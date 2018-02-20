@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "game.h"
+#include "system_renderer.h"
 
 using namespace sf;
 using namespace std;
@@ -7,9 +9,21 @@ using namespace std;
 const int gameWidth = 800;
 const int gameHeight = 600;
 
+std::shared_ptr<Scene> gameScene;
+std::shared_ptr<Scene> menuScene;
+std::shared_ptr<Scene> activeScene;
+
 void Reset() {}
 
-void Load() {}
+void Load() {
+	gameScene = make_shared<GameScene>();
+	menuScene = make_shared<MenuScene>();
+	gameScene.reset(new GameScene());
+	menuScene.reset(new MenuScene());
+	activeScene = menuScene;
+	gameScene->Load();
+	menuScene->Load();
+}
 
 void Update(RenderWindow &window) {
 	// recalculate delta time
@@ -27,13 +41,19 @@ void Update(RenderWindow &window) {
 	if (Keyboard::isKeyPressed(Keyboard::Escape)) {
 		window.close();
 	}
+
+	activeScene->Update(dt);
 }
 
-void Render(RenderWindow &window) {}
+void Render(RenderWindow &window) {
+	activeScene->Render();
+
+	Renderer::render();
+}
 
   int main() {
 	RenderWindow window(VideoMode(gameWidth, gameHeight), "Coursework");
-	
+	Renderer::initiliase(window);
 	Load();
 
 	while (window.isOpen()) {

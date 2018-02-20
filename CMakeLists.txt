@@ -20,7 +20,7 @@ link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 file(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
 add_executable(Coursework ${SOURCES})
 target_include_directories(Coursework PRIVATE ${SFML_INCS})
-target_link_libraries(Coursework sfml-graphics)
+target_link_libraries(Coursework lib_tile_level_loader lib_ecm sfml-graphics)
 
 ## COPY RESOURCES ##
 add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/res" 											${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIGURATION>/res)
@@ -36,3 +36,9 @@ target_link_libraries(lib_tile_level_loader lib_maths sfml-graphics)
 add_library(lib_maths INTERFACE)
 target_sources(lib_maths INTERFACE "${CMAKE_SOURCE_DIR}/lib_maths/maths.h")
 target_include_directories(lib_maths INTERFACE "${CMAKE_SOURCE_DIR}/lib_maths" SYSTEM INTERFACE ${SFML_INCS})
+
+#Entity Component lib
+file(GLOB_RECURSE SOURCE_FILES lib_ecm/*.cpp lib_ecm/*.h)
+add_library(lib_ecm STATIC ${SOURCE_FILES})
+target_include_directories(lib_ecm INTERFACE "${CMAKE_SOURCE_DIR}/lib_ecm")
+target_link_libraries(lib_ecm PRIVATE lib_maths)

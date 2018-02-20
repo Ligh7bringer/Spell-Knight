@@ -13,7 +13,7 @@ namespace sf {
 	//returns the length of a sf::vector
 	template<typename T> double length(const Vector2<T> &v) {
 		//to do
-		return sqrt( (x * x) + (y * y) );
+		return sqrt( (v.x * v.x) + (v.y * v.y) );
 	}
 
 	//returns normalized sf::vector
@@ -50,7 +50,7 @@ namespace sf {
 
 	//cout!
 	template<typename T>	
-	std::ostream &operator<<(std::ostream &s, const Vector2<T> &v) {
+	std::ostream &operator<<(std::ostream &os, const Vector2<T> &v) {
 		os << '(' << v.x << ", " << v.y << ')';
 		return os;
 	}

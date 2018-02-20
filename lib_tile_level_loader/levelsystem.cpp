@@ -11,8 +11,9 @@ size_t LevelSystem::_height;
 Vector2f LevelSystem::_offset = Vector2f{ 0 , 0 };
 
 float LevelSystem::_tileSize(100.0f);
+
 vector<std::unique_ptr<sf::RectangleShape>> LevelSystem::_sprites;
-std::map<LevelSystem::TILE, sf::Color> LevelSystem::_colours{ {WALL, Color::White }, { END, Color::Red }, {START, Color::Blue } };
+std::map<LevelSystem::TILE, sf::Color> LevelSystem::_colours{ {WALL, Color::White }, {END, Color::Red}, {START, Color::Blue }, {ENEMY, Color::Green} };
 
 sf::Color LevelSystem::getColor(LevelSystem::TILE t) {
 	auto it = _colours.find(t);
@@ -41,12 +42,11 @@ void LevelSystem::loadLevelFile(const std::string &path, float tileSize) {
 		f.close();
 	}
 	else {
-		throw string("Couldn't open level file: " + path);
+		std::cerr << "Couldn't open level file: " << path << std::endl;
 	}
 
 	std::vector<TILE> temp_tiles;
 	for (int i = 0; i < buffer.size(); ++i) {
-		//cout << buffer[i] << endl;
 		const char c = buffer[i];
 
 		switch (c) {
@@ -81,7 +81,7 @@ void LevelSystem::loadLevelFile(const std::string &path, float tileSize) {
 
 	//check for errors
 	if (temp_tiles.size() != (w * h)) {
-		throw string("Can't parse level: " + path);
+		std::cerr << "Can't parse level: " << path << std::endl;
 	}
 	
 	//make an array for the level
