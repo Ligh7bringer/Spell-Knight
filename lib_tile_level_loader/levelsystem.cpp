@@ -50,7 +50,7 @@ void LevelSystem::loadLevelFile(const std::string &path, float tileSize) {
 		const char c = buffer[i];
 
 		switch (c) {
-			case 'w':
+			case 'W':
 				temp_tiles.push_back(WALL);
 				break;
 			case 's':
@@ -59,7 +59,7 @@ void LevelSystem::loadLevelFile(const std::string &path, float tileSize) {
 			case 'e':
 				temp_tiles.push_back(END);
 				break;
-			case ' ':
+			case 'x':
 				temp_tiles.push_back(EMPTY);
 				break;
 			case '+':

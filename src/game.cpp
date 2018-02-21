@@ -44,7 +44,7 @@ GameScene::GameScene() {}
 void GameScene::Respawn() {}
 
 void GameScene::Load() {
-    LevelSystem::loadLevelFile("res/levels/level_1", 25.0f);
+    LevelSystem::loadLevelFile("res/levels/level_1.txt", 25.0f);
 
     auto player = make_shared<Entity>();
     auto s = player->addComponent<ShapeComponent>();
@@ -58,9 +58,13 @@ void GameScene::Load() {
 }
 
 void GameScene::Update(double dt) {
-    if(Keyboard::isKeyPressed(Keyboard::Tab)) {
+    if(Keyboard::isKeyPressed(Keyboard::BackSpace)) {
         activeScene = menuScene;
     }
+	if (Keyboard::isKeyPressed(Keyboard::L)) {
+		LevelSystem::loadLevelFile("res/levels/level_1.txt", 25.0f);
+	}
+	
 
     Scene::Update(dt);
 }
