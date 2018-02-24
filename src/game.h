@@ -1,29 +1,11 @@
 #pragma once
-#include "scene.h"
-#include <SFML/Graphics.hpp>
 
-extern std::shared_ptr<Scene> gameScene;
-extern std::shared_ptr<Scene> menuScene;
-extern std::shared_ptr<Scene> activeScene;
+#include "scenes/scene_level1.h"
+#include "scenes/scene_level2.h"
+#include "scenes/scene_level3.h"
+#include "scenes/scene_menu.h"
 
-//Menu scene
-class MenuScene : public Scene {
-public: 
-    MenuScene();
-    void Update(double dt) override;
-    void Render() override;
-    void Load() override;
-};
-
-//Game Scene
-class GameScene : public Scene {
-private:
-    sf::Text text;
-    void Respawn();
-
-public: 
-    GameScene();
-    void Update(double dt) override;
-    void Render() override;
-    void Load() override;
-};
+extern MenuScene menu;
+extern Level1Scene level1;
+extern Level2Scene level2;
+extern Level3Scene level3;
