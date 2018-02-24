@@ -17,11 +17,11 @@ public:
   typedef unsigned char Tile;
 
   enum TILES {
-    EMPTY = 'x',
-    START = 'S',
-    END = 'E',
-    WALL = 'W',
-    ENEMY = 'N',
+    EMPTY = ' ',
+    START = 's',
+    END = 'e',
+    WALL = 'w',
+    ENEMY = 'n',
     WAYPOINT = '+'
   };
 
