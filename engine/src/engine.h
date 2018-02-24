@@ -5,6 +5,7 @@
 #include <maths.h>
 #include <mutex>
 #include <string>
+#include "SFML/Graphics.hpp"
 
 class Scene {
 public:

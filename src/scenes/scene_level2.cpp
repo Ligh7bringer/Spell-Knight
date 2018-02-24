@@ -21,9 +21,6 @@ void Level2Scene::Load() {
   Vector2f windowSize = static_cast<Vector2f>(Engine::getWindowSize());
   _view = View(FloatRect(0, 0, windowSize.x, windowSize.y));
 
-  auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
-  ls::setOffset(Vector2f(0, 0.f));
-
   // Create player
   {
     // *********************************
