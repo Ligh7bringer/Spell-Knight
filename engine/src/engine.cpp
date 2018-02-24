@@ -141,7 +141,10 @@ void Scene::Update(const double& dt) {
   ents.update(dt); 
 }
 
-void Scene::Render() { ents.render(); }
+void Scene::Render() { 
+  ents.render(); 
+  //Renderer::queue(&_background);
+}
 
 bool Scene::isLoaded() const {
   {
