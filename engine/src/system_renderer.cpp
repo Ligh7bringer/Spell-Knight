@@ -27,3 +27,14 @@ void Renderer::render() {
 }
 
 void Renderer::queue(const sf::Drawable* s) { sprites.push(s); }
+
+sf::RenderWindow &Renderer::getWindow() { return *rw; }
+
+void Renderer::setView(sf::View &view) {
+  rw->setView(view);
+}
+
+void Renderer::resetView() {
+  auto v = rw->getDefaultView();
+  rw->setView(v);
+}

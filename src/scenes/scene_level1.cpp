@@ -5,6 +5,7 @@
 #include <LevelSystem.h>
 #include <iostream>
 #include <thread>
+#include "system_renderer.h"
 
 using namespace std;
 using namespace sf;
@@ -14,6 +15,10 @@ static shared_ptr<Entity> player;
 void Level1Scene::Load() {
   cout << " Scene 1 Load" << endl;
   ls::loadLevelFile("res/level_1.txt", 32.0f);
+
+  //setup view
+  Vector2f windowSize = static_cast<Vector2f>(Engine::getWindowSize());
+  _view = View(FloatRect(0, 0, windowSize.x, windowSize.y));
 
   auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);
   ls::setOffset(Vector2f(0, 32.f));
@@ -51,6 +56,8 @@ void Level1Scene::Load() {
 
 void Level1Scene::UnLoad() {
   cout << "Scene 1 Unload" << endl;
+  //_view.reset();
+  Renderer::resetView();
   player.reset();
   ls::unload();
   Scene::UnLoad();
@@ -61,6 +68,12 @@ void Level1Scene::Update(const double& dt) {
   if (ls::getTileAt(player->getPosition()) == ls::END) {
     Engine::ChangeScene((Scene*)&level2);
   }
+
+  if(player != nullptr) {
+    _view.setCenter(player->getPosition().x, Engine::getWindowSize().y / 2.f);
+    Renderer::setView(_view);
+  }
+  
   Scene::Update(dt);
 }
 

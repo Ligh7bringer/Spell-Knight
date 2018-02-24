@@ -13,4 +13,11 @@ void update(const double&);
 void queue(const sf::Drawable* s);
 
 void render();
+
+sf::RenderWindow& getWindow();
+
+void setView(sf::View &view);
+
+void resetView();
+
 }; // namespace Renderer
