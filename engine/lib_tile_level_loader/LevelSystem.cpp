@@ -95,7 +95,7 @@ void LevelSystem::buildSprites(bool optimise) {
   _sprites.clear();
 
   //Texture spritesheet;
-  if(!_spritesheet.loadFromFile("res/img/tiles.png")) {
+  if(!_spritesheet.loadFromFile("res/img/tiles3.png")) {
     cout << "Error!" << endl;
   }
 
