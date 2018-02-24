@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics.hpp>
 #include <ecm.h>
 #include <future>
 #include <maths.h>
@@ -25,7 +26,6 @@ protected:
   void setLoaded(bool);
   sf::View _view;
   sf::Sprite _background;
-
 private:
   mutable bool _loaded;
   mutable std::future<void> _loaded_future;

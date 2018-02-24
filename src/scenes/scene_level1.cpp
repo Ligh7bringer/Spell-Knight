@@ -10,11 +10,21 @@
 using namespace std;
 using namespace sf;
 
+Texture tex;
+Sprite background;
+
 static shared_ptr<Entity> player;
 
 void Level1Scene::Load() {
   cout << " Scene 1 Load" << endl;
   ls::loadLevelFile("res/level_1.txt", 32.0f);
+
+  //setup background
+  if(!tex.loadFromFile("res/img/forest.jpg")) {
+    cout << "Couldn't load forest.jpg" << endl;
+  }
+
+  _background.setTexture(tex);
 
   //setup view
   Vector2f windowSize = static_cast<Vector2f>(Engine::getWindowSize());
@@ -61,7 +71,6 @@ void Level1Scene::UnLoad() {
 }
 
 void Level1Scene::Update(const double& dt) {
-
   if (ls::getTileAt(player->getPosition()) == ls::END) {
 	  cout << "yeh won!!" << endl;
     Engine::ChangeScene((Scene*)&menu);
@@ -71,11 +80,15 @@ void Level1Scene::Update(const double& dt) {
     _view.setCenter(player->getPosition().x, Engine::getWindowSize().y / 2.f);
     Renderer::setView(_view);
   }
-  
+
   Scene::Update(dt);
 }
 
 void Level1Scene::Render() {
-  ls::render(Engine::GetWindow());
+  //ensure background is drawn before anything else
+  Engine::GetWindow().draw(_background);
+
   Scene::Render();
+
+  ls::render(Engine::GetWindow());
 }

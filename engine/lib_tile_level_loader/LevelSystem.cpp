@@ -8,7 +8,7 @@ std::map<LevelSystem::Tile, sf::Color> LevelSystem::_colours{
     {WALL, Color::White}, {END, Color::Red}};
 
 std::map<LevelSystem::Tile, sf::IntRect> LevelSystem::_rects{
-    {WALL, IntRect(32, 0, 32, 32)}, {END, IntRect(2.f * 32.f, 6.f * 32.f, 32.f, 32.f)}};
+    {WALL, IntRect(0, 0, 33, 33)}, {END, IntRect(2 * 32, 6 * 32, 32, 32)}};
 
 std::vector<sf::Sprite> LevelSystem::_texs;
 sf::Texture LevelSystem::_spritesheet;
