@@ -13,8 +13,6 @@ static shared_ptr<Entity> player;
 void Level3Scene::Load() {
   cout << "Scene 3 Load" << endl;
   ls::loadLevelFile("res/level_3.txt", 40.0f);
-  auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
-  ls::setOffset(Vector2f(0, ho));
 
   // Create player
   {

@@ -30,9 +30,6 @@ void Level1Scene::Load() {
   Vector2f windowSize = static_cast<Vector2f>(Engine::getWindowSize());
   _view = View(FloatRect(0, 0, windowSize.x, windowSize.y));
 
-  auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);
-  ls::setOffset(Vector2f(0, 32.f));
-
   // Create player
   {
     player = makeEntity();
@@ -75,7 +72,8 @@ void Level1Scene::UnLoad() {
 
 void Level1Scene::Update(const double& dt) {
   if (ls::getTileAt(player->getPosition()) == ls::END) {
-    Engine::ChangeScene((Scene*)&level2);
+	  cout << "yeh won!!" << endl;
+    Engine::ChangeScene((Scene*)&menu);
   }
 
   if(player != nullptr) {
