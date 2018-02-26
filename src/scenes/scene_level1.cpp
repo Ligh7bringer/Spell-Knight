@@ -19,13 +19,9 @@ static shared_ptr<Entity> player;
 
 void Level1Scene::Load() {
   cout << " Scene 1 Load" << endl;
-<<<<<<< HEAD
   ls::loadLevelFile("res/level_1.txt", 32.0f);
   //auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);
   //ls::setOffset(Vector2f(0, ho));
-=======
-  ls::loadLevelFile("res/level_2.txt", 32.0f);
->>>>>>> 4e71b5041ccbbcc56d807e1f9d6aa04c520548dd
 
   //setup background
   if(!tex.loadFromFile("res/img/tiles/forest.jpg")) {
@@ -41,17 +37,9 @@ void Level1Scene::Load() {
   // Create player
   {
     player = makeEntity();
-<<<<<<< HEAD
 	player->setPosition(Vector2f(100.f,100.f));
-    auto s = player->addComponent<ShapeComponent>();
-    s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
-    s->getShape().setFillColor(Color::Magenta);
-    s->getShape().setOrigin(10.f, 15.f);
-=======
-    player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
+    
     player->addComponent<PlayerAnimatedSpriteComponent>();
->>>>>>> 4e71b5041ccbbcc56d807e1f9d6aa04c520548dd
-
     player->addComponent<PlayerPhysicsComponent>(Vector2f(32.f, 64.f));
   }
 

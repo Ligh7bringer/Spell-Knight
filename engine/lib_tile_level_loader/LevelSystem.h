@@ -35,15 +35,14 @@ public:
 		  PLATFORM3 = 'P',
 	  };
   };
-
-  struct baseTiles {
-	  enum types {
-		  EMPTY = 'x',
-		  START = 'S',
-		  END = 'E',
-		  ENEMY = 'N',
-		  WAYPOINT = '+'
-	  };
+  struct baseTiles{
+	 enum types {
+		EMPTY = 'x',
+		START = 'S',
+		END = 'E',
+		ENEMY = 'N',
+		WAYPOINT = '+'
+	 };
   };
 
   static Tile getTile(sf::Vector2ul);
