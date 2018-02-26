@@ -4,22 +4,35 @@
 using namespace std;
 using namespace sf;
 
-std::map<LevelSystem::Tile, sf::Color> LevelSystem::_colours{
-    {WALL, Color::White}, {END, Color::Red}};
+
+//std::map<LevelSystem::Tile, sf::Color> LevelSystem::_colours{{LevelSystem::getGroundTile, Color::White}, {baseTiles::END, Color::Red}};
 
 std::map<LevelSystem::Tile, sf::IntRect> LevelSystem::_rects{
-    {WALL, IntRect(0, 0, 33, 33)}, {END, IntRect(2 * 32, 6 * 32, 32, 32)}};
+    {groundTiles::GROUND1, IntRect(0, 0, 32, 32)},
+	{groundTiles::GROUND2, IntRect(0, 64, 32, 32)},
+	{groundTiles::GROUND3, IntRect(32, 64, 32, 32)},
+	{groundTiles::GROUND4, IntRect(64, 64, 32, 32)},
+	{groundTiles::GROUND5, IntRect(96, 64, 32, 32)},
+	{groundTiles::GROUND6, IntRect(0, 96, 32, 32)},
+	{groundTiles::GROUND7, IntRect(32, 96, 32, 32)},
+	{groundTiles::GROUND8, IntRect(64, 96, 32, 32)},
+	{groundTiles::GROUND9, IntRect(96, 96, 32, 32)},
+	{platformTiles::PLATFORM1, IntRect(64, 0, 32, 32)},
+	{platformTiles::PLATFORM2, IntRect(96, 0, 32, 32)},
+	{platformTiles::PLATFORM3, IntRect(0, 32, 32, 32)},
+	{baseTiles::END, IntRect(2 * 32, 6 * 32, 32, 32)}
+};
 
 std::vector<sf::Sprite> LevelSystem::_texs;
 sf::Texture LevelSystem::_spritesheet;
 
-sf::Color LevelSystem::getColor(LevelSystem::Tile t) {
+/*sf::Color LevelSystem::getColor(LevelSystem::Tile t) {
   auto it = _colours.find(t);
   if (it == _colours.end()) {
     _colours[t] = Color::Transparent;
   }
   return _colours[t];
-}
+}*/
 
 sf::IntRect LevelSystem::getRect(LevelSystem::Tile t) {
   auto it = _rects.find(t);
@@ -29,11 +42,12 @@ sf::IntRect LevelSystem::getRect(LevelSystem::Tile t) {
   return _rects[t];
 }
 
-void LevelSystem::setColor(LevelSystem::Tile t, sf::Color c) {
-  _colours[t] = c;
-}
+//void LevelSystem::setColor(LevelSystem::Tile t, sf::Color c) {
+  //_colours[t] = c;
+//}
 
 std::unique_ptr<LevelSystem::Tile[]> LevelSystem::_tiles;
+std::unique_ptr<LevelSystem::Tile[]> LevelSystem::_groundTiles;
 size_t LevelSystem::_width;
 size_t LevelSystem::_height;
 
@@ -60,11 +74,15 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
   }
 
   std::vector<Tile> temp_tiles;
+  std::vector<Tile> tempGroundTiles;
   int widthCheck = 0;
   for (int i = 0; i < buffer.size(); ++i) {
     const char c = buffer[i];
 	if (c == '\0'){
 		break;
+	}
+	if (c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9') {
+		tempGroundTiles.push_back((Tile)c);
 	}
     if (c == '\n') { // newline
       if (w == 0) {  // if we haven't written width yet
@@ -84,9 +102,12 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
     throw string("Can't parse level file") + path;
   }
   _tiles = std::make_unique<Tile[]>(w * h);
+  _groundTiles = std::make_unique<Tile[]>(w*h);
+
   _width = w; // set static class vars
   _height = h;
   std::copy(temp_tiles.begin(), temp_tiles.end(), &_tiles[0]);
+  std::copy(tempGroundTiles.begin(), tempGroundTiles.end(), &_groundTiles[0]);
   cout << "Level " << path << " Loaded. " << w << "x" << h << std::endl;
   buildSprites(false);
 }
@@ -95,7 +116,7 @@ void LevelSystem::buildSprites(bool optimise) {
   _sprites.clear();
 
   //Texture spritesheet;
-  if(!_spritesheet.loadFromFile("res/img/tiles3.png")) {
+  if(!_spritesheet.loadFromFile("res/img/tiles4.png")) {
     cout << "Error!" << endl;
   }
 
@@ -110,14 +131,14 @@ void LevelSystem::buildSprites(bool optimise) {
   for (size_t y = 0; y < _height; ++y) {
     for (size_t x = 0; x < _width; ++x) {
       Tile t = getTile({x, y});
-      if (t == EMPTY) {
+      if (t == baseTiles::EMPTY) {
         continue;
       }
 
       tp temp;
       temp.p = getTilePosition({x, y});
       temp.s = tls;
-      temp.c = getColor(t);
+     // temp.c = getColor(t);
       temp.sprite.setTexture(_spritesheet);
       temp.sprite.setTextureRect(getRect(t));
       tps.push_back(temp);
@@ -219,6 +240,14 @@ LevelSystem::Tile LevelSystem::getTile(sf::Vector2ul p) {
   return _tiles[(p.y * _width) + p.x];
 }
 
+LevelSystem::Tile LevelSystem::getGroundTile(sf::Vector2ul p) {
+	if (p.x > _width || p.y > _height) {
+		throw string("Tile out of range: ") + to_string(p.x) + "," +
+			to_string(p.y) + ")";
+	}
+	return _groundTiles[(p.y * _width) + p.x];
+}
+
 size_t LevelSystem::getWidth() { return _width; }
 
 size_t LevelSystem::getHeight() { return _height; }
@@ -237,6 +266,16 @@ std::vector<sf::Vector2ul> LevelSystem::findTiles(LevelSystem::Tile type) {
 
   return v;
 }
+std::vector<sf::Vector2ul> LevelSystem::getGroundTiles()
+{
+	auto v = vector<sf::Vector2ul>();
+	for (size_t i = 0; i < _width * _height; ++i) {
+		if (_tiles[i] == '1' || _tiles[i] == '2' || _tiles[i] == '3' || _tiles[i] == '4' || _tiles[i] == '5' || _tiles[i] == '6' || _tiles[i] == '7' || _tiles[i] == '8' || _tiles[i] == '9') {
+			v.push_back({ i % _width, i / _width });
+		}
+	}
+	return v;
+}
 
 LevelSystem::Tile LevelSystem::getTileAt(Vector2f v) {
   auto a = v - _offset;
@@ -245,6 +284,17 @@ LevelSystem::Tile LevelSystem::getTileAt(Vector2f v) {
   }
   return getTile(Vector2ul((v - _offset) / (_tileSize)));
 }
+
+LevelSystem::Tile LevelSystem::getGroundTileAt(Vector2f v)
+{
+	auto a = v - _offset;
+	if (a.x < 0 || a.y < 0) {
+		throw string("Tile out of range ");
+	}
+	return getGroundTile(Vector2ul((v - _offset) / (_tileSize)));
+}
+
+
 
 bool LevelSystem::isOnGrid(sf::Vector2f v) {
   auto a = v - _offset;

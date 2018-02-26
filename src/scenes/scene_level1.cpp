@@ -6,6 +6,7 @@
 #include <iostream>
 #include <thread>
 #include "system_renderer.h"
+#include <string>
 
 using namespace std;
 using namespace sf;
@@ -18,6 +19,8 @@ static shared_ptr<Entity> player;
 void Level1Scene::Load() {
   cout << " Scene 1 Load" << endl;
   ls::loadLevelFile("res/level_1.txt", 32.0f);
+  //auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);
+  //ls::setOffset(Vector2f(0, ho));
 
   //setup background
   if(!tex.loadFromFile("res/img/forest.jpg")) {
@@ -33,7 +36,7 @@ void Level1Scene::Load() {
   // Create player
   {
     player = makeEntity();
-    player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
+	player->setPosition(Vector2f(100.f,100.f));
     auto s = player->addComponent<ShapeComponent>();
     s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
     s->getShape().setFillColor(Color::Magenta);
@@ -44,7 +47,7 @@ void Level1Scene::Load() {
 
   // Add physics colliders to level tiles.
   {
-    auto walls = ls::findTiles(ls::WALL);
+	auto walls = (ls::getGroundTiles());
     for (auto w : walls) {
       auto pos = ls::getTilePosition(w);
       pos += Vector2f(16.f, 16.f); //offset to center
@@ -55,7 +58,7 @@ void Level1Scene::Load() {
   }
 
   //Simulate long loading times
-  std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   cout << " Scene 1 Load Done" << endl;
 
   setLoaded(true);
@@ -71,7 +74,7 @@ void Level1Scene::UnLoad() {
 }
 
 void Level1Scene::Update(const double& dt) {
-  if (ls::getTileAt(player->getPosition()) == ls::END) {
+  if (ls::getTileAt(player->getPosition()) == ls::baseTiles::END) {
 	  cout << "yeh won!!" << endl;
     Engine::ChangeScene((Scene*)&menu);
   }

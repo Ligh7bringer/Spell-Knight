@@ -30,7 +30,7 @@ void Level3Scene::Load() {
   // Add physics colliders to level tiles.
   {
     // *********************************
-    auto walls = ls::findTiles(ls::WALL);
+    auto walls = ls::getGroundTiles();
     for(auto w : walls) {
       auto pos = ls::getTilePosition(w);
       pos += Vector2f(20.f, 20.f);
@@ -57,7 +57,7 @@ void Level3Scene::UnLoad() {
 void Level3Scene::Update(const double& dt) {
   Scene::Update(dt);
   const auto pp = player->getPosition();
-  if (ls::getTileAt(pp) == ls::END) {
+  if (ls::getTileAt(pp) == ls::baseTiles::END) {
     Engine::ChangeScene((Scene*)&level1);
   } else if (!player->isAlive()) {
     Engine::ChangeScene((Scene*)&level3);

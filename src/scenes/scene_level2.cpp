@@ -25,7 +25,7 @@ void Level2Scene::Load() {
   {
     // *********************************
     player = makeEntity();
-    player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
+    player->setPosition(ls::getTilePosition(ls::findTiles(ls::baseTiles::START)[0]));
     auto s = player->addComponent<ShapeComponent>();
     s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
     s->getShape().setFillColor(Color::Magenta);
@@ -38,7 +38,7 @@ void Level2Scene::Load() {
   // Create Enemy
   {
     auto enemy = makeEntity();
-    enemy->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[0]) +
+    enemy->setPosition(ls::getTilePosition(ls::findTiles(ls::baseTiles::ENEMY)[0]) +
                        Vector2f(0, 24));
     // *********************************
     // Add HurtComponent
@@ -68,7 +68,7 @@ void Level2Scene::Load() {
   // Add physics colliders to level tiles.
   {
     // *********************************
-    auto walls = ls::findTiles(ls::WALL);
+    auto walls = ls::getGroundTiles();
     for(auto w : walls) {
       auto pos = ls::getTilePosition(w);
       pos += Vector2f(16.f, 16.f);
@@ -98,7 +98,7 @@ void Level2Scene::Update(const double& dt) {
   Renderer::setView(_view);
 
   const auto pp = player->getPosition();
-  if (ls::getTileAt(pp) == ls::END) {
+  if (ls::getTileAt(pp) == ls::baseTiles::END) {
     Engine::ChangeScene((Scene*)&level3);
   } else if (!player->isAlive()) {
     Engine::ChangeScene((Scene*)&level2);
