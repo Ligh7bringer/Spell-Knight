@@ -1,7 +1,9 @@
 #include "cmp_actor_movement.h"
+#include "cmp_animated_sprite.h"
 #include <LevelSystem.h>
 #include <engine.h>
 #include <iostream>
+
 using namespace sf;
 using namespace std;
 

@@ -13,11 +13,15 @@ protected:
   sf::Sprite _sprite;
   sf::Texture _spritesheet;
   sf::IntRect _currentFrame;
-  sf::Clock _clock;
+  sf::Vector2u _currentImage;
+  int _spriteSheetPadding;
+  int _currentRow;
+  float _totalTime;
   float _frameTime;
   int _numOfFrames;
   int _width;
   int _height;
+  bool _facingRight;
 
 public:
   AnimatedSpriteComponent() = delete;
@@ -27,7 +31,11 @@ public:
   void render() override;
 
   void setSpritesheet(std::string path);
+  void setSpritesheet(sf::Texture& sh);
   void setFrameTime(float t);
   void setNumberOfFrames(int num);
+  void setCurrentRow(int r);
+  void setSpriteSheetPadding(int padding);
+  void setFacingRight(bool b);
 };
 

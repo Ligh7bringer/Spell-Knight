@@ -1,7 +1,7 @@
 #include "scene_level1.h"
 #include "../components/cmp_player_physics.h"
-#include "../components/cmp_sprite.h"
 #include "../components/cmp_animated_sprite.h"
+#include "../components/cmp_player_animated_sprite.h"
 #include "../game.h"
 #include <LevelSystem.h>
 #include <iostream>
@@ -21,7 +21,7 @@ void Level1Scene::Load() {
   ls::loadLevelFile("res/level_2.txt", 32.0f);
 
   //setup background
-  if(!tex.loadFromFile("res/img/forest.jpg")) {
+  if(!tex.loadFromFile("res/img/tiles/forest.jpg")) {
     cout << "Couldn't load forest.jpg" << endl;
   }
 
@@ -35,10 +35,7 @@ void Level1Scene::Load() {
   {
     player = makeEntity();
     player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
-    auto s = player->addComponent<AnimatedSpriteComponent>(64, 64);
-    s->setSpritesheet("res/img/sheet_hero_walk.png");
-    s->setNumberOfFrames(3);
-    s->setFrameTime(0.5f);
+    player->addComponent<PlayerAnimatedSpriteComponent>();
 
     player->addComponent<PlayerPhysicsComponent>(Vector2f(32.f, 64.f));
   }

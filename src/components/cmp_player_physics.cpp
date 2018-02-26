@@ -1,6 +1,7 @@
 #include "cmp_player_physics.h"
 #include "system_physics.h"
 #include <LevelSystem.h>
+#include "cmp_animated_sprite.h"
 #include <SFML/Window/Keyboard.hpp>
 
 using namespace std;
@@ -42,15 +43,20 @@ void PlayerPhysicsComponent::update(double dt) {
       Keyboard::isKeyPressed(Keyboard::D)) {
     // Moving Either Left or Right
     if (Keyboard::isKeyPressed(Keyboard::D)) {
-      if (getVelocity().x < _maxVelocity.x)
+      if (getVelocity().x < _maxVelocity.x) {
         impulse({(float)(dt * _groundspeed), 0});
+        _direction = 1;
+      }
     } else {
-      if (getVelocity().x > -_maxVelocity.x)
+      if (getVelocity().x > -_maxVelocity.x) {
         impulse({-(float)(dt * _groundspeed), 0});
+        _direction = -1;
+      }
     }
   } else {
     // Dampen X axis movement
     dampen({0.9f, 1.0f});
+    _direction = 0;
   }
 
   // Handle Jump
@@ -93,4 +99,12 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
   _body->SetFixedRotation(true);
   //Bullet items have higher-res collision detection
   _body->SetBullet(true);
+}
+
+int PlayerPhysicsComponent::getDirection() const {
+  return _direction;
+}
+
+bool PlayerPhysicsComponent::isJumping() const {
+  return !_grounded;
 }
