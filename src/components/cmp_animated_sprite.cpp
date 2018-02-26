@@ -1,0 +1,113 @@
+#include "cmp_animated_sprite.h"
+#include "system_renderer.h"
+#include <SFML/Graphics.hpp>
+
+using namespace sf;
+using namespace std;
+
+//constructor, initialises default sprite size and default animation speed
+AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, int width, int height)
+    : Component(p) {
+        //width and height of the sprite
+        _width = width;
+        _height = height;
+        //total accumulated time, used to tell when to switch to the next frame
+        _totalTime = 0.0f;
+        //the texture rect's width and height
+        _currentFrame.width = _width;
+        _currentFrame.height = _height;
+        //current frame, default 0, 0
+        _currentImage = Vector2u(0, 0);
+        //default animation speed
+        _frameTime = 0.2f;
+        //this boolean is used to decide whether to flip the sprite or not
+        _facingRight = true;
+        //set this to the padding between rows in the spritesheet!!
+        //all online spritesheet packers seem to addign padding for some reason
+        _spriteSheetPadding = 0;
+}
+
+void AnimatedSpriteComponent::update(double dt) {
+    //make sure we are at the right row in the spritesheet
+    _currentImage.y = _currentRow;
+
+    //accumulate time
+    _totalTime += dt;
+    //if the time that has passed is greater than the animation speed (_frameTime)
+    if (_totalTime > _frameTime) {
+        //reset
+        _totalTime -= _frameTime;
+        //move on to next frame
+        _currentImage.x++;
+        //if there are no more frames
+        if(_currentImage.x >= _numOfFrames) {
+            //restart from the first frame
+            _currentImage.x = 0;
+        }
+    }
+
+    //if the sprite is supposed to be facing right
+    if(_facingRight) {
+        //set the texture rect's x to the correct x coordinate on the spritesheet
+        _currentFrame.left = _currentImage.x * _width;
+        //make sure the width is correct!!
+        _currentFrame.width = abs(_currentFrame.width);
+    } else { //if facing left
+        //set the width to negative which should flip the sprite horizontally
+        _currentFrame.left = (_currentImage.x + 1) * abs(_currentFrame.width);
+        _currentFrame.width = -abs(_currentFrame.width);
+    }
+    
+    //calculate spritesheet y coordinate, don't forget padding
+    _currentFrame.top = _currentImage.y * _height + _spriteSheetPadding;
+
+    //update sprite: set texture rect, update position and origin
+    _sprite.setTextureRect(_currentFrame);
+    _sprite.setPosition(_parent->getPosition());
+    _sprite.setOrigin(_width/2, _height/2);
+}
+
+//render current sprite
+void AnimatedSpriteComponent::render() {
+    Renderer::queue(&_sprite);
+}
+
+//sets the sprite sheet for the animation, loaded from path
+void AnimatedSpriteComponent::setSpritesheet(string path) {
+    if(!_spritesheet.loadFromFile(path)) {
+        cout << "Couldn't load component's spritesheet!";
+    }
+    //update spritesheet
+    _sprite.setTexture(_spritesheet);
+}
+
+//sets the spritesheet, using the passed reference to a spritesheet
+void AnimatedSpriteComponent::setSpritesheet(sf::Texture& sh) {
+    _spritesheet = sh;
+    _sprite.setTexture(_spritesheet);
+}
+
+//sets animation speed
+void AnimatedSpriteComponent::setFrameTime(float t) {
+    _frameTime = t;
+}
+
+//sets number of frames the animation consists of
+void AnimatedSpriteComponent::setNumberOfFrames(int num) {
+    _numOfFrames = num;
+}
+
+//sets current row in the spritesheet 
+void AnimatedSpriteComponent::setCurrentRow(int r) {
+    _currentRow = r;
+}
+
+//sets padding
+void AnimatedSpriteComponent::setSpriteSheetPadding(int padding) {
+    _spriteSheetPadding = padding;
+}
+
+//sets whether the entity is facing right or not
+void AnimatedSpriteComponent::setFacingRight(bool b) {
+    _facingRight = b;
+}
