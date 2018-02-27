@@ -33,3 +33,7 @@ void ActorMovementComponent::move(const sf::Vector2f& p) {
 void ActorMovementComponent::move(float x, float y) {
   move(Vector2f(x, y));
 }
+
+float ActorMovementComponent::getSpeed() const {
+  return _speed;
+}
