@@ -20,7 +20,7 @@ std::map<LevelSystem::Tile, sf::IntRect> LevelSystem::_rects{
 	{platformTiles::PLATFORM1, IntRect(64, 0, 32, 32)},
 	{platformTiles::PLATFORM2, IntRect(96, 0, 32, 32)},
 	{platformTiles::PLATFORM3, IntRect(0, 32, 32, 32)},
-	{baseTiles::END, IntRect(2 * 32, 6 * 32, 32, 32)}
+	{baseTiles::END, IntRect(0,32, 32, 32)}
 };
 
 std::vector<sf::Sprite> LevelSystem::_texs;
@@ -81,7 +81,7 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
 	if (c == '\0'){
 		break;
 	}
-	if (c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9') {
+	if (c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9' || c=='I'||c=='O'||c=='P') {
 		tempGroundTiles.push_back((Tile)c);
 	}
     if (c == '\n') { // newline
@@ -245,7 +245,13 @@ LevelSystem::Tile LevelSystem::getGroundTile(sf::Vector2ul p) {
 		throw string("Tile out of range: ") + to_string(p.x) + "," +
 			to_string(p.y) + ")";
 	}
-	return _groundTiles[(p.y * _width) + p.x];
+	auto v = vector<sf::Vector2ul>();
+	for (size_t i = 0; i < _width * _height; ++i) {
+		if (_tiles[i] == '1' || _tiles[i] == '2' || _tiles[i] == '3' || _tiles[i] == '4' || _tiles[i] == '5' || _tiles[i] == '6'
+			|| _tiles[i] == '7' || _tiles[i] == '8' || _tiles[i] == '9' || _tiles[i] == 'I' || _tiles[i] == 'O' || _tiles[i] == 'P') {
+			return _tiles[(p.y * _width) + p.x];
+		}
+	}
 }
 
 size_t LevelSystem::getWidth() { return _width; }
@@ -270,16 +276,19 @@ std::vector<sf::Vector2ul> LevelSystem::getGroundTiles()
 {
 	auto v = vector<sf::Vector2ul>();
 	for (size_t i = 0; i < _width * _height; ++i) {
-		if (_tiles[i] == '1' || _tiles[i] == '2' || _tiles[i] == '3' || _tiles[i] == '4' || _tiles[i] == '5' || _tiles[i] == '6' || _tiles[i] == '7' || _tiles[i] == '8' || _tiles[i] == '9') {
+		if (_tiles[i] == '1' || _tiles[i] == '2' || _tiles[i] == '3' || _tiles[i] == '4' || _tiles[i] == '5' || _tiles[i] == '6'
+			|| _tiles[i] == '7' || _tiles[i] == '8' || _tiles[i] == '9' || _tiles[i]== 'I' || _tiles[i] == 'O'|| _tiles[i] == 'P') {
 			v.push_back({ i % _width, i / _width });
 		}
 	}
+	//cout << v.size() << endl;
 	return v;
 }
 
 LevelSystem::Tile LevelSystem::getTileAt(Vector2f v) {
   auto a = v - _offset;
   if (a.x < 0 || a.y < 0) {
+
     throw string("Tile out of range ");
   }
   return getTile(Vector2ul((v - _offset) / (_tileSize)));

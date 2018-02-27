@@ -52,7 +52,7 @@ void Level2Scene::Load() {
     enemy->addComponent<EnemyAIComponent>();
     // *********************************
   }
-
+  
   // Create Turret
   {
     auto turret = makeEntity();
@@ -64,7 +64,7 @@ void Level2Scene::Load() {
     s->getShape().setOrigin(16.f, 16.f);
     turret->addComponent<EnemyTurretComponent>();
   }
-
+  
   // Add physics colliders to level tiles.
   {
     // *********************************

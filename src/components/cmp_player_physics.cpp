@@ -12,7 +12,7 @@ bool PlayerPhysicsComponent::isGrounded() const {
   auto touch = getTouching();
   const auto& pos = _body->GetPosition();
   const float halfPlrHeigt = _size.y * .5f;
-  const float halfPlrWidth = _size.x * .52f;
+  const float halfPlrWidth = _size.x * .5f;
   b2WorldManifold manifold;
   for (const auto& contact : touch) {
     contact->GetWorldManifold(&manifold);
@@ -36,6 +36,7 @@ void PlayerPhysicsComponent::update(double dt) {
 
   //Teleport to start if we fall off map.
   if (pos.y > ls::getHeight() * ls::getTileSize()) {
+	  cout << "no map left!!" << endl;
     teleport(ls::getTilePosition(ls::findTiles(ls::baseTiles::START)[0]));
   }
 
@@ -65,7 +66,7 @@ void PlayerPhysicsComponent::update(double dt) {
     if (_grounded) {
       setVelocity(Vector2f(getVelocity().x, 0.f));
       teleport(Vector2f(pos.x, pos.y - 2.0f));
-      impulse(Vector2f(0, -6.f));
+      impulse(Vector2f(0, -8.f));
     }
   }
 

@@ -40,18 +40,19 @@ void Level1Scene::Load() {
 	player->setPosition(Vector2f(100.f,100.f));
     
     player->addComponent<PlayerAnimatedSpriteComponent>();
-    player->addComponent<PlayerPhysicsComponent>(Vector2f(32.f, 64.f));
+    player->addComponent<PlayerPhysicsComponent>(Vector2f(26.f, 64.f));
   }
 
   // Add physics colliders to level tiles.
   {
 	auto walls = (ls::getGroundTiles());
     for (auto w : walls) {
+		//cout << walls << endl;
       auto pos = ls::getTilePosition(w);
       pos += Vector2f(16.f, 16.f); //offset to center
       auto e = makeEntity();
       e->setPosition(pos);
-      e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
+      e->addComponent<PhysicsComponent>(false, Vector2f(26.f, 32.f));
     }
   }
 
@@ -74,7 +75,7 @@ void Level1Scene::UnLoad() {
 void Level1Scene::Update(const double& dt) {
   if (ls::getTileAt(player->getPosition()) == ls::baseTiles::END) {
 	  cout << "yeh won!!" << endl;
-    Engine::ChangeScene((Scene*)&menu);
+    Engine::ChangeScene((Scene*)&level2);
   }
 
   if(player != nullptr) {
