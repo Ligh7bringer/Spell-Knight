@@ -1,15 +1,14 @@
 #include "cmp_player_animated_sprite.h"
 #include "cmp_player_physics.h"
 #include <SFML/Graphics.hpp>
+#include "../../engine/lib_texture_manager/TextureManager.h"
 
 using namespace std;
 using namespace sf;
 
 PlayerAnimatedSpriteComponent::PlayerAnimatedSpriteComponent(Entity *p, int width, int height) : AnimatedSpriteComponent(p, width, height) {
     //load spritesheet 
-    if(!_knightSpritesheet.loadFromFile("res/img/knight/WIZARD.png")) {
-        cout << "Couldnt load knight sprite sheet!" << endl;
-    }
+    _knightSpritesheet = TextureManager::getTexture("WIZARD.png");
 
     //set spritesheet
     setSpritesheet(_knightSpritesheet);

@@ -1,16 +1,13 @@
 #include "cmp_enemy_animated_sprite.h"
 #include <SFML/Graphics.hpp>
 #include "cmp_enemy_ai.h"
+#include "../../engine/lib_texture_manager/TextureManager.h"
 
 using namespace std;
 using namespace sf;
 
 EnemyAnimatedSpriteComponent::EnemyAnimatedSpriteComponent(Entity *p, int width, int height) : AnimatedSpriteComponent(p, width, height) {
-    //load spritesheet 
-    if(!_enemySpritesheet.loadFromFile("res/img/sheet_snake_walk.png")) {
-        cout << "Couldnt load knight sprite sheet!" << endl;
-    }
-
+    _enemySpritesheet = TextureManager::getTexture("sheet_snake_walk.png");
     //set spritesheet
     setSpritesheet(_enemySpritesheet);
     setNumberOfFrames(7);

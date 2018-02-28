@@ -25,10 +25,11 @@ const sf::Texture& TextureManager::getTexture(const std::string& filename) {
     for(std::vector<std::string>::const_iterator it = _resource_directories.begin(); it != _resource_directories.end(); ++it) {
         if(tex.loadFromFile((*it) + filename)) {
             _textures[filename] = tex;
-            std::cout << "TextureManager: texture found in registered resource directory " << *it << std::endl;
+            std::cout << "TextureManager: texture " << filename << " found in registered resource directory " << *it << std::endl;
             return _textures[filename];
         }
     }
+    
     //texture couldn't be loaded, return empty texture
     std::cout << "TextureManager: texture " << filename << " couldn't be loaded!" << std::endl;
     _textures[filename] = tex;
