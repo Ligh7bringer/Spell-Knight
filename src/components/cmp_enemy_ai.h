@@ -11,5 +11,9 @@ public:
 
   explicit EnemyAIComponent(Entity* p);
 
+  float getSpeed() const;
+
+  sf::Vector2f getDirection() const;
+
   EnemyAIComponent() = delete;
 };

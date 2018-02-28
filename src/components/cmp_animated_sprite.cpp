@@ -5,6 +5,8 @@
 using namespace sf;
 using namespace std;
 
+int prevRow;
+
 //constructor, initialises default sprite size and default animation speed
 AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, int width, int height)
     : Component(p) {
@@ -30,6 +32,13 @@ AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, int width, int heigh
 void AnimatedSpriteComponent::update(double dt) {
     //make sure we are at the right row in the spritesheet
     _currentImage.y = _currentRow;
+
+    //reset to the 1st frame of new animation whenever animation is changed
+    //fixes a number of problems, especially when the animations don't have the same number of frames
+    // if(_currentRow != prevRow)
+    //      _currentImage.x = 0;
+    
+    cout << _currentRow << ", " << _currentImage.y << endl;
 
     //accumulate time
     _totalTime += dt;
@@ -65,6 +74,9 @@ void AnimatedSpriteComponent::update(double dt) {
     _sprite.setTextureRect(_currentFrame);
     _sprite.setPosition(_parent->getPosition());
     _sprite.setOrigin(_width/2, _height/2);
+    
+    //keep track of previous row
+    prevRow = _currentRow;
 }
 
 //render current sprite

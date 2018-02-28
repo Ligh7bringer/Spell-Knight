@@ -9,7 +9,7 @@ protected:
 
 public:
     PlayerAnimatedSpriteComponent() = delete;
-    explicit PlayerAnimatedSpriteComponent(Entity* p);
+    explicit PlayerAnimatedSpriteComponent(Entity* p, int width, int height);
 
     void update(double dt) override;
     void render() override;

@@ -223,7 +223,7 @@ void LevelSystem::buildSprites(bool optimise) {
   }
 
   cout << "Level with " << (_width * _height) << " Tiles, With " << nonempty
-       << " Not Empty, using: " << _sprites.size() << " Sprites\n";
+       << " Not Empty, using: " << _texs.size() << " Sprites\n";
 }
 
 void LevelSystem::render(RenderWindow& window) {

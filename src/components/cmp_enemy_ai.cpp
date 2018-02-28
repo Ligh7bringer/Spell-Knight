@@ -18,3 +18,11 @@ EnemyAIComponent::EnemyAIComponent(Entity* p) : ActorMovementComponent(p) {
   _direction = Vector2f(1.0f, 0);
   _speed = 100.0f;
 }
+
+float EnemyAIComponent::getSpeed() const {
+  return _speed;
+}
+
+Vector2f EnemyAIComponent::getDirection() const {
+  return _direction;
+}

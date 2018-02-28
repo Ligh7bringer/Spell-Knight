@@ -19,6 +19,7 @@ public:
   virtual void Render();
   bool isLoaded() const;
   std::shared_ptr<Entity> makeEntity();
+  sf::View getView() const;
 
   EntityManager ents;
 
@@ -47,6 +48,7 @@ private:
   static std::string _gameName;
   static void Update();
   static void Render(sf::RenderWindow& window);
+  static void resizeView(sf::Window &window, sf::View& view);
 };
 
 namespace timing {

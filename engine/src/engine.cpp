@@ -79,6 +79,15 @@ void Engine::Render(RenderWindow& window) {
   Renderer::render();
 }
 
+sf::Vector2u Engine::getWindowSize() { return _window->getSize(); }
+
+sf::RenderWindow& Engine::GetWindow() { return *_window; }
+
+void Engine::resizeView(sf::Window &window, sf::View& view) {
+  // float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
+  // view.setSize(window.getSize().x * aspectRatio, window.getSize().y);
+}
+
 void Engine::Start(unsigned int width, unsigned int height,
                    const std::string& gameName, Scene* scn) {
   RenderWindow window(VideoMode(width, height), gameName);
@@ -92,6 +101,8 @@ void Engine::Start(unsigned int width, unsigned int height,
     while (window.pollEvent(event)) {
       if (event.type == Event::Closed) {
         window.close();
+      }
+      if(event.type == Event::Resized) {
       }
     }
     if (Keyboard::isKeyPressed(Keyboard::Escape)) {
@@ -175,10 +186,6 @@ void Scene::UnLoad() {
 
 void Scene::LoadAsync() { _loaded_future = std::async(&Scene::Load, this); }
 
-sf::Vector2u Engine::getWindowSize() { return _window->getSize(); }
-
-sf::RenderWindow& Engine::GetWindow() { return *_window; }
-
 namespace timing {
 // Return time since Epoc
 long long now() {
@@ -195,5 +202,9 @@ long long last() {
   return dt;
 }
 } // namespace timing
+
+sf::View Scene::getView() const{
+  return _view;
+}
 
 Scene::~Scene() { UnLoad(); }

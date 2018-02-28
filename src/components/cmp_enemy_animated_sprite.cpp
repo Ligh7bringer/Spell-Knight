@@ -20,8 +20,8 @@ EnemyAnimatedSpriteComponent::EnemyAnimatedSpriteComponent(Entity *p, int width,
 
 void EnemyAnimatedSpriteComponent::update(double dt) {
     auto c = _parent->get_components<EnemyAIComponent>()[0];
-    auto speed = c->getSpeed();
-    setFacingRight(speed > 0.0f ? false : true);
+    auto dir = c->getDirection();
+    setFacingRight(dir.x > 0.0f ? false : true);
 
     //call super's update which will take care of everything else
     AnimatedSpriteComponent::update(dt);
