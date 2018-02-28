@@ -40,7 +40,7 @@ void Level1Scene::Load() {
 
   //setup view
   _view = View(FloatRect(0, 0, windowSize.x, windowSize.y));
-
+  
   // Create player
   {
     player = makeEntity();

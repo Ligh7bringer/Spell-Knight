@@ -84,17 +84,34 @@ sf::Vector2u Engine::getWindowSize() { return _window->getSize(); }
 
 sf::RenderWindow& Engine::GetWindow() { return *_window; }
 
-void Engine::resizeView(sf::Window &window, sf::View& view) {
-  // float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
-  // view.setSize(window.getSize().x * aspectRatio, window.getSize().y);
+void Engine::resizeView() {
+        sf::Vector2f size = static_cast<sf::Vector2f>(Engine::GetWindow().getSize());
+
+        // Minimum size
+        if(size.x < 800)
+          size.x = 800;
+        if(size.y < 600)
+          size.y = 600;
+
+        // Apply possible size changes
+        Engine::GetWindow().setSize(static_cast<sf::Vector2u>(size));
+
+        // Reset view
+        //auto v = _activeScene->getView();
+        auto v = sf::View(sf::FloatRect(0.f, 0.f, size.x, size.y));
+        Renderer::setView(v);
 }
 
 void Engine::Start(unsigned int width, unsigned int height,
                    const std::string& gameName, Scene* scn) {
-  RenderWindow window(VideoMode(width, height), gameName);
+  RenderWindow window(VideoMode(width, height), gameName, sf::Style::Close | sf::Style::Resize);
   _gameName = gameName;
   _window = &window;
+
   TextureManager::addResourceDirectory("res/img/tiles/");
+  TextureManager::addResourceDirectory("res/img/");
+  TextureManager::addResourceDirectory("res/img/knight/");
+
   Renderer::initialise(window);
   Physics::initialise();
   ChangeScene(scn);
@@ -105,8 +122,11 @@ void Engine::Start(unsigned int width, unsigned int height,
         window.close();
       }
       if(event.type == Event::Resized) {
+        //resize view when window is resized so textures are not stretched
+        _activeScene->getView().setSize(event.size.width, event.size.height);
       }
     }
+    
     if (Keyboard::isKeyPressed(Keyboard::Escape)) {
       window.close();
     }
@@ -205,7 +225,7 @@ long long last() {
 }
 } // namespace timing
 
-sf::View Scene::getView() const{
+sf::View& Scene::getView() {
   return _view;
 }
 
