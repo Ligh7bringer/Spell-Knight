@@ -65,7 +65,7 @@ void PlayerPhysicsComponent::update(double dt) {
     _grounded = isGrounded();
     if (_grounded) {
       setVelocity(Vector2f(getVelocity().x, 0.f));
-      teleport(Vector2f(pos.x, pos.y - 2.0f));
+      teleport(Vector2f(pos.x, pos.y - 1.0f));
       impulse(Vector2f(0, -8.f));
     }
   }

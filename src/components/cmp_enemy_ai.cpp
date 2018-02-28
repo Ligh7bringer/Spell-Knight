@@ -16,7 +16,7 @@ void EnemyAIComponent::update(double dt) {
 
 EnemyAIComponent::EnemyAIComponent(Entity* p) : ActorMovementComponent(p) {
   _direction = Vector2f(1.0f, 0);
-  _speed = 100.0f;
+  _speed = 100.f;
 }
 
 float EnemyAIComponent::getSpeed() const {

@@ -1,6 +1,5 @@
 #include "scene_level1.h"
 #include "../components/cmp_player_physics.h"
-#include "../components/cmp_animated_sprite.h"
 #include "../components/cmp_player_animated_sprite.h"
 #include "../components/cmp_enemy_ai.h"
 #include "../components/cmp_hurt_player.h"
@@ -12,6 +11,7 @@
 #include <string>
 #include <iostream>
 #include "../../engine/lib_texture_manager/TextureManager.h"
+#include "../components/cmp_ground_enemy_physics.h"
 
 using namespace std;
 using namespace sf;
@@ -44,7 +44,7 @@ void Level1Scene::Load() {
   // Create player
   {
     player = makeEntity();
-	  player->setPosition(Vector2f(100.f,100.f));
+	player->setPosition(Vector2f(100.f,100.f));
     player->addTag("player");
   
     player->addComponent<PlayerAnimatedSpriteComponent>(64, 64);
@@ -55,16 +55,18 @@ void Level1Scene::Load() {
 // Create Enemy
   {
     auto enemy = makeEntity();
-    auto p = ls::getTilePosition(ls::findTiles(LevelSystem::baseTiles::START)[0]);
-    enemy->setPosition(Vector2f(p.x + 160, p.y - 32));
+    auto p = ls::getTilePosition(ls::findTiles(LevelSystem::baseTiles::ENEMY)[0]);
+    enemy->setPosition(p);
     // *********************************
     // Add HurtComponent
     enemy->addComponent<HurtComponent>();
     // Add ShapeComponent, Red 16.f Circle
     auto s = enemy->addComponent<EnemyAnimatedSpriteComponent>(64, 64);
-    // s->setShape<CircleShape>(16.f, 16.f);
-    // s->getShape().setFillColor(Color::Red);
-    // s->getShape().setOrigin(Vector2f(16.f, 16.f));
+	//auto s = enemy->addComponent<ShapeComponent>();
+    // s->setShape<CircleShape>(32.f, 32.f);
+    //  s->getShape().setFillColor(Color::Red);
+    //s->getShape().setOrigin(Vector2f(16.f, 16.f));
+	enemy->addComponent<GroundEnemyPhysicsComponent>(Vector2f(35.f,32.f));
     // Add EnemyAIComponent
     enemy->addComponent<EnemyAIComponent>();
     // *********************************

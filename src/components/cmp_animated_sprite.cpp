@@ -27,6 +27,7 @@ AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, int width, int heigh
         //set this to the padding between rows in the spritesheet!!
         //all online spritesheet packers seem to addign padding for some reason
         _spriteSheetPadding = 0;
+		_currentRow = 0;
 }
 
 void AnimatedSpriteComponent::update(double dt) {
@@ -35,8 +36,8 @@ void AnimatedSpriteComponent::update(double dt) {
 
     //reset to the 1st frame of new animation whenever animation is changed
     //fixes a number of problems, especially when the animations don't have the same number of frames
-    // if(_currentRow != prevRow)
-    //      _currentImage.x = 0;
+     //if(_currentRow != prevRow)
+         // _currentImage.x = 0;
     
     //cout << _currentRow << ", " << _currentImage.y << endl;
 
