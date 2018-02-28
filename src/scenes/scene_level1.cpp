@@ -11,6 +11,7 @@
 #include "system_renderer.h"
 #include <string>
 #include <iostream>
+#include "../../engine/lib_texture_manager/TextureManager.h"
 
 using namespace std;
 using namespace sf;
@@ -28,18 +29,14 @@ void Level1Scene::Load() {
   //auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);
   //ls::setOffset(Vector2f(0, ho));
 
-  //setup background
-  if(!tex.loadFromFile("res/img/tiles/forest.jpg")) {
-    cout << "Couldn't load forest.jpg" << endl;
-  } else {
-    tex.setRepeated(true);
-    _background.setTexture(tex);
-    //set up repeated background
-    auto pos = Vector2f(_background.getLocalBounds().width/2, _background.getLocalBounds().height/2);
-    _background.setOrigin(pos);
-    _background.setPosition(Vector2f(pos.x/4, pos.y));
-    _background.setTextureRect(IntRect(0, 0, windowSize.x * 20, windowSize.y));
-  }
+  tex = TextureManager::getTexture("forest.jpg");
+  tex.setRepeated(true);
+  _background.setTexture(tex);
+  //set up repeated background
+  auto pos = Vector2f(_background.getLocalBounds().width/2, _background.getLocalBounds().height/2);
+  _background.setOrigin(pos);
+  _background.setPosition(Vector2f(pos.x/4, pos.y));
+  _background.setTextureRect(IntRect(0, 0, windowSize.x * 20, windowSize.y));  
 
   //setup view
   _view = View(FloatRect(0, 0, windowSize.x, windowSize.y));

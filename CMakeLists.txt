@@ -52,8 +52,11 @@ file(GLOB_RECURSE SOURCE_FILES engine/lib_ecm/*.cpp engine/lib_ecm/*.h)
 add_library(lib_ecm STATIC ${SOURCE_FILES})
 target_include_directories(lib_ecm INTERFACE "${CMAKE_SOURCE_DIR}/engine/lib_ecm" )
 target_link_libraries(lib_ecm PRIVATE lib_maths)
-
-#### Add Practical Projects####
+## Texture manager lib_ecm
+file(GLOB_RECURSE SOURCE_FILES engine/lib_texture_manager/*.cpp engine/lib_texture_manager/*.h)
+add_library(lib_texture_manager STATIC ${SOURCE_FILES})
+target_include_directories(lib_texture_manager INTERFACE "${CMAKE_SOURCE_DIR}/engine/lib_texture_manager" )
+target_link_libraries(lib_texture_manager lib_maths sfml-graphics)
 
 ## Coursework
 file(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
@@ -63,7 +66,7 @@ add_executable(Coursework ${SOURCES} ${RESOURCE_FILES})
 source_group("components" FILES ${CMPNTS})
 source_group("resources" FILES ${RESOURCE_FILES})
 #target_include_directories(PRACTICAL_6_PLATFORMER SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
-target_link_libraries(Coursework lib_engine)
+target_link_libraries(Coursework lib_engine lib_texture_manager)
 set(EXECUTABLES ${EXECUTABLES} Coursework)
 
 #### Target for copying resources to build dir####

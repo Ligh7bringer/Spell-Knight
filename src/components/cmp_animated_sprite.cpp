@@ -38,7 +38,7 @@ void AnimatedSpriteComponent::update(double dt) {
     // if(_currentRow != prevRow)
     //      _currentImage.x = 0;
     
-    cout << _currentRow << ", " << _currentImage.y << endl;
+    //cout << _currentRow << ", " << _currentImage.y << endl;
 
     //accumulate time
     _totalTime += dt;

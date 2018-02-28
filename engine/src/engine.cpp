@@ -7,6 +7,7 @@
 #include <future>
 #include <iostream>
 #include <stdexcept>
+#include "../lib_texture_manager/TextureManager.h"
 
 using namespace sf;
 using namespace std;
@@ -93,6 +94,7 @@ void Engine::Start(unsigned int width, unsigned int height,
   RenderWindow window(VideoMode(width, height), gameName);
   _gameName = gameName;
   _window = &window;
+  TextureManager::addResourceDirectory("res/img/tiles/");
   Renderer::initialise(window);
   Physics::initialise();
   ChangeScene(scn);
