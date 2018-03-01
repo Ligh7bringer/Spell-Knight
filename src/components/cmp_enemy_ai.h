@@ -13,7 +13,7 @@ public:
 
   float getSpeed() const;
 
-  sf::Vector2f getDirection() const;
+  sf::Vector2f getDirection();
 
   EnemyAIComponent() = delete;
 };

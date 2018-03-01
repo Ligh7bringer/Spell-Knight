@@ -19,7 +19,7 @@ bool PlayerPhysicsComponent::isGrounded() const {
   for (const auto& contact : touch) {
     contact->GetWorldManifold(&manifold);
     const int numPoints = contact->GetManifold()->pointCount;
-    bool onTop = numPoints > 0;
+    bool onTop = numPoints > 1;
     // If all contacts are below the player.
     for (int j = 0; j < numPoints; j++) {
       onTop &= (manifold.points[j].y < pos.y - halfPlrHeigt);

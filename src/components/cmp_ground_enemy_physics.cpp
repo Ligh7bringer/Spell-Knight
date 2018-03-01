@@ -40,10 +40,12 @@ void GroundEnemyPhysicsComponent::update(double dt) {
 		//teleport(ls::getTilePosition(ls::findTiles(ls::baseTiles::START)[0]));
 	}
 
-	/*if (Keyboard::isKeyPressed(Keyboard::A) ||
-		Keyboard::isKeyPressed(Keyboard::D)) {
+	auto c = _parent->get_components<EnemyAIComponent>()[0];
+	auto dir = c->getDirection();
+	if (dir == Vector2f(1.f,0.f)||
+		dir == Vector2f(-1.f,0.f)) {
 		// Moving Either Left or Right
-		if (Keyboard::isKeyPressed(Keyboard::D)) {
+		if (dir == Vector2f(1.f,0.f)) {
 			if (getVelocity().x < _maxVelocity.x) {
 				impulse({ (float)(dt * _groundspeed), 0 });
 				_direction = 1;
@@ -60,7 +62,7 @@ void GroundEnemyPhysicsComponent::update(double dt) {
 		// Dampen X axis movement
 		dampen({ 0.9f, 1.0f });
 		_direction = 0;
-	}*/
+	}
 
 	/*
 	// Handle Jump

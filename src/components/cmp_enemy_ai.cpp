@@ -23,6 +23,6 @@ float EnemyAIComponent::getSpeed() const {
   return _speed;
 }
 
-Vector2f EnemyAIComponent::getDirection() const {
+Vector2f EnemyAIComponent::getDirection() {
   return _direction;
 }
