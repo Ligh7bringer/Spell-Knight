@@ -52,7 +52,7 @@ file(GLOB_RECURSE SOURCE_FILES engine/lib_ecm/*.cpp engine/lib_ecm/*.h)
 add_library(lib_ecm STATIC ${SOURCE_FILES})
 target_include_directories(lib_ecm INTERFACE "${CMAKE_SOURCE_DIR}/engine/lib_ecm" )
 target_link_libraries(lib_ecm PRIVATE lib_maths)
-## Texture manager lib_ecm
+## Texture manager
 file(GLOB_RECURSE SOURCE_FILES engine/lib_texture_manager/*.cpp engine/lib_texture_manager/*.h)
 add_library(lib_texture_manager STATIC ${SOURCE_FILES})
 target_include_directories(lib_texture_manager INTERFACE "${CMAKE_SOURCE_DIR}/engine/lib_texture_manager" )

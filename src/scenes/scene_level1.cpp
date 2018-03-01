@@ -64,7 +64,7 @@ void Level1Scene::Load() {
     enemy->addComponent<HurtComponent>();
     // Add ShapeComponent, Red 16.f Circle
     auto s = enemy->addComponent<EnemyAnimatedSpriteComponent>(64, 64);
-	//auto s = enemy->addComponent<ShapeComponent>();
+	  //auto s = enemy->addComponent<ShapeComponent>();
     // s->setShape<CircleShape>(32.f, 32.f);
     //  s->getShape().setFillColor(Color::Red);
     //s->getShape().setOrigin(Vector2f(16.f, 16.f));
@@ -83,7 +83,7 @@ void Level1Scene::Load() {
       pos += Vector2f(16.f, 16.f); //offset to center
       auto e = makeEntity();
       e->setPosition(pos);
-      e->addComponent<PhysicsComponent>(false, Vector2f(26.f, 32.f));
+      e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
     }
   }
 
