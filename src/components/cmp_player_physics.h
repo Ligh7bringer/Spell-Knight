@@ -9,6 +9,8 @@ protected:
   bool _grounded;
   float _groundspeed;
   int _direction;
+  bool _facing;
+  bool _shooting;
 
   bool isGrounded() const;
 
@@ -20,6 +22,7 @@ public:
   PlayerPhysicsComponent() = delete;
 
   int getDirection() const;
-
+  bool facingRight() const;
   bool isJumping() const;
+  bool isShooting() const;
 };

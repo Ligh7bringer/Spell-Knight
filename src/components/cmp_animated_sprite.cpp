@@ -25,7 +25,7 @@ AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, int width, int heigh
         //this boolean is used to decide whether to flip the sprite or not
         _facingRight = true;
         //set this to the padding between rows in the spritesheet!!
-        //all online spritesheet packers seem to addign padding for some reason
+        //all online spritesheet packers seem to add padding for some reason
         _spriteSheetPadding = 0;
 		_currentRow = 0;
 }
@@ -36,10 +36,10 @@ void AnimatedSpriteComponent::update(double dt) {
 
     //reset to the 1st frame of new animation whenever animation is changed
     //fixes a number of problems, especially when the animations don't have the same number of frames
-     //if(_currentRow != prevRow)
-         // _currentImage.x = 0;
-    
-    //cout << _currentRow << ", " << _currentImage.y << endl;
+    //  if(_currentRow != prevRow) {
+    //      _currentImage.x = 0;
+    //     cout << _currentRow << ", " << _currentImage.y << endl;
+    //  }
 
     //accumulate time
     _totalTime += dt;
@@ -54,6 +54,9 @@ void AnimatedSpriteComponent::update(double dt) {
             //restart from the first frame
             _currentImage.x = 0;
         }
+            
+        //keep track of previous row
+        prevRow = _currentImage.y;      
     }
 
     //if the sprite is supposed to be facing right
@@ -75,9 +78,6 @@ void AnimatedSpriteComponent::update(double dt) {
     _sprite.setTextureRect(_currentFrame);
     _sprite.setPosition(_parent->getPosition());
     _sprite.setOrigin(_width/2, _height/2);
-    
-    //keep track of previous row
-    prevRow = _currentRow;
 }
 
 //render current sprite
@@ -86,7 +86,7 @@ void AnimatedSpriteComponent::render() {
 }
 
 //sets the sprite sheet for the animation, loaded from path
-void AnimatedSpriteComponent::setSpritesheet(string path) {
+void AnimatedSpriteComponent::setSpritesheet(const string& path) {
     if(!_spritesheet.loadFromFile(path)) {
         cout << "Couldn't load component's spritesheet!";
     }
@@ -95,7 +95,7 @@ void AnimatedSpriteComponent::setSpritesheet(string path) {
 }
 
 //sets the spritesheet, using the passed reference to a spritesheet
-void AnimatedSpriteComponent::setSpritesheet(sf::Texture& sh) {
+void AnimatedSpriteComponent::setSpritesheet(const sf::Texture& sh) {
     _spritesheet = sh;
     _sprite.setTexture(_spritesheet);
 }

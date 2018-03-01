@@ -12,6 +12,7 @@
 #include <iostream>
 #include "../../engine/lib_texture_manager/TextureManager.h"
 #include "../components/cmp_ground_enemy_physics.h"
+#include "../components/cmp_player_bullet.h"
 
 using namespace std;
 using namespace sf;
@@ -44,11 +45,12 @@ void Level1Scene::Load() {
   // Create player
   {
     player = makeEntity();
-	player->setPosition(Vector2f(100.f,100.f));
+	  player->setPosition(Vector2f(100.f,100.f));
     player->addTag("player");
   
     player->addComponent<PlayerAnimatedSpriteComponent>(64, 64);
     player->addComponent<PlayerPhysicsComponent>(Vector2f(27.f, 62.f));
+    player->addComponent<PlayerBulletComponent>();
   }
 
 

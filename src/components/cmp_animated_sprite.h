@@ -14,9 +14,9 @@ protected:
   sf::Texture _spritesheet;
   sf::IntRect _currentFrame;
   sf::Vector2u _currentImage;
+  float _totalTime;
   int _spriteSheetPadding;
   int _currentRow;
-  float _totalTime;
   float _frameTime;
   int _numOfFrames;
   int _width;
@@ -30,8 +30,8 @@ public:
   void update(double dt) override;
   void render() override;
 
-  void setSpritesheet(std::string path);
-  void setSpritesheet(sf::Texture& sh);
+  void setSpritesheet(const std::string& path);
+  void setSpritesheet(const sf::Texture& sh);
   void setFrameTime(float t);
   void setNumberOfFrames(int num);
   void setCurrentRow(int r);

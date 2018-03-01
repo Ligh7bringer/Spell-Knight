@@ -8,7 +8,7 @@ const sf::Texture& TextureManager::getTexture(const std::string& filename) {
     //check if texture exists
     for(std::map<std::string, sf::Texture>::const_iterator it = _textures.begin(); it != _textures.end(); ++it) {
         if(filename == it->first) {
-            std::cout << "TextureManager: using existing image for" << filename << std::endl;
+            std::cout << "TextureManager: using existing image for " << filename << std::endl;
             return it->second;
         }
     }

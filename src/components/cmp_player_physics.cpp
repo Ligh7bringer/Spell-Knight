@@ -2,6 +2,8 @@
 #include "system_physics.h"
 #include <LevelSystem.h>
 #include "cmp_animated_sprite.h"
+#include "../../engine/lib_ecm/ecm.h"
+#include "cmp_player_bullet.h"
 #include <SFML/Window/Keyboard.hpp>
 
 using namespace std;
@@ -31,6 +33,7 @@ bool PlayerPhysicsComponent::isGrounded() const {
 }
 
 void PlayerPhysicsComponent::update(double dt) {
+  _shooting = false;
 
   const auto pos = _parent->getPosition();
 
@@ -47,11 +50,13 @@ void PlayerPhysicsComponent::update(double dt) {
       if (getVelocity().x < _maxVelocity.x) {
         impulse({(float)(dt * _groundspeed), 0});
         _direction = 1;
+        _facing = true;
       }
     } else {
       if (getVelocity().x > -_maxVelocity.x) {
         impulse({-(float)(dt * _groundspeed), 0});
         _direction = -1;
+        _facing = false;
       }
     }
   } else {
@@ -86,6 +91,12 @@ void PlayerPhysicsComponent::update(double dt) {
   v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
   setVelocity(v);
 
+  //shoot, TODO: move this to a another component or somewhere else!!
+  if(Keyboard::isKeyPressed(Keyboard::Space)) {
+    _parent->get_components<PlayerBulletComponent>()[0]->fire();
+    _shooting = true;
+  }
+
   PhysicsComponent::update(dt);
 }
 
@@ -100,6 +111,7 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
   _body->SetFixedRotation(true);
   //Bullet items have higher-res collision detection
   _body->SetBullet(true);
+  _facing = true;
 }
 
 int PlayerPhysicsComponent::getDirection() const {
@@ -108,4 +120,12 @@ int PlayerPhysicsComponent::getDirection() const {
 
 bool PlayerPhysicsComponent::isJumping() const {
   return !_grounded;
+}
+
+bool PlayerPhysicsComponent::facingRight() const {
+  return _facing;
+}
+
+bool PlayerPhysicsComponent::isShooting() const {
+  return _shooting;
 }

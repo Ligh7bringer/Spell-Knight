@@ -2,7 +2,7 @@
 #include "cmp_bullet.h"
 #include "cmp_hurt_player.h"
 #include "engine.h"
-#include <SFML/Graphics/CircleShape.hpp>
+
 using namespace std;
 using namespace sf;
 

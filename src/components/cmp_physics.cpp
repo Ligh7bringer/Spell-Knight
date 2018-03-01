@@ -148,3 +148,11 @@ std::vector<const b2Contact*> PhysicsComponent::getTouching() const {
 void PhysicsComponent::setRestitution(float r) {
   _fixture->SetRestitution(r);
 }
+
+void PhysicsComponent::setLinearVelocity(const Vector2f& move) {
+  _body->SetLinearVelocity(b2Vec2(move.x, move.y * -1.f));
+}
+
+void PhysicsComponent::setGravityScale(int32 gs) {
+  _body->SetGravityScale(gs);
+}

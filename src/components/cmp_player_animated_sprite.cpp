@@ -44,6 +44,11 @@ void PlayerAnimatedSpriteComponent::update(double dt) {
         setFacingRight(_lastDir == 1 ? true : false);
     } 
 
+    if(physicsComp->isShooting()) {
+        setCurrentRow(3);
+        //setFacingRight(false);
+    }
+
     //call super's update which will take care of everything else
     AnimatedSpriteComponent::update(dt);
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "cmp_physics.h"
 #include <ecm.h>
+#include <SFML/Graphics/CircleShape.hpp>
 
 class EnemyTurretComponent : public Component {
 protected:
