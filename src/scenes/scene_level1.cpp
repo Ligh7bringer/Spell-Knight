@@ -4,6 +4,7 @@
 #include "../components/cmp_enemy_ai.h"
 #include "../components/cmp_hurt_player.h"
 #include "../components/cmp_enemy_animated_sprite.h"
+#include "../components/cmp_hurt_enemy.h"
 #include "../game.h"
 #include <LevelSystem.h>
 #include <thread>
@@ -20,7 +21,7 @@ using namespace std;
 using namespace sf;
 
 Texture tex;
-//Sprite background;
+//Sprite background;	
 
 static shared_ptr<Entity> player;
 
@@ -32,7 +33,7 @@ void Level1Scene::Load() {
   //auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);
   //ls::setOffset(Vector2f(0, ho));
 
-  tex = TextureManager::getTexture("forest.jpg");
+  tex = TextureManager::getTexture("game_background_4.png");
   tex.setRepeated(true);
   _background.setTexture(tex);
   //set up repeated background
@@ -59,10 +60,11 @@ void Level1Scene::Load() {
 
 // Create some enemies
   {
-	  for(int i = 0; i<ls::findTiles(ls::baseTiles::ENEMY).size();i++)
+    auto enemyPos = ls::findTiles(ls::baseTiles::ENEMY);
+	  for(int i = 0; i < enemyPos.size(); ++i)
 	  {
 		  auto snakeEnemy = makeEntity();
- 		  auto p = ls::getTilePosition(ls::findTiles(LevelSystem::baseTiles::ENEMY)[i]);
+ 		  auto p = ls::getTilePosition(enemyPos[i]);
 		  //check if normal ai snakes
 		  if (i<3)
 		  {
@@ -73,7 +75,7 @@ void Level1Scene::Load() {
 			  // Add EnemyAIComponent
 			 snakeEnemy->addComponent<EnemyAIComponent>();
 			 snakeEnemy->addComponent<GroundEnemyPhysicsComponent>(Vector2f(35.f, 32.f));
-			    
+			 snakeEnemy->addComponent<HurtEnemyComponent>();
 		  }
 		  else 
 		  {
@@ -89,6 +91,7 @@ void Level1Scene::Load() {
 			  // Add EnemyAIComponent
 			  eyeEnemy->addComponent<EnemyAIComponent>();
 			  eyeEnemy->addComponent<AirEnemyPhysicsComponent>(Vector2f(64.f, 64.f));
+			  eyeEnemy->addComponent<HurtEnemyComponent>();
 		  }
 		  //else {
 			  //add turret enemy

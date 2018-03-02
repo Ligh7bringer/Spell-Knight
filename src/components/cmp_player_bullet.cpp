@@ -3,7 +3,7 @@
 #include "cmp_physics.h"
 #include "cmp_animated_sprite.h"
 #include "engine.h"
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include "../../engine/lib_texture_manager/TextureManager.h"
 #include "cmp_player_physics.h"
 
@@ -13,8 +13,9 @@ using namespace sf;
 PlayerBulletComponent::PlayerBulletComponent(Entity* p) : Component(p), _cooldown(1.f) {
     _spritesheet = TextureManager::getTexture("WIZARD.png");
     //this offset is needed because the bullet shouldn't be spawned on top of the player, but next to them
-    _posOffset = Vector2f(30.f, 5.f);
+    _posOffset = Vector2f(35.f, 5.f);
     _speed = 10.f;
+    _cooldown = 0;
 }
 
 //don't need to render anything (at the moment)
@@ -51,10 +52,11 @@ void PlayerBulletComponent::fire() {
         p->setGravityScale(0.0f);
         //set the appropirate direction
         p->setLinearVelocity(right ? Vector2f(_speed, 0) : Vector2f(-_speed, 0));
+
+        _bullets.push_back(bullet);
         
         _cooldown = 1.f;
-    }
-    
+    }    
 }
 
 void PlayerBulletComponent::update(double dt) {
@@ -62,3 +64,11 @@ void PlayerBulletComponent::update(double dt) {
     _cooldown -= dt;
 }
 
+std::vector<std::shared_ptr<Entity>> PlayerBulletComponent::getBullets() const {
+    return _bullets;
+}
+
+void PlayerBulletComponent::removeBullet(std::shared_ptr<Entity> b) {
+    std::cout << "--------DELETING BULLET" << std::endl;
+    _bullets.erase(std::remove(_bullets.begin(), _bullets.end(), b), _bullets.end());    
+}

@@ -9,7 +9,7 @@ using namespace sf;
 EnemyAnimatedSpriteComponent::EnemyAnimatedSpriteComponent(Entity *p, int width, int height) : AnimatedSpriteComponent(p, width, height) {
     //load spritesheet 
 
-    _enemySpritesheet = TextureManager::getTexture("sheet_snake_walk.png");
+    _enemySpritesheet = TextureManager::getTexture("sheet_snake.png");
     //set spritesheet
     setSpritesheet(_enemySpritesheet);
     setNumberOfFrames(5);
