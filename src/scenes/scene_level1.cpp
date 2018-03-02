@@ -31,7 +31,7 @@ void Level1Scene::Load() {
   //auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);
   //ls::setOffset(Vector2f(0, ho));
 
-  tex = TextureManager::getTexture("forest.jpg");
+  tex = TextureManager::getTexture("game_background_4.png");
   tex.setRepeated(true);
   _background.setTexture(tex);
   //set up repeated background
@@ -57,10 +57,11 @@ void Level1Scene::Load() {
 
 // Create some snakes
   {
-	  for(int i = 0; i<ls::findTiles(ls::baseTiles::ENEMY).capacity();++i)
+    auto enemyPos = ls::findTiles(ls::baseTiles::ENEMY);
+	  for(int i = 0; i < enemyPos.size(); ++i)
 	  {
 		  auto snakeEnemy = makeEntity();
- 		  auto p = ls::getTilePosition(ls::findTiles(LevelSystem::baseTiles::ENEMY)[i]);
+ 		  auto p = ls::getTilePosition(enemyPos[i]);
 		  //check if normal ai snakes
 		  
 			  snakeEnemy->setPosition(p);

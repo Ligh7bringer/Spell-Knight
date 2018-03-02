@@ -156,3 +156,8 @@ void PhysicsComponent::setLinearVelocity(const Vector2f& move) {
 void PhysicsComponent::setGravityScale(int32 gs) {
   _body->SetGravityScale(gs);
 }
+
+b2ContactEdge* PhysicsComponent::getContactList() const {
+  return _body->GetContactList();
+}
+

@@ -8,8 +8,6 @@
 
 class AnimatedSpriteComponent : public Component {
 protected:
-  //std::shared_ptr<sf::Sprite> _sprite;
-  //std::shared_ptr<sf::Texture> _spritesheet;
   sf::Sprite _sprite;
   sf::Texture _spritesheet;
   sf::IntRect _currentFrame;
@@ -37,5 +35,6 @@ public:
   void setCurrentRow(int r);
   void setSpriteSheetPadding(int padding);
   void setFacingRight(bool b);
+  void setSize(const sf::Vector2f& size);
 };
 

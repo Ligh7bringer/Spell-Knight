@@ -124,3 +124,11 @@ void AnimatedSpriteComponent::setSpriteSheetPadding(int padding) {
 void AnimatedSpriteComponent::setFacingRight(bool b) {
     _facingRight = b;
 }
+
+//sets the size of the sprite 
+void AnimatedSpriteComponent::setSize(const Vector2f& size) {
+    _width = size.x;
+    _height = size.y;
+    _currentFrame.left = _width;
+    _currentFrame.top = _height;
+}

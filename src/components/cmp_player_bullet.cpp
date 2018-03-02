@@ -13,8 +13,9 @@ using namespace sf;
 PlayerBulletComponent::PlayerBulletComponent(Entity* p) : Component(p), _cooldown(1.f) {
     _spritesheet = TextureManager::getTexture("WIZARD.png");
     //this offset is needed because the bullet shouldn't be spawned on top of the player, but next to them
-    _posOffset = Vector2f(30.f, 5.f);
+    _posOffset = Vector2f(35.f, 5.f);
     _speed = 10.f;
+    _cooldown = 0;
 }
 
 //don't need to render anything (at the moment)
