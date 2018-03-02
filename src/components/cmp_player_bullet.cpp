@@ -3,7 +3,7 @@
 #include "cmp_physics.h"
 #include "cmp_animated_sprite.h"
 #include "engine.h"
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include "../../engine/lib_texture_manager/TextureManager.h"
 #include "cmp_player_physics.h"
 
@@ -52,10 +52,11 @@ void PlayerBulletComponent::fire() {
         p->setGravityScale(0.0f);
         //set the appropirate direction
         p->setLinearVelocity(right ? Vector2f(_speed, 0) : Vector2f(-_speed, 0));
+
+        _bullets.push_back(bullet);
         
         _cooldown = 1.f;
-    }
-    
+    }    
 }
 
 void PlayerBulletComponent::update(double dt) {
@@ -63,3 +64,11 @@ void PlayerBulletComponent::update(double dt) {
     _cooldown -= dt;
 }
 
+std::vector<std::shared_ptr<Entity>> PlayerBulletComponent::getBullets() const {
+    return _bullets;
+}
+
+void PlayerBulletComponent::removeBullet(std::shared_ptr<Entity> b) {
+    std::cout << "--------DELETING BULLET" << std::endl;
+    _bullets.erase(std::remove(_bullets.begin(), _bullets.end(), b), _bullets.end());    
+}

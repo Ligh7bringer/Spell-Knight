@@ -4,6 +4,7 @@
 #include "../components/cmp_enemy_ai.h"
 #include "../components/cmp_hurt_player.h"
 #include "../components/cmp_enemy_animated_sprite.h"
+#include "../components/cmp_hurt_enemy.h"
 #include "../game.h"
 #include <LevelSystem.h>
 #include <thread>
@@ -71,6 +72,7 @@ void Level1Scene::Load() {
 			  snakeEnemy->addComponent<GroundEnemyPhysicsComponent>(Vector2f(35.f, 32.f));
 			  // Add EnemyAIComponent
 			  snakeEnemy->addComponent<EnemyAIComponent>();
+        snakeEnemy->addComponent<HurtEnemyComponent>();
 
 			  /* add turret enemy
 			  cout << "hey" << endl;

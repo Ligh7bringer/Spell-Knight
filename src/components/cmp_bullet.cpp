@@ -1,7 +1,10 @@
 #include "cmp_bullet.h"
+#include "cmp_player_bullet.h"
 #include "cmp_animated_sprite.h"
 #include "../../engine/lib_texture_manager/TextureManager.h"
 #include "system_physics.h"
+#include "../../engine/src/engine.h"
+#include "../../engine/lib_ecm/ecm.h"
 #include <iostream>
 
 using namespace std;
@@ -38,6 +41,9 @@ void BulletComponent::update(double dt) {
     if(_explosionTime <= 0.f && _exploded) {
       //delete it
       _parent->setForDelete();
+      // auto pl = _parent->scene->ents.find("player")[0];
+      // auto pbc = pl->get_components<PlayerBulletComponent>()[0];
+      // pbc->removeBullet(shared);
     }
   } 
 }
