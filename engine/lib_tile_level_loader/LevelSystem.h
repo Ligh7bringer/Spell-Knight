@@ -25,7 +25,8 @@ public:
 		  GROUND6 = '6',
 		  GROUND7 = '7',
 		  GROUND8 = '8',
-		  GROUND9 = '9'
+		  GROUND9 = '9',
+		  INVISIBLE = '0'
 	  };
   };
   struct platformTiles {

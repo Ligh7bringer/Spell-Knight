@@ -14,6 +14,7 @@
 #include "../components/cmp_ground_enemy_physics.h"
 #include "../components/cmp_player_bullet.h"
 #include "../components/cmp_enemy_turret.h"
+#include "../components/cmp_air_enemy_physics.h"
 
 using namespace std;
 using namespace sf;
@@ -42,6 +43,7 @@ void Level1Scene::Load() {
 
   //setup view
   _view = View(FloatRect(0, 0, windowSize.x, windowSize.y));
+  _view.zoom(0.7f);
   
   // Create player
   {
@@ -55,37 +57,54 @@ void Level1Scene::Load() {
   }
 
 
-// Create some snakes
+// Create some enemies
   {
-	  for(int i = 0; i<ls::findTiles(ls::baseTiles::ENEMY).capacity();++i)
+	  for(int i = 0; i<ls::findTiles(ls::baseTiles::ENEMY).size();i++)
 	  {
 		  auto snakeEnemy = makeEntity();
  		  auto p = ls::getTilePosition(ls::findTiles(LevelSystem::baseTiles::ENEMY)[i]);
 		  //check if normal ai snakes
-		  
-			  snakeEnemy->setPosition(p);
+		  if (i<3)
+		  {
+			 snakeEnemy->setPosition(p);
 			  snakeEnemy->addComponent<EnemyAnimatedSpriteComponent>(64, 64);
 			  // Add HurtComponent
 			  snakeEnemy->addComponent<HurtComponent>();
-			  snakeEnemy->addComponent<GroundEnemyPhysicsComponent>(Vector2f(35.f, 32.f));
 			  // Add EnemyAIComponent
-			  snakeEnemy->addComponent<EnemyAIComponent>();
-
-			  /* add turret enemy
-			  cout << "hey" << endl;
+			 snakeEnemy->addComponent<EnemyAIComponent>();
+			 snakeEnemy->addComponent<GroundEnemyPhysicsComponent>(Vector2f(35.f, 32.f));
+			    
+		  }
+		  else 
+		  {
+			  auto eyeEnemy = makeEntity();
+			  eyeEnemy->setPosition(Vector2f(p.x+i*500.f, p.y));
+			  auto t = eyeEnemy->addComponent<AnimatedSpriteComponent>(64, 64);
+			  t->setSpritesheet(TextureManager::getTexture("sheet_eye_flyer.png"));
+			  t->setCurrentRow(0);
+			  t->setNumberOfFrames(5);
+			  t->setFrameTime(0.15f);
+			  // Add HurtComponent
+			  eyeEnemy->addComponent<HurtComponent>();
+			  // Add EnemyAIComponent
+			  eyeEnemy->addComponent<EnemyAIComponent>();
+			  eyeEnemy->addComponent<AirEnemyPhysicsComponent>(Vector2f(64.f, 64.f));
+		  }
+		  //else {
+			  //add turret enemy
+			  /*cout << "adding turret enemy" << endl;
 			  auto turretEnemy = makeEntity();
 			  turretEnemy->setPosition(ls::getTilePosition(ls::findTiles('t')[0]));
-			  auto t =turretEnemy->addComponent<EnemyAnimatedSpriteComponent>(64, 64);
-			  t->setSpritesheet(TextureManager::getTexture("spritesheet_knight.png"));
-			  t->setCurrentRow(0);
-			  t->setNumberOfFrames(8);
+			  auto t = turretEnemy->addComponent<EnemyAnimatedSpriteComponent>(64, 64);
+			  t->setSpritesheet(TextureManager::getTexture("sheet_snake_walk.png"));
+			  t->setNumberOfFrames(5);
 			  t->setFrameTime(0.15f);
 			  // Add HurtComponent
 			  turretEnemy->addComponent<HurtComponent>();
 			  turretEnemy->addComponent<GroundEnemyPhysicsComponent>(Vector2f(35.f, 32.f));
 			  // Add EnemyAIComponent
-			  turretEnemy->addComponent<EnemyTurretComponent>();
-			  */
+			  turretEnemy->addComponent<EnemyTurretComponent>();*/
+		 // }
 	  }
     
   }

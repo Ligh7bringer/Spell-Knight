@@ -8,19 +8,20 @@ using namespace sf;
 //std::map<LevelSystem::Tile, sf::Color> LevelSystem::_colours{{LevelSystem::getGroundTile, Color::White}, {baseTiles::END, Color::Red}};
 
 std::map<LevelSystem::Tile, sf::IntRect> LevelSystem::_rects{
-    {groundTiles::GROUND1, IntRect(0, 0, 32, 32)},
-	{groundTiles::GROUND2, IntRect(0, 64, 32, 32)},
-	{groundTiles::GROUND3, IntRect(32, 64, 32, 32)},
-	{groundTiles::GROUND4, IntRect(64, 64, 32, 32)},
-	{groundTiles::GROUND5, IntRect(96, 64, 32, 32)},
-	{groundTiles::GROUND6, IntRect(0, 96, 32, 32)},
-	{groundTiles::GROUND7, IntRect(32, 96, 32, 32)},
-	{groundTiles::GROUND8, IntRect(64, 96, 32, 32)},
-	{groundTiles::GROUND9, IntRect(96, 96, 32, 32)},
-	{platformTiles::PLATFORM1, IntRect(64, 0, 32, 32)},
-	{platformTiles::PLATFORM2, IntRect(96, 0, 32, 32)},
-	{platformTiles::PLATFORM3, IntRect(0, 32, 32, 32)},
-	{baseTiles::END, IntRect(0,32, 32, 32)}
+	{ groundTiles::GROUND1, IntRect(0, 0, 32, 32) },
+	{ groundTiles::GROUND2, IntRect(0, 64, 32, 32) },
+	{ groundTiles::GROUND3, IntRect(32, 64, 32, 32) },
+	{ groundTiles::GROUND4, IntRect(64, 64, 32, 32) },
+	{ groundTiles::GROUND5, IntRect(96, 64, 32, 32) },
+	{ groundTiles::GROUND6, IntRect(0, 96, 32, 32) },
+	{ groundTiles::GROUND7, IntRect(32, 96, 32, 32) },
+	{ groundTiles::GROUND8, IntRect(64, 96, 32, 32) },
+	{ groundTiles::GROUND9, IntRect(96, 96, 32, 32) },
+	{ platformTiles::PLATFORM1, IntRect(64, 0, 32, 32) },
+	{ platformTiles::PLATFORM2, IntRect(96, 0, 32, 32) },
+	{ platformTiles::PLATFORM3, IntRect(0, 32, 32, 32) },
+	{ baseTiles::END, IntRect(0,32, 32, 32) },
+	{groundTiles::INVISIBLE, IntRect(0, 0, 1,1)}
 };
 
 std::vector<sf::Sprite> LevelSystem::_texs;
@@ -81,7 +82,7 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
 	if (c == '\0'){
 		break;
 	}
-	if (c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9' || c=='I'||c=='O'||c=='P') {
+	if (c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9' || c=='I'||c=='O'||c=='P' || c=='0') {
 		tempGroundTiles.push_back((Tile)c);
 	}
     if (c == '\n') { // newline
@@ -248,7 +249,7 @@ LevelSystem::Tile LevelSystem::getGroundTile(sf::Vector2ul p) {
 	auto v = vector<sf::Vector2ul>();
 	for (size_t i = 0; i < _width * _height; ++i) {
 		if (_tiles[i] == '1' || _tiles[i] == '2' || _tiles[i] == '3' || _tiles[i] == '4' || _tiles[i] == '5' || _tiles[i] == '6'
-			|| _tiles[i] == '7' || _tiles[i] == '8' || _tiles[i] == '9' || _tiles[i] == 'I' || _tiles[i] == 'O' || _tiles[i] == 'P') {
+			|| _tiles[i] == '7' || _tiles[i] == '8' || _tiles[i] == '9' || _tiles[i] == '0' || _tiles[i] == 'I' || _tiles[i] == 'O' || _tiles[i] == 'P') {
 			return _tiles[(p.y * _width) + p.x];
 		}
 	}
@@ -277,7 +278,7 @@ std::vector<sf::Vector2ul> LevelSystem::getGroundTiles()
 	auto v = vector<sf::Vector2ul>();
 	for (size_t i = 0; i < _width * _height; ++i) {
 		if (_tiles[i] == '1' || _tiles[i] == '2' || _tiles[i] == '3' || _tiles[i] == '4' || _tiles[i] == '5' || _tiles[i] == '6'
-			|| _tiles[i] == '7' || _tiles[i] == '8' || _tiles[i] == '9' || _tiles[i]== 'I' || _tiles[i] == 'O'|| _tiles[i] == 'P') {
+			|| _tiles[i] == '7' || _tiles[i] == '8' || _tiles[i] == '9'|| _tiles[i] =='0' || _tiles[i]== 'I' || _tiles[i] == 'O'|| _tiles[i] == 'P') {
 			v.push_back({ i % _width, i / _width });
 		}
 	}

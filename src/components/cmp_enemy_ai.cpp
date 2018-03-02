@@ -8,6 +8,7 @@ void EnemyAIComponent::update(double dt) {
   mov.x += _direction.x * 16.f;
   if (!validMove(_parent->getPosition() + mov)) {
     _direction *= -1.f;
+	cout << _direction << endl;
   }
 
   move(_direction * (float)(dt * _speed));

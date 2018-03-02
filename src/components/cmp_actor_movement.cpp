@@ -18,6 +18,7 @@ bool ActorMovementComponent::validMove(const sf::Vector2f& pos) {
 	return (LevelSystem::getTileAt(pos) != '1' && ls::getTileAt(pos)!= '2' && ls::getTileAt(pos)!='3'
 		&& LevelSystem::getTileAt(pos) != '4' && ls::getTileAt(pos) != '5' && ls::getTileAt(pos) != '6'
 		&& LevelSystem::getTileAt(pos) != '7' && ls::getTileAt(pos) != '8' && ls::getTileAt(pos) != '9'
+		&& LevelSystem::getTileAt(pos) != '0'
 		&& LevelSystem::getTileAt(pos) != 'I' && ls::getTileAt(pos) != 'O' && ls::getTileAt(pos) != 'P');
 			  //}
   // return true;

@@ -31,7 +31,7 @@ void Renderer::queue(const sf::Drawable* s) {
 }
 
 void Renderer::setView(sf::View &view) {
-  rw->setView(view);
+	rw->setView(view);
 }
 
 void Renderer::resetView() {
