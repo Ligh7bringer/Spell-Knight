@@ -107,7 +107,7 @@ void PhysicsComponent::dampen(const sf::Vector2f& i) {
 }
 
 bool PhysicsComponent::isTouching(const PhysicsComponent& pc) const {
-  b2Contact* bc;
+  const b2Contact* bc = getTouching()[0];
   return isTouching(pc, bc);
 }
 
@@ -161,3 +161,6 @@ b2ContactEdge* PhysicsComponent::getContactList() const {
   return _body->GetContactList();
 }
 
+void PhysicsComponent::setParentForDelete() {
+  _parent->setForDelete();
+}

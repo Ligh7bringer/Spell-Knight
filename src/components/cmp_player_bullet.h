@@ -14,7 +14,7 @@ public:
     void render() override;
 
     void fire();
-    std::vector<std::shared_ptr<Entity>> getBullets() const;
+    const std::vector<std::shared_ptr<Entity>>& getBullets() const;
     void removeBullet(std::shared_ptr<Entity> b);
 
     explicit PlayerBulletComponent(Entity* p);

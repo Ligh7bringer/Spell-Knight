@@ -64,35 +64,37 @@ void Level1Scene::Load() {
 	  for(int i = 0; i < enemyPos.size(); ++i)
 	  {
 		  auto snakeEnemy = makeEntity();
+      snakeEnemy->addTag("enemy");
  		  auto p = ls::getTilePosition(enemyPos[i]);
 		  //check if normal ai snakes
-		  if (i<3)
+		  //if (i<3)
 		  {
-			 snakeEnemy->setPosition(p);
+			  snakeEnemy->setPosition(p);
 			  snakeEnemy->addComponent<EnemyAnimatedSpriteComponent>(64, 64);
 			  // Add HurtComponent
 			  snakeEnemy->addComponent<HurtComponent>();
 			  // Add EnemyAIComponent
 			 snakeEnemy->addComponent<EnemyAIComponent>();
 			 snakeEnemy->addComponent<GroundEnemyPhysicsComponent>(Vector2f(35.f, 32.f));
-			 snakeEnemy->addComponent<HurtEnemyComponent>();
+			 //snakeEnemy->addComponent<HurtEnemyComponent>();
 		  }
-		  else 
-		  {
-			  auto eyeEnemy = makeEntity();
-			  eyeEnemy->setPosition(Vector2f(p.x+i*500.f, p.y));
-			  auto t = eyeEnemy->addComponent<AnimatedSpriteComponent>(64, 64);
-			  t->setSpritesheet(TextureManager::getTexture("sheet_eye_flyer.png"));
-			  t->setCurrentRow(0);
-			  t->setNumberOfFrames(5);
-			  t->setFrameTime(0.15f);
-			  // Add HurtComponent
-			  eyeEnemy->addComponent<HurtComponent>();
-			  // Add EnemyAIComponent
-			  eyeEnemy->addComponent<EnemyAIComponent>();
-			  eyeEnemy->addComponent<AirEnemyPhysicsComponent>(Vector2f(64.f, 64.f));
-			  eyeEnemy->addComponent<HurtEnemyComponent>();
-		  }
+		  // else 
+		  // {
+			//   auto eyeEnemy = makeEntity();
+      //   eyeEnemy->addTag("enemy");
+			//   eyeEnemy->setPosition(Vector2f(p.x+i*500.f, p.y));
+			//   auto t = eyeEnemy->addComponent<AnimatedSpriteComponent>(64, 64);
+			//   t->setSpritesheet(TextureManager::getTexture("sheet_eye_flyer.png"));
+			//   t->setCurrentRow(0);
+			//   t->setNumberOfFrames(5);
+			//   t->setFrameTime(0.15f);
+			//   // Add HurtComponent
+			//   eyeEnemy->addComponent<HurtComponent>();
+			//   // Add EnemyAIComponent
+			//   eyeEnemy->addComponent<EnemyAIComponent>();
+			//   eyeEnemy->addComponent<AirEnemyPhysicsComponent>(Vector2f(64.f, 64.f));
+			//   //eyeEnemy->addComponent<HurtEnemyComponent>();
+		  // }
 		  //else {
 			  //add turret enemy
 			  /*cout << "adding turret enemy" << endl;
