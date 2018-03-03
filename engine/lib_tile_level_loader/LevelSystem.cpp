@@ -9,19 +9,21 @@ using namespace sf;
 
 std::map<LevelSystem::Tile, sf::IntRect> LevelSystem::_rects{
 	{ groundTiles::GROUND1, IntRect(0, 0, 32, 32) },
-	{ groundTiles::GROUND2, IntRect(0, 64, 32, 32) },
-	{ groundTiles::GROUND3, IntRect(32, 64, 32, 32) },
-	{ groundTiles::GROUND4, IntRect(64, 64, 32, 32) },
-	{ groundTiles::GROUND5, IntRect(96, 64, 32, 32) },
-	{ groundTiles::GROUND6, IntRect(0, 96, 32, 32) },
-	{ groundTiles::GROUND7, IntRect(32, 96, 32, 32) },
-	{ groundTiles::GROUND8, IntRect(64, 96, 32, 32) },
-	{ groundTiles::GROUND9, IntRect(96, 96, 32, 32) },
+	{ groundTiles::GROUND2, IntRect(32, 64, 32, 32) },
+	{ groundTiles::GROUND3, IntRect(64, 64, 32, 32) },
+	{ groundTiles::GROUND4, IntRect(96, 64, 32, 32) },
+	{ groundTiles::GROUND5, IntRect(0, 96, 32, 32) },
+	{ groundTiles::GROUND6, IntRect(32, 96, 32, 32) },
+	{ groundTiles::GROUND7, IntRect(64, 96, 32, 32) },
+	{ groundTiles::GROUND8, IntRect(96, 96, 32, 32) },
+	{ groundTiles::GROUND9, IntRect(128, 0, 32, 32) },
 	{ platformTiles::PLATFORM1, IntRect(64, 0, 32, 32) },
 	{ platformTiles::PLATFORM2, IntRect(96, 0, 32, 32) },
 	{ platformTiles::PLATFORM3, IntRect(0, 32, 32, 32) },
 	{ baseTiles::END, IntRect(0,32, 32, 32) },
-	{groundTiles::INVISIBLE, IntRect(0, 0, 1,1)}
+	{groundTiles::INVISIBLE, IntRect(0, 64, 32,32)},
+	{groundTiles::COIN, IntRect(128, 32, 32, 32)},
+	{groundTiles::ITEM, IntRect(128, 64, 32, 32)}
 };
 
 std::vector<sf::Sprite> LevelSystem::_texs;
@@ -117,7 +119,7 @@ void LevelSystem::buildSprites(bool optimise) {
   _sprites.clear();
 
   //Texture spritesheet;
-  if(!_spritesheet.loadFromFile("res/img/tiles4.png")) {
+  if(!_spritesheet.loadFromFile("res/img/tiles5.png")) {
     cout << "Error!" << endl;
   }
 

@@ -15,7 +15,7 @@
 #include "../components/cmp_ground_enemy_physics.h"
 #include "../components/cmp_player_bullet.h"
 #include "../components/cmp_enemy_turret.h"
-#include "../components/cmp_air_enemy_physics.h"
+#include "../components/cmp_enemy_physics.h"
 
 using namespace std;
 using namespace sf;
@@ -67,16 +67,31 @@ void Level1Scene::Load() {
       snakeEnemy->addTag("enemy");
  		  auto p = ls::getTilePosition(enemyPos[i]);
 		  //check if normal ai snakes
-		  //if (i<3)
+		  if (i<3)
 		  {
-			  snakeEnemy->setPosition(p);
-			  snakeEnemy->addComponent<EnemyAnimatedSpriteComponent>(64, 64);
+			 snakeEnemy->setPosition(p);
+			  snakeEnemy->addComponent<EnemyAnimatedSpriteComponent>(64, 28);
 			  // Add HurtComponent
 			  snakeEnemy->addComponent<HurtComponent>();
 			  // Add EnemyAIComponent
 			 snakeEnemy->addComponent<EnemyAIComponent>();
-			 snakeEnemy->addComponent<GroundEnemyPhysicsComponent>(Vector2f(35.f, 32.f));
-			 //snakeEnemy->addComponent<HurtEnemyComponent>();
+			 snakeEnemy->addComponent<EnemyPhysicsComponent>(Vector2f(64.f, 28.f), false);
+		  }
+		  else 
+		  {
+			  auto eyeEnemy = makeEntity();
+        eyeEnemy->addTag("enemy");
+			  eyeEnemy->setPosition(Vector2f(p.x+i*500.f, p.y));
+			  auto t = eyeEnemy->addComponent<AnimatedSpriteComponent>(64,37);
+			  t->setSpritesheet(TextureManager::getTexture("sheet_eye_flyer.png"));
+			  t->setCurrentRow(0);
+			  t->setNumberOfFrames(5);
+			  t->setFrameTime(0.15f);
+			  // Add HurtComponent
+			  eyeEnemy->addComponent<HurtComponent>();
+			  // Add EnemyAIComponent
+			  eyeEnemy->addComponent<EnemyAIComponent>();
+			  eyeEnemy->addComponent<EnemyPhysicsComponent>(Vector2f(64.f, 37.f), true);
 		  }
 		  // else 
 		  // {

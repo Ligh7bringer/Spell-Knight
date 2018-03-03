@@ -2,7 +2,7 @@
 #include "cmp_player_bullet.h"
 #include "cmp_physics.h"
 #include "cmp_animated_sprite.h"
-#include "cmp_ground_enemy_physics.h"
+#include "cmp_enemy_physics.h"
 #include "../../engine/lib_texture_manager/TextureManager.h"
 #include "system_physics.h"
 #include "../../engine/src/engine.h"
@@ -55,10 +55,10 @@ void BulletComponent::checkCollisions(const std::vector<const b2Contact*>& conta
   if(contacts.size() > 0) {
     auto contact = contacts[0];
 
-    for(int i = 0; i < 5; ++i) {
+    for(int i = 0; i < 3; ++i) {
     auto enemyPhysics = enemies[i]->GetCompatibleComponent<PhysicsComponent>()[0];
     auto parentPhysics = _parent->get_components<PhysicsComponent>()[0];
-    if(enemyPhysics->isTouching(*parentPhysics)) {
+    if(enemyPhysics->isTouching(*parentPhysics, contact)) {
         std::cout << "BOOM!" << std::endl;
         _explosionTime = 0.8f;
         _exploded = true;
