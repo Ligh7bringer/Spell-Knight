@@ -50,13 +50,27 @@ void PlayerBulletComponent::fire() {
         auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(32.f, 20.f));
         //the bullet shouldn't be affected by gravity 
         p->setGravityScale(0.0f);
+        p->setRestitution(0.0f);
         //set the appropirate direction
         p->setLinearVelocity(right ? Vector2f(_speed, 0) : Vector2f(-_speed, 0));
 
-        _bullets.push_back(bullet);
+        //_bullets.push_back(bullet);
         
         _cooldown = 1.f;
     }    
+
+    // if(_bullets.size() > 0) {
+    //     auto it = _bullets.begin();
+    //     while(it != _bullets.end()) {
+    //         auto c = (*it)->get_components<BulletComponent>()[0];
+    //         if(c->isExploded()) {
+    //             it = _bullets.erase(it);
+    //         } else {
+    //             ++it;
+    //         }
+    //     }
+    // }
+
 }
 
 void PlayerBulletComponent::update(double dt) {
@@ -64,7 +78,7 @@ void PlayerBulletComponent::update(double dt) {
     _cooldown -= dt;
 }
 
-std::vector<std::shared_ptr<Entity>> PlayerBulletComponent::getBullets() const {
+const std::vector<std::shared_ptr<Entity>>& PlayerBulletComponent::getBullets() const {
     return _bullets;
 }
 

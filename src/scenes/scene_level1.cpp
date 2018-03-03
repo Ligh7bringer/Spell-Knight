@@ -64,6 +64,7 @@ void Level1Scene::Load() {
 	  for(int i = 0; i < enemyPos.size(); ++i)
 	  {
 		  auto snakeEnemy = makeEntity();
+      snakeEnemy->addTag("enemy");
  		  auto p = ls::getTilePosition(enemyPos[i]);
 		  //check if normal ai snakes
 		  if (i<3)
@@ -75,11 +76,11 @@ void Level1Scene::Load() {
 			  // Add EnemyAIComponent
 			 snakeEnemy->addComponent<EnemyAIComponent>();
 			 snakeEnemy->addComponent<EnemyPhysicsComponent>(Vector2f(64.f, 28.f), false);
-			 snakeEnemy->addComponent<HurtEnemyComponent>();
 		  }
 		  else 
 		  {
 			  auto eyeEnemy = makeEntity();
+        eyeEnemy->addTag("enemy");
 			  eyeEnemy->setPosition(Vector2f(p.x+i*500.f, p.y));
 			  auto t = eyeEnemy->addComponent<AnimatedSpriteComponent>(64,37);
 			  t->setSpritesheet(TextureManager::getTexture("sheet_eye_flyer.png"));
@@ -91,8 +92,24 @@ void Level1Scene::Load() {
 			  // Add EnemyAIComponent
 			  eyeEnemy->addComponent<EnemyAIComponent>();
 			  eyeEnemy->addComponent<EnemyPhysicsComponent>(Vector2f(64.f, 37.f), true);
-			  eyeEnemy->addComponent<HurtEnemyComponent>();
 		  }
+		  // else 
+		  // {
+			//   auto eyeEnemy = makeEntity();
+      //   eyeEnemy->addTag("enemy");
+			//   eyeEnemy->setPosition(Vector2f(p.x+i*500.f, p.y));
+			//   auto t = eyeEnemy->addComponent<AnimatedSpriteComponent>(64, 64);
+			//   t->setSpritesheet(TextureManager::getTexture("sheet_eye_flyer.png"));
+			//   t->setCurrentRow(0);
+			//   t->setNumberOfFrames(5);
+			//   t->setFrameTime(0.15f);
+			//   // Add HurtComponent
+			//   eyeEnemy->addComponent<HurtComponent>();
+			//   // Add EnemyAIComponent
+			//   eyeEnemy->addComponent<EnemyAIComponent>();
+			//   eyeEnemy->addComponent<AirEnemyPhysicsComponent>(Vector2f(64.f, 64.f));
+			//   //eyeEnemy->addComponent<HurtEnemyComponent>();
+		  // }
 		  //else {
 			  //add turret enemy
 			  /*cout << "adding turret enemy" << endl;

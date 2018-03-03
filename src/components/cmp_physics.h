@@ -29,6 +29,7 @@ public:
   void teleport(const sf::Vector2f& v);
   void setLinearVelocity(const sf::Vector2f& move);
   void setGravityScale(int32 gs);
+  void setParentForDelete();
   b2ContactEdge* getContactList() const;
   ~PhysicsComponent() override;
 };
