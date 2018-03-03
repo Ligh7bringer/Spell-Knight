@@ -46,14 +46,14 @@ void GroundEnemyPhysicsComponent::update(double dt) {
 		dir == Vector2f(-1.f,0.f)) {
 		// Moving Either Left or Right
 		if (dir == Vector2f(1.f,0.f)) {
-			cout << "enemy going right" << endl;
+			//cout << "enemy going right" << endl;
 			if (getVelocity().x < _maxVelocity.x) {
 				impulse({ (float)(dt * _groundspeed), 0 });
 				_direction = 1;
 			}
 		}
 		else {
-			cout << "enemy going left" << endl;
+			//cout << "enemy going left" << endl;
 			if (getVelocity().x > -_maxVelocity.x) {
 				impulse({ -(float)(dt * _groundspeed), 0 });
 				_direction = -1;

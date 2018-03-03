@@ -1,4 +1,4 @@
-#include "cmp_air_enemy_physics.h"
+#include "cmp_enemy_physics.h"
 #include "system_physics.h"
 #include <LevelSystem.h>
 #include "cmp_animated_sprite.h"
@@ -8,11 +8,11 @@ using namespace std;
 using namespace sf;
 using namespace Physics;
 
-bool AirEnemyPhysicsComponent::isGrounded() const {
+bool EnemyPhysicsComponent::isGrounded() const {
 	auto touch = getTouching();
 	const auto& pos = _body->GetPosition();
-	const float halfPlrHeigt = _size.y * .75f;
-	const float halfPlrWidth = _size.x * .75f;
+	const float halfPlrHeigt = _size.y * .25f;
+	const float halfPlrWidth = _size.x * .25f;
 	b2WorldManifold manifold;
 	for (const auto& contact : touch) {
 		contact->GetWorldManifold(&manifold);
@@ -20,7 +20,7 @@ bool AirEnemyPhysicsComponent::isGrounded() const {
 		bool onTop = numPoints > 0;
 		// If all contacts are below the enemy.
 		for (int j = 0; j < numPoints; j++) {
-			onTop &= (manifold.points[j].y < pos.y);
+			onTop &= (manifold.points[j].y < pos.y- halfPlrHeigt);
 		}
 		if (onTop) {
 			return true;
@@ -30,7 +30,7 @@ bool AirEnemyPhysicsComponent::isGrounded() const {
 	return false;
 }
 
-void AirEnemyPhysicsComponent::update(double dt) {
+void EnemyPhysicsComponent::update(double dt) {
 
 	const auto pos = _parent->getPosition();
 
@@ -39,19 +39,48 @@ void AirEnemyPhysicsComponent::update(double dt) {
 		cout << "enemy has been affected by the forces of gravity!!" << endl;
 		//teleport(ls::getTilePosition(ls::findTiles(ls::baseTiles::START)[0]));
 	}
-		// Dampen X axis movement
-		dampen({ 0.9f, 1.0f });
-		//_direction = 0;
 
-	
-	// Handle Jump
-	//check if the creature is certain height above ground
-	if (_grounded = isGrounded()) {
-		if (_grounded) 
-		{
+	if (_isAir == false)
+	{
+		auto c = _parent->get_components<EnemyAIComponent>()[0];
+		auto dir = c->getDirection();
+		if (dir == Vector2f(1.f, 0.f) ||
+			dir == Vector2f(-1.f, 0.f)) {
+			// Moving Either Left or Right
+			if (dir == Vector2f(1.f, 0.f)) {
+				//cout << "enemy going right" << endl;
+				if (getVelocity().x < _maxVelocity.x) {
+					impulse({ (float)(dt * _groundspeed), 0 });
+					_direction = 1;
+				}
+			}
+			else {
+				//cout << "enemy going left" << endl;
+				if (getVelocity().x > -_maxVelocity.x) {
+					impulse({ -(float)(dt * _groundspeed), 0 });
+					_direction = -1;
+				}
+			}
+		}
+		else {
+			// Dampen X axis movement
+			dampen({ 0.9f, 1.0f });
+			//_direction = 0;
+		}
+
+	}
+	else
+	{ 
+		// Handle Jump
+		//check if the creature is certain height above ground
+		if (isGrounded()) {
 			setVelocity(Vector2f(getVelocity().x, 0.f));
 			teleport(Vector2f(pos.x, pos.y - 1.0f));
 			impulse(Vector2f(0, -8.f));
+
+			// Dampen X axis movement
+			dampen({ 0.9f, 1.0f });
+			_direction = 0;
 		}
 	}
 
@@ -74,10 +103,11 @@ void AirEnemyPhysicsComponent::update(double dt) {
 
 	PhysicsComponent::update(dt);
 }
-AirEnemyPhysicsComponent::AirEnemyPhysicsComponent(Entity* p,
-	const Vector2f& size)
+EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,
+	const Vector2f& size, bool isAir)
 	: PhysicsComponent(p, true, size) {
 	_size = sv2_to_bv2(size, true);
+	_isAir = isAir;
 	_maxVelocity = Vector2f(200.f, 400.f);
 	_groundspeed = 30.f;
 	_grounded = false;
@@ -87,10 +117,10 @@ AirEnemyPhysicsComponent::AirEnemyPhysicsComponent(Entity* p,
 	_body->SetBullet(true);
 }
 
-int AirEnemyPhysicsComponent::getDirection() const {
+int EnemyPhysicsComponent::getDirection() const {
 	return _direction;
 }
 
-bool AirEnemyPhysicsComponent::isJumping() const {
+bool EnemyPhysicsComponent::isJumping() const {
 	return !_grounded;
 }
