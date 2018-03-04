@@ -2,7 +2,6 @@
 #include "cmp_player_bullet.h"
 #include "cmp_bullet.h"
 #include "cmp_physics.h"
-#include "cmp_ground_enemy_physics.h"
 #include <engine.h>
 #include <iostream>
 

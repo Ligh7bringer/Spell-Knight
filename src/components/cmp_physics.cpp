@@ -107,7 +107,7 @@ void PhysicsComponent::dampen(const sf::Vector2f& i) {
 }
 
 bool PhysicsComponent::isTouching(const PhysicsComponent& pc) const {
-  const b2Contact* bc = getTouching()[0];
+  b2Contact* bc;
   return isTouching(pc, bc);
 }
 
