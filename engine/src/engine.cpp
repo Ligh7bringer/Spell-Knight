@@ -102,6 +102,14 @@ void Engine::resizeView() {
         Renderer::setView(v);
 }
 
+sf::View& Engine::getCurrentView() {
+  return _activeScene->getView();
+}
+
+void Engine::setView(const sf::View& view) {
+  _activeScene->setView(view);
+}
+
 void Engine::Start(unsigned int width, unsigned int height,
                    const std::string& gameName, Scene* scn) {
   RenderWindow window(VideoMode(width, height), gameName, sf::Style::Close | sf::Style::Resize);
@@ -227,6 +235,10 @@ long long last() {
 
 sf::View& Scene::getView() {
   return _view;
+}
+
+void Scene::setView(const sf::View& view) {
+  _view = view;
 }
 
 Scene::~Scene() { UnLoad(); }

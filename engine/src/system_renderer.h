@@ -20,4 +20,6 @@ void setView(sf::View &view);
 
 void resetView();
 
+void drawGUI(const sf::Drawable* s);
+
 }; // namespace Renderer

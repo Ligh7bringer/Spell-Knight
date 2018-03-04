@@ -1,4 +1,5 @@
 #include "system_renderer.h"
+#include "../../engine/src/engine.h"
 #include <queue>
 
 using namespace std;
@@ -37,4 +38,13 @@ void Renderer::setView(sf::View &view) {
 void Renderer::resetView() {
   auto v = rw->getDefaultView();
   rw->setView(v);
+}
+
+void Renderer::drawGUI(const sf::Drawable* s) {
+  auto currentView = Engine::getCurrentView();
+  Engine::GetWindow().setView(Engine::GetWindow().getDefaultView());
+
+  rw->draw(*s);
+
+  Engine::setView(currentView);
 }

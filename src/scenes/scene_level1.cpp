@@ -4,7 +4,7 @@
 #include "../components/cmp_enemy_ai.h"
 #include "../components/cmp_hurt_player.h"
 #include "../components/cmp_enemy_animated_sprite.h"
-#include "../components/cmp_hurt_enemy.h"
+#include "../components/cmp_player_lives.h"
 #include "../game.h"
 #include <LevelSystem.h>
 #include <thread>
@@ -43,7 +43,7 @@ void Level1Scene::Load() {
 
   //setup view
   _view = View(FloatRect(0, 0, windowSize.x, windowSize.y));
-  _view.zoom(0.7f);
+  //_view.zoom(0.7f);
   
   // Create player
   {
@@ -54,6 +54,7 @@ void Level1Scene::Load() {
     player->addComponent<PlayerAnimatedSpriteComponent>(64, 64);
     player->addComponent<PlayerPhysicsComponent>(Vector2f(27.f, 62.f));
     player->addComponent<PlayerBulletComponent>();
+    player->addComponent<PlayerLivesComponent>(3);
   }
 
 

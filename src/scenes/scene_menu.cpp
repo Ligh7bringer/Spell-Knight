@@ -3,7 +3,7 @@
 #include "../game.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
-#include "../button.h"
+#include "../GUI/button.h"
 
 using namespace std;
 using namespace sf;

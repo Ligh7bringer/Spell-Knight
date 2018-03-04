@@ -1,7 +1,7 @@
 #include "button.h"
-#include "../engine/src/system_renderer.h"
-#include "../engine/src/system_resources.h"
-#include "../engine/src/engine.h"
+#include "../../engine/src/system_renderer.h"
+#include "../../engine/src/system_resources.h"
+#include "../../engine/src/engine.h"
 #include <iostream>
 
 using namespace sf;
