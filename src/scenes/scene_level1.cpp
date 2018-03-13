@@ -1,10 +1,4 @@
 #include "scene_level1.h"
-#include "../components/cmp_player_physics.h"
-#include "../components/cmp_player_animated_sprite.h"
-#include "../components/cmp_enemy_ai.h"
-#include "../components/cmp_hurt_player.h"
-#include "../components/cmp_enemy_animated_sprite.h"
-#include "../components/cmp_player_lives.h"
 #include "../game.h"
 #include <LevelSystem.h>
 #include <thread>
@@ -12,9 +6,7 @@
 #include <string>
 #include <iostream>
 #include "../../engine/lib_texture_manager/TextureManager.h"
-#include "../components/cmp_player_bullet.h"
-#include "../components/cmp_enemy_turret.h"
-#include "../components/cmp_enemy_physics.h"
+#include "../entity_factory.h"
 
 using namespace std;
 using namespace sf;
@@ -46,55 +38,24 @@ void Level1Scene::Load() {
   //_view.zoom(0.7f);
   
   // Create player
-  {
-    player = makeEntity();
-	  player->setPosition(Vector2f(100.f,100.f));
-    player->addTag("player");
+  player = EntityFactory::makePlayer(this, Vector2f(100.f, 100.f));
   
-    player->addComponent<PlayerAnimatedSpriteComponent>(64, 64);
-    player->addComponent<PlayerPhysicsComponent>(Vector2f(27.f, 62.f));
-    player->addComponent<PlayerBulletComponent>();
-    player->addComponent<PlayerLivesComponent>(3);
-  }
+  // Create some enemies  
+  auto enemyPos = ls::findTiles(ls::baseTiles::ENEMY);
 
-
-// Create some enemies
+  for(int i = 0; i < enemyPos.size(); ++i)
   {
-    auto enemyPos = ls::findTiles(ls::baseTiles::ENEMY);
-
-	  for(int i = 0; i < enemyPos.size(); ++i)
-	  {
-			auto p = ls::getTilePosition(enemyPos[i]);
-			
-			auto snakeEnemy = makeEntity();
-			snakeEnemy->addTag("enemy");
-			//check if normal ai snakes
-			snakeEnemy->setPosition(p);
-			snakeEnemy->addComponent<EnemyAnimatedSpriteComponent>(64, 28);
-			// Add HurtComponent
-			snakeEnemy->addComponent<HurtComponent>();
-			// Add EnemyAIComponent
-			snakeEnemy->addComponent<EnemyAIComponent>();
-			snakeEnemy->addComponent<EnemyPhysicsComponent>(Vector2f(64.f, 28.f), false);		  			
-		} 
+    auto p = ls::getTilePosition(enemyPos[i]);
     
-  }
+    EntityFactory::makeSnake(this, p);	  			
+  } 
 
-  // Add physics colliders to level tiles.
-  {
-	auto walls = (ls::getGroundTiles());
-    for (auto w : walls) {
-		//cout << walls << endl;
-      auto pos = ls::getTilePosition(w);
-      pos += Vector2f(16.f, 16.f); //offset to center
-      auto e = makeEntity();
-      e->setPosition(pos);
-      e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
-    }
-  }
+  // Add physics colliders to level tiles.  
+	EntityFactory::makeWalls(this);
+  
 
   //Simulate long loading times
-  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+  //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   cout << " Scene 1 Load Done" << endl;
 
   setLoaded(true);
@@ -115,6 +76,7 @@ void Level1Scene::Update(const double& dt) {
     Engine::ChangeScene((Scene*)&level2);
   }
 
+  //move the view with the player
   if(player != nullptr) {
     _view.setCenter(player->getPosition().x, Engine::getWindowSize().y / 2.f);
     Renderer::setView(_view);

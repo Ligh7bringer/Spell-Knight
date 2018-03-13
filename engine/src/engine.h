@@ -43,7 +43,6 @@ public:
   static sf::RenderWindow& GetWindow();
   static sf::Vector2u getWindowSize();
   static void setVsync(bool b);
-  static void resizeView();
   static sf::View& getCurrentView();
   static void setView(const sf::View& view);
 

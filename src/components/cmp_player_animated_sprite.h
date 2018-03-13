@@ -6,6 +6,8 @@ class PlayerAnimatedSpriteComponent : public AnimatedSpriteComponent {
 protected:
     sf::Texture _knightSpritesheet;
     int _lastDir; 
+    bool _hurt;
+    float _hurtTimer;
 
 public:
     PlayerAnimatedSpriteComponent() = delete;
@@ -13,4 +15,7 @@ public:
 
     void update(double dt) override;
     void render() override;
+
+    void setHurt(bool h);
+    bool isHurt();
 };

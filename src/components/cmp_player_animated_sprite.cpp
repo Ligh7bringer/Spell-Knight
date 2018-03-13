@@ -17,9 +17,24 @@ PlayerAnimatedSpriteComponent::PlayerAnimatedSpriteComponent(Entity *p, int widt
     setSpriteSheetPadding(2);   
     setFrameTime(0.15f);
     _lastDir = 1;
+    _hurt = false;
+    _hurtTimer = 1.f;
 }
 
 void PlayerAnimatedSpriteComponent::update(double dt) {
+    if(_hurt) {
+        _hurtTimer -= dt;
+        static int alpha = 127;
+        alpha -= 5;
+        _sprite.setColor(Color(255, 255, 255, alpha));
+    }
+
+    if(_hurt && _hurtTimer <= 0.f) {
+        _hurt = false;
+        _hurtTimer = 1.0f;
+        _sprite.setColor(Color(255, 255, 255, 255));
+    }
+
     //get the physics component, this could be put outside of update possibly?
     auto physicsComp = _parent->get_components<PlayerPhysicsComponent>()[0];
     //get direction and whether the player is jumping
@@ -41,7 +56,7 @@ void PlayerAnimatedSpriteComponent::update(double dt) {
         _lastDir = dir;    
     } else {
         setCurrentRow(0);
-        setFacingRight(_lastDir == 1 ? true : false);
+        setFacingRight(_lastDir == 1);
     } 
 
     if(physicsComp->isShooting()) {
@@ -56,4 +71,12 @@ void PlayerAnimatedSpriteComponent::update(double dt) {
 //just use super's render
 void PlayerAnimatedSpriteComponent::render() {
     AnimatedSpriteComponent::render();    
+}
+
+void PlayerAnimatedSpriteComponent::setHurt(bool h) {
+    _hurt = h;
+}
+
+bool PlayerAnimatedSpriteComponent::isHurt() {
+    return _hurt;
 }

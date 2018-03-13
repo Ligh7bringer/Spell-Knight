@@ -84,24 +84,6 @@ sf::Vector2u Engine::getWindowSize() { return _window->getSize(); }
 
 sf::RenderWindow& Engine::GetWindow() { return *_window; }
 
-void Engine::resizeView() {
-        sf::Vector2f size = static_cast<sf::Vector2f>(Engine::GetWindow().getSize());
-
-        // Minimum size
-        if(size.x < 800)
-          size.x = 800;
-        if(size.y < 600)
-          size.y = 600;
-
-        // Apply possible size changes
-        Engine::GetWindow().setSize(static_cast<sf::Vector2u>(size));
-
-        // Reset view
-        //auto v = _activeScene->getView();
-        auto v = sf::View(sf::FloatRect(0.f, 0.f, size.x, size.y));
-        Renderer::setView(v);
-}
-
 sf::View& Engine::getCurrentView() {
   return _activeScene->getView();
 }

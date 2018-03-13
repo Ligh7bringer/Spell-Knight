@@ -13,8 +13,8 @@ using namespace Physics;
 bool PlayerPhysicsComponent::isGrounded() const {
   auto touch = getTouching();
   const auto& pos = _body->GetPosition();
-  const float halfPlrHeigt = _size.y * .25f;
-  const float halfPlrWidth = _size.x * .25f;
+  const float halfPlrHeigt = _size.y * .5f;
+  const float halfPlrWidth = _size.x * .5f;
   b2WorldManifold manifold;
   for (const auto& contact : touch) {
     contact->GetWorldManifold(&manifold);
@@ -22,9 +22,10 @@ bool PlayerPhysicsComponent::isGrounded() const {
     bool onTop = numPoints > 1;
     // If all contacts are below the player.
     for (int j = 0; j < numPoints; j++) {
-      onTop &= (manifold.points[j].y < pos.y - halfPlrHeigt);
+      onTop &= (manifold.points[j].y < pos.y - halfPlrHeigt && manifold.points[j].x > pos.x - halfPlrWidth);
     }
-    if (onTop) {
+    //change this so it makes sure edges are not considered collisions
+    if(onTop) {
       return true;
     }
   }

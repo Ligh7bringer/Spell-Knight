@@ -39,12 +39,3 @@ void Renderer::resetView() {
   auto v = rw->getDefaultView();
   rw->setView(v);
 }
-
-void Renderer::drawGUI(const sf::Drawable* s) {
-  auto currentView = Engine::getCurrentView();
-  Engine::GetWindow().setView(Engine::GetWindow().getDefaultView());
-
-  rw->draw(*s);
-
-  Engine::setView(currentView);
-}

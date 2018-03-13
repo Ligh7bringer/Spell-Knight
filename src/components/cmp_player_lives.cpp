@@ -6,6 +6,10 @@
 
 using namespace sf;
 
+/*
+* Component which handles the lives of the player and draws them on the screen.
+*/
+
 PlayerLivesComponent::PlayerLivesComponent(Entity* p, int maxLives) : Component(p), _maxLives(maxLives), _lives(_maxLives) {
     _panel = RectangleShape(Vector2f(100.f, 34.f));
     _panel.setFillColor(sf::Color(255,255,255,128));
@@ -45,12 +49,13 @@ void PlayerLivesComponent::increaseLives(int num) {
 void PlayerLivesComponent::decreaseLives(int num) {
     _lives -= num;
     //make sure lives are not less than zero
-    if(_lives < 0) { 
+    if(_lives <= 0) { 
         //if they are 
         _lives = 0;
         //the player is dead
         _parent->setForDelete();
     }
+    
 }
 
 //returns lives
