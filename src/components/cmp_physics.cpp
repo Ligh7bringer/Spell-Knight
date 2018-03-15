@@ -1,5 +1,4 @@
 #include "cmp_physics.h"
-#include "system_physics.h"
 
 using namespace std;
 using namespace sf;
@@ -14,6 +13,8 @@ void PhysicsComponent::update(double dt) {
 PhysicsComponent::PhysicsComponent(Entity* p, bool dyn,
                                    const Vector2f& size)
     : Component(p), _dynamic(dyn) {
+  
+  _size = size;
 
   b2BodyDef BodyDef;
   // Is Dynamic(moving), or static(Stationary)
@@ -119,10 +120,11 @@ bool PhysicsComponent::isTouching(const PhysicsComponent& pc,
   const auto clc = w.GetContactCount();
   for (int32 i = 0; i < clc; i++) {
     const auto& contact = (contactList[i]);
-    if (contact.IsTouching() && ((contact.GetFixtureA() == _fixture &&
-                                  contact.GetFixtureA() == _otherFixture) ||
-                                 (contact.GetFixtureA() == _otherFixture &&
-                                  contact.GetFixtureA() == _fixture))) {
+    //the bodies need to be compared here, not the fixtures!
+    if (contact.IsTouching() && ((contact.GetFixtureA()->GetBody() == _fixture->GetBody() &&
+                                  contact.GetFixtureB()->GetBody() == _otherFixture->GetBody()) ||
+                                 (contact.GetFixtureA()->GetBody() == _otherFixture->GetBody() &&
+                                  contact.GetFixtureB()->GetBody() == _fixture->GetBody()))) {
       bc = &contact;
       return true;
     }
@@ -164,3 +166,17 @@ b2ContactEdge* PhysicsComponent::getContactList() const {
 void PhysicsComponent::setParentForDelete() {
   _parent->setForDelete();
 }
+
+const b2Vec2& PhysicsComponent::getLinearVelocity() {
+  return _body->GetLinearVelocity();
+}
+
+const Vector2f& PhysicsComponent::getSize() {
+  return _size;
+}
+
+const b2Vec2& PhysicsComponent::getPosition() {
+  return _body->GetPosition();
+}
+
+//const b2Body& PhysicsComponent::getBody()

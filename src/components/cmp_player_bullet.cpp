@@ -9,6 +9,10 @@
 
 using namespace sf;
 
+/*
+* This component allows the player to shoot.
+*/
+
 //set spritesheet, position of bullet relative to player, speed of bullet
 PlayerBulletComponent::PlayerBulletComponent(Entity* p) : Component(p), _cooldown(1.f) {
     _spritesheet = TextureManager::getTexture("WIZARD.png");

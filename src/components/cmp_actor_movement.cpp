@@ -13,15 +13,11 @@ ActorMovementComponent::ActorMovementComponent(Entity* p)
     : _speed(100.0f), Component(p) {}
 
 bool ActorMovementComponent::validMove(const sf::Vector2f& pos) {
-  //re0turn (LevelSystem::getTileAt(pos) != (LevelSystem::getTilePosition(LevelSystem::getGroundTiles())
-	 // for (auto t : LevelSystem::getGroundTiles()) {
 	return (LevelSystem::getTileAt(pos) != '1' && ls::getTileAt(pos)!= '2' && ls::getTileAt(pos)!='3'
 		&& LevelSystem::getTileAt(pos) != '4' && ls::getTileAt(pos) != '5' && ls::getTileAt(pos) != '6'
 		&& LevelSystem::getTileAt(pos) != '7' && ls::getTileAt(pos) != '8' && ls::getTileAt(pos) != '9'
 		&& LevelSystem::getTileAt(pos) != '0'
 		&& LevelSystem::getTileAt(pos) != 'I' && ls::getTileAt(pos) != 'O' && ls::getTileAt(pos) != 'P');
-			  //}
-  // return true;
 }
 
 void ActorMovementComponent::move(const sf::Vector2f& p) {

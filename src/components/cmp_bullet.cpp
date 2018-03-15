@@ -12,6 +12,10 @@
 using namespace std;
 using namespace sf;
 
+/*
+* This component, when attached to a bullet entity, handles its lifetime and collisions.
+*/
+
 void BulletComponent::update(double dt) {
   //get the collisions from the physics component
   auto contacts = _parent->get_components<PhysicsComponent>()[0]->getTouching();
@@ -36,23 +40,28 @@ void BulletComponent::update(double dt) {
 
 //finds out if the bullet has hit an enemy
 void BulletComponent::checkCollisions(const std::vector<const b2Contact*>& contacts) {
-  //make sure there are contacts still
+  //get necessary component
+  const auto parentPhysics = _parent->get_components<PhysicsComponent>()[0];
+
+  //make sure the bullet is still colliding with something
   if(contacts.size() > 0) {
     //check each enemy for collisions with the bullet
     for(auto enemy : _enemies) {
-      //get necessary components
+      //get enemy physics component, have to use GetCompatibleComponent because enemy have an EnemyPhysicsComponent
       auto enemyPhysics = enemy->GetCompatibleComponent<PhysicsComponent>()[0];
-      const auto parentPhysics = _parent->get_components<PhysicsComponent>()[0];
-
-      //if they are touching
-      b2Contact* bc;
-      if(parentPhysics->isTouching(*enemyPhysics, bc)) {
-        //remove enemy
-        enemyPhysics->setParentForDelete();
-      } 
+      b2Contact* contact;
+      //if they are colliding
+      if(parentPhysics->isTouching(*enemyPhysics, contact)) {
+        //start the explosion animation
+        //explode();
+        //delete enemy
+        enemy->setForDelete();
+        break;
+      }      
     }
-  } 
-}
+  }
+
+} 
 
 //changes the animation to the explosion animation and starts the explosion counter
 void BulletComponent::explode() {

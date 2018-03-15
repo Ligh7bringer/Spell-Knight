@@ -42,6 +42,7 @@ std::shared_ptr<Entity> EntityFactory::makeSnake(Scene* scene, const Vector2f& p
     // Add EnemyAIComponent
     snakeEnemy->addComponent<EnemyAIComponent>();
     snakeEnemy->addComponent<EnemyPhysicsComponent>(Vector2f(64.f, 28.f), false);	
+    //snakeEnemy->addComponent<PhysicsComponent>(false, Vector2f(64.f, 28.f));
 
     return snakeEnemy;
 }

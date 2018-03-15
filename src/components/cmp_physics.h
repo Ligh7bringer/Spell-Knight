@@ -2,6 +2,7 @@
 
 #include "cmp_sprite.h"
 #include "ecm.h"
+#include "system_physics.h"
 #include <Box2D/Dynamics/b2Body.h>
 
 class PhysicsComponent : public Component {
@@ -9,6 +10,7 @@ protected:
   b2Body* _body;
   const bool _dynamic;
   b2Fixture* _fixture;
+  sf::Vector2f _size;
 
 public:
   PhysicsComponent(Entity* p, bool dyn, const sf::Vector2f& size);
@@ -31,5 +33,8 @@ public:
   void setGravityScale(int32 gs);
   void setParentForDelete();
   b2ContactEdge* getContactList() const;
+  const b2Vec2& getLinearVelocity();
+  const sf::Vector2f& getSize();
+  const b2Vec2& getPosition();
   ~PhysicsComponent() override;
 };

@@ -26,7 +26,7 @@ void PlayerLivesComponent::update(double dt) {
     _panel.setPosition(pos);
 
     //update text
-    _text.setPosition(_panel.getPosition().x, _panel.getPosition().y);
+    _text.setPosition(_panel.getPosition());
     _text.setString("HP " + std::to_string(_lives));
 }
 

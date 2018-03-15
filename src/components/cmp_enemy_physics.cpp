@@ -40,7 +40,7 @@ void EnemyPhysicsComponent::update(double dt) {
 		//teleport(ls::getTilePosition(ls::findTiles(ls::baseTiles::START)[0]));
 	}
 
-	if (_isAir == false)
+	if (!_isAir)
 	{
 		auto c = _parent->get_components<EnemyAIComponent>()[0];
 		auto dir = c->getDirection();

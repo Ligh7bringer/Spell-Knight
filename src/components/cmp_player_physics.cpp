@@ -22,7 +22,7 @@ bool PlayerPhysicsComponent::isGrounded() const {
     bool onTop = numPoints > 1;
     // If all contacts are below the player.
     for (int j = 0; j < numPoints; j++) {
-      onTop &= (manifold.points[j].y < pos.y - halfPlrHeigt && manifold.points[j].x > pos.x - halfPlrWidth);
+      onTop &= (manifold.points[j].y < pos.y - halfPlrHeigt && (manifold.points[j].x > pos.x - halfPlrWidth || manifold.points[j].x < pos.x + halfPlrWidth ));
     }
     //change this so it makes sure edges are not considered collisions
     if(onTop) {
