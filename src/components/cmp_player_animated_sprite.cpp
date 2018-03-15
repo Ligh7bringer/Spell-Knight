@@ -6,6 +6,10 @@
 using namespace std;
 using namespace sf;
 
+/*
+* This component allows entities to have animated sprites.
+*/
+
 PlayerAnimatedSpriteComponent::PlayerAnimatedSpriteComponent(Entity *p, int width, int height) : AnimatedSpriteComponent(p, width, height) {
     //load spritesheet 
     _knightSpritesheet = TextureManager::getTexture("WIZARD.png");

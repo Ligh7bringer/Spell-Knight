@@ -56,6 +56,8 @@ void BulletComponent::checkCollisions(const std::vector<const b2Contact*>& conta
         //explode();
         //delete enemy
         enemy->setForDelete();
+          //update the list of enemies!!
+        _enemies = _parent->scene->ents.find("enemy");
         break;
       }      
     }
@@ -78,10 +80,6 @@ void BulletComponent::explode() {
   _explosionTime = 0.8f;
   //and life time
   _lifetime = 0.4f;
-
-  //update the list of enemies!!
-  _enemies = _parent->scene->ents.find("enemy");
-
 }
 
 //returns whether the bullet has exploded
@@ -90,7 +88,9 @@ bool BulletComponent::isExploded() const {
 }
 
 BulletComponent::BulletComponent(Entity* p, float lifetime)
-    : Component(p), _lifetime(lifetime), _exploded(false), _explosionTime(0.5f) {
-        _enemies = _parent->scene->ents.find("enemy");
+    : Component(p), _lifetime(lifetime), _exploded(false), _explosionTime(0.5f), _enemies(_parent->scene->ents.find("enemy")) {
+
+      
+       
     }
 

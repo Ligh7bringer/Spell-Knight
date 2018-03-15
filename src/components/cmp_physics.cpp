@@ -121,10 +121,14 @@ bool PhysicsComponent::isTouching(const PhysicsComponent& pc,
   for (int32 i = 0; i < clc; i++) {
     const auto& contact = (contactList[i]);
     //the bodies need to be compared here, not the fixtures!
-    if (contact.IsTouching() && ((contact.GetFixtureA()->GetBody() == _fixture->GetBody() &&
-                                  contact.GetFixtureB()->GetBody() == _otherFixture->GetBody()) ||
-                                 (contact.GetFixtureA()->GetBody() == _otherFixture->GetBody() &&
-                                  contact.GetFixtureB()->GetBody() == _fixture->GetBody()))) {
+    if (contact.IsTouching() && 
+        contact.GetFixtureA()->GetBody() != nullptr && 
+        contact.GetFixtureB()->GetBody() != nullptr &&
+      ((contact.GetFixtureA()->GetBody() == _fixture->GetBody() &&
+        contact.GetFixtureB()->GetBody() == _otherFixture->GetBody()) ||
+       (contact.GetFixtureA()->GetBody() == _otherFixture->GetBody() &&
+        contact.GetFixtureB()->GetBody() == _fixture->GetBody()))) {
+
       bc = &contact;
       return true;
     }

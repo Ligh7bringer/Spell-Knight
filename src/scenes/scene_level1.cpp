@@ -47,7 +47,11 @@ void Level1Scene::Load() {
   {
     auto p = ls::getTilePosition(enemyPos[i]);
     
-    EntityFactory::makeSnake(this, p);	  			
+    if(i < 1) {
+      EntityFactory::makeSnake(this, p);	  		
+    } else {
+      EntityFactory::makeEyeDemon(this, p);
+    }
   } 
 
   // Add physics colliders to level tiles.  
