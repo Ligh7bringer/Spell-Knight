@@ -8,6 +8,7 @@
 #include <iostream>
 #include <stdexcept>
 #include "../lib_texture_manager/TextureManager.h"
+#include "../../src/Log.h"
 
 using namespace sf;
 using namespace std;
@@ -18,6 +19,9 @@ static bool loading = false;
 static float loadingspinner = 0.f;
 static float loadingTime;
 static RenderWindow* _window;
+
+structlog LOGCFG = {};
+
 
 void Loading_update(float dt, const Scene* const scn) {
   //  cout << "Eng: Loading Screen\n";
@@ -94,6 +98,13 @@ void Engine::setView(const sf::View& view) {
 
 void Engine::Start(unsigned int width, unsigned int height,
                    const std::string& gameName, Scene* scn) {
+
+  //set up logging:
+  //display logging level
+  LOGCFG.headers = true; 
+  //default logging level
+  LOGCFG.level = DEBUG;
+
   RenderWindow window(VideoMode(width, height), gameName, sf::Style::Close | sf::Style::Resize);
   _gameName = gameName;
   _window = &window;
@@ -165,6 +176,7 @@ void Scene::Update(const double& dt) {
 }
 
 void Scene::Render() { 
+  Engine::GetWindow().draw(_background);
   ents.render(); 
   //Renderer::queue(&_background);
 }
