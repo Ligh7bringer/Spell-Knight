@@ -22,8 +22,8 @@ std::map<LevelSystem::Tile, sf::IntRect> LevelSystem::_rects{
 	{ platformTiles::PLATFORM3, IntRect(0, 32, 32, 32) },
 	{ baseTiles::END, IntRect(0,32, 32, 32) },
 	{groundTiles::INVISIBLE, IntRect(0, 64, 32,32)},
-	{groundTiles::COIN, IntRect(128, 32, 32, 32)},
-	{groundTiles::ITEM, IntRect(128, 64, 32, 32)}
+	{groundTiles::COIN, IntRect(0, 0, 0, 0)},
+	{groundTiles::ITEM, IntRect(0, 0, 0, 0)}
 };
 
 std::vector<sf::Sprite> LevelSystem::_texs;

@@ -165,6 +165,7 @@ void Scene::Update(const double& dt) {
 }
 
 void Scene::Render() { 
+  Engine::GetWindow().draw(_background);
   ents.render(); 
   //Renderer::queue(&_background);
 }

@@ -24,6 +24,7 @@ void Level1Scene::Load() {
   //auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);
   //ls::setOffset(Vector2f(0, ho));
 
+  //setup background
   tex = TextureManager::getTexture("game_background_4.png");
   tex.setRepeated(true);
   _background.setTexture(tex);
@@ -55,8 +56,13 @@ void Level1Scene::Load() {
   } 
 
   // Add physics colliders to level tiles.  
-	EntityFactory::makeWalls(this);
-  
+	EntityFactory::makeWalls(this);  
+
+  auto flamePos = ls::findTiles(ls::groundTiles::COIN);
+  for(int i = 0; i < flamePos.size(); ++i) {
+    auto fp = ls::getTilePosition(flamePos[i]);
+    EntityFactory::makePowerUp(this, fp);
+  }
 
   //Simulate long loading times
   //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -90,9 +96,6 @@ void Level1Scene::Update(const double& dt) {
 }
 
 void Level1Scene::Render() {
-  //ensure background is drawn before anything else
-  Engine::GetWindow().draw(_background);
-
   Scene::Render();
 
   ls::render(Engine::GetWindow());

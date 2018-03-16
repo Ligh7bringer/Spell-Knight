@@ -59,7 +59,7 @@ void BulletComponent::checkCollisions(const std::vector<const b2Contact*>& conta
           //update the list of enemies!!
         _enemies = _parent->scene->ents.find("enemy");
         break;
-      }      
+      }          
     }
   }
 

@@ -1,6 +1,5 @@
 #include "cmp_player_lives.h"
 #include "../../engine/src/system_renderer.h"
-#include "../../engine/lib_texture_manager/TextureManager.h"
 #include "../../engine/src/system_resources.h"
 #include <engine.h>
 

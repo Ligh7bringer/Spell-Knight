@@ -11,6 +11,8 @@
 #include "components/cmp_physics.h"
 #include "../engine/lib_tile_level_loader/LevelSystem.h"
 #include "../engine/lib_texture_manager/TextureManager.h"
+#include "components/cmp_pickup.h"
+#include "components/cmp_score.h"
 
 using namespace sf;
 
@@ -28,6 +30,7 @@ std::shared_ptr<Entity> EntityFactory::makePlayer(Scene* scene, const Vector2f& 
     player->addComponent<PlayerPhysicsComponent>(Vector2f(27.f, 62.f));
     player->addComponent<PlayerBulletComponent>();
     player->addComponent<PlayerLivesComponent>(3);
+    player->addComponent<PlayerScoreComponent>();
 
     return player;
 }
@@ -75,4 +78,18 @@ void EntityFactory::makeWalls(Scene* scene) {
         e->setPosition(pos);
         e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
   }
+}
+
+//makes a collectible in Scene scene at position pos
+std::shared_ptr<Entity> EntityFactory::makePowerUp(Scene* scene, sf::Vector2f& pos) {
+    auto pu = scene->makeEntity();
+    pu->setPosition(pos);
+    pu->addComponent<PickUpComponent>();
+
+    auto anim = pu->addComponent<AnimatedSpriteComponent>(32, 32);
+    anim->setSpritesheet(TextureManager::getTexture("flame.png"));
+    anim->setNumberOfFrames(4);
+    anim->setFrameTime(0.1f);
+
+    return pu;
 }
