@@ -12,6 +12,7 @@ using namespace std;
 using namespace sf;
 
 Texture tex;
+
 //Sprite background;	
 
 static shared_ptr<Entity> player;
@@ -49,7 +50,7 @@ void Level1Scene::Load() {
     auto p = ls::getTilePosition(enemyPos[i]);
     
     if(i < 1) {
-      EntityFactory::makeSnake(this, p);	  		
+      EntityFactory::makeSlime(this, p);	  		
     } else {
       EntityFactory::makeEyeDemon(this, p);
     }
@@ -66,7 +67,7 @@ void Level1Scene::Load() {
 
   //Simulate long loading times
   //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-  cout << " Scene 1 Load Done" << endl;
+  cout << "Scene 1 Load Done" << endl;
 
   setLoaded(true);
 }

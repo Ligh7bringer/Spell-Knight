@@ -47,11 +47,10 @@ void BulletComponent::checkCollisions(const std::vector<const b2Contact*>& conta
   if(contacts.size() > 0) {
     //check each enemy for collisions with the bullet
     for(auto enemy : _enemies) {
-      //get enemy physics component, have to use GetCompatibleComponent because enemy have an EnemyPhysicsComponent
+      //get enemy physics component, have to use GetCompatibleComponent because enemies have an EnemyPhysicsComponent
       auto enemyPhysics = enemy->GetCompatibleComponent<PhysicsComponent>()[0];
-      b2Contact* contact;
       //if they are colliding
-      if(parentPhysics->isTouching(*enemyPhysics, contact)) {
+      if(parentPhysics->isTouching(*enemyPhysics)) {
         //start the explosion animation
         //explode();
         //delete enemy

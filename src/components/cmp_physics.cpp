@@ -107,29 +107,26 @@ void PhysicsComponent::dampen(const sf::Vector2f& i) {
   _body->SetLinearVelocity(vel);
 }
 
-bool PhysicsComponent::isTouching(const PhysicsComponent& pc) const {
-  b2Contact* bc;
-  return isTouching(pc, bc);
-}
+// bool PhysicsComponent::isTouching(const PhysicsComponent& pc) const {
+//   b2Contact* bc;
+//   return isTouching(pc, bc);
+// }
 
-bool PhysicsComponent::isTouching(const PhysicsComponent& pc,
-                                  b2Contact const* bc) const {
+bool PhysicsComponent::isTouching(const PhysicsComponent& pc) const {
   const auto _otherFixture = pc.getFixture();
-  const auto& w = *Physics::GetWorld();
-  const auto contactList = w.GetContactList();
-  const auto clc = w.GetContactCount();
-  for (int32 i = 0; i < clc; i++) {
+  //instead of using a list of all the contacts in the world, it would be better to use a list of contacts 
+  //for the current entity. Seems to fix the segfault problem
+  const auto contactList = getTouching();
+  for (int32 i = 0; i < contactList.size(); i++) {
     const auto& contact = (contactList[i]);
     //the bodies need to be compared here, not the fixtures!
-    if (contact.IsTouching() && 
-        contact.GetFixtureA()->GetBody() != nullptr && 
-        contact.GetFixtureB()->GetBody() != nullptr &&
-      ((contact.GetFixtureA()->GetBody() == _fixture->GetBody() &&
-        contact.GetFixtureB()->GetBody() == _otherFixture->GetBody()) ||
-       (contact.GetFixtureA()->GetBody() == _otherFixture->GetBody() &&
-        contact.GetFixtureB()->GetBody() == _fixture->GetBody()))) {
+    if (contact->IsTouching() && 
+      ((contact->GetFixtureA()->GetBody() == _fixture->GetBody() &&
+        contact->GetFixtureB()->GetBody() == _otherFixture->GetBody()) ||
+       (contact->GetFixtureA()->GetBody() == _otherFixture->GetBody() &&
+        contact->GetFixtureB()->GetBody() == _fixture->GetBody()))) {
 
-      bc = &contact;
+      //bc = &contact;
       return true;
     }
   }
