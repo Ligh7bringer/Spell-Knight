@@ -107,13 +107,12 @@ void PhysicsComponent::dampen(const sf::Vector2f& i) {
   _body->SetLinearVelocity(vel);
 }
 
-bool PhysicsComponent::isTouching(const PhysicsComponent& pc) const {
-  b2Contact* bc;
-  return isTouching(pc, bc);
-}
+//bool PhysicsComponent::isTouching(const PhysicsComponent& pc) const {
+  //b2Contact* bc;
+  //return isTouching(pc, bc);
+//}
 
-bool PhysicsComponent::isTouching(const PhysicsComponent& pc,
-                                  b2Contact const* bc) const {
+bool PhysicsComponent::isTouching(const PhysicsComponent& pc) const {
   const auto _otherFixture = pc.getFixture();
   const auto& w = *Physics::GetWorld();
   const auto contactList = w.GetContactList();
@@ -129,7 +128,7 @@ bool PhysicsComponent::isTouching(const PhysicsComponent& pc,
        (contact.GetFixtureA()->GetBody() == _otherFixture->GetBody() &&
         contact.GetFixtureB()->GetBody() == _fixture->GetBody()))) {
 
-      bc = &contact;
+      //bc = &contact;
       return true;
     }
   }

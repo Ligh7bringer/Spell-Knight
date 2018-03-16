@@ -9,7 +9,9 @@ protected:
 	bool _grounded;
 	float _groundspeed;
 	int _direction;
-	bool _isAir;
+	bool _isAir; 
+	enum state { DEADEND, ROAMING, ROTATING, ROTATED };
+	state _state;
 
 	bool isGrounded() const;
 

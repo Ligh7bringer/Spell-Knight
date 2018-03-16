@@ -8,6 +8,7 @@ using namespace std;
 using namespace sf;
 using namespace Physics;
 
+
 bool EnemyPhysicsComponent::isGrounded() const {
 	auto touch = getTouching();
 	const auto& pos = _body->GetPosition();
@@ -33,6 +34,7 @@ bool EnemyPhysicsComponent::isGrounded() const {
 void EnemyPhysicsComponent::update(double dt) {
 
 	const auto pos = _parent->getPosition();
+	
 
 	//enemy falling off map
 	if (pos.y > ls::getHeight() * ls::getTileSize()) {
@@ -44,6 +46,46 @@ void EnemyPhysicsComponent::update(double dt) {
 	{
 		auto c = _parent->get_components<EnemyAIComponent>()[0];
 		auto dir = c->getDirection();
+
+		switch (_state)
+		{
+		case ROAMING:
+			cout << "ROAMING"<< endl;
+			//find the nextpos and compare with currentpos and if the tile types are different then chage state to rotating
+			if (LevelSystem::getTileAt(Vector2f(pos.x + (_direction*dt +_groundspeed), pos.y)) != LevelSystem::getTileAt(pos)) {
+				_state = ROTATED;
+			}
+			else
+			{
+				//if the tile types are the same then head in the same direction
+				if (getVelocity().x < _maxVelocity.x) {
+					cout << "impulse" << endl;
+					impulse({ _direction*(float)(dt* _groundspeed),1 });
+				}
+			}
+			break;
+		/*case ROTATING:
+			cout << "ROTATING" << endl;
+			while (LevelSystem::getTileAt(Vector2f(pos.x + (_direction*dt+_groundspeed), pos.y)) == LevelSystem::getTileAt(pos)) {
+				_direction *= -1;
+			}
+			_state = ROTATED;
+			break;*/
+		case ROTATED:
+			cout << "ROTATED" << endl;
+			//put back to roaming if the nexttile is not the same as the current and impulse in an opposite direction
+			if (LevelSystem::getTileAt(Vector2f(pos.x + (_direction*dt+_groundspeed), pos.y)) != LevelSystem::getTileAt(pos)) {
+				if (getVelocity().x < _maxVelocity.x) {
+					_direction *= -1;
+					cout << "impoulse" << endl;
+					impulse({ _direction*(float)(dt* _groundspeed),1 });
+				}
+				_state = ROAMING;
+			}
+			
+			break;
+		}
+		/*
 		if (dir == Vector2f(1.f, 0.f) ||
 			dir == Vector2f(-1.f, 0.f)) {
 			// Moving Either Left or Right
@@ -67,8 +109,9 @@ void EnemyPhysicsComponent::update(double dt) {
 			dampen({ 0.9f, 1.0f });
 			//_direction = 0;
 		}
-
+	*/	
 	}
+	
 	else
 	{ 
 		// Handle Jump
@@ -83,6 +126,7 @@ void EnemyPhysicsComponent::update(double dt) {
 			_direction = 0;
 		}
 	}
+	
 
 	//Are we in air?
 	if (!_grounded) {
@@ -109,6 +153,8 @@ EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,
 	_size = sv2_to_bv2(size, true);
 	_isAir = isAir;
 	_maxVelocity = Vector2f(200.f, 400.f);
+	_direction = 1;
+	_state = ROAMING;
 	_groundspeed = 30.f;
 	_grounded = false;
 	_body->SetSleepingAllowed(false);

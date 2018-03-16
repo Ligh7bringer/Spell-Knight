@@ -13,11 +13,11 @@ void HurtComponent::update(double dt) {
     auto playerPhysics = pl->GetCompatibleComponent<PhysicsComponent>()[0];
     auto parentPhysics = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
     auto touching = parentPhysics->getTouching();
-    b2Contact* contact;
+    //b2Contact* contact;
     //check for minimum distance between the entities before using the box2d method of collision detection
     if(length(_parent->getPosition() - pl->getPosition()) < 69.f) { 
       //if the entities are colliding
-      if (touching.size() > 0 && playerPhysics->isTouching(*parentPhysics, contact) && !anim->isHurt()) {
+      if (touching.size() > 0 && playerPhysics->isTouching(*parentPhysics) && !anim->isHurt()) {
         //change the player animation
         auto lives = pl->get_components<PlayerLivesComponent>()[0];
         anim->setHurt(true);
