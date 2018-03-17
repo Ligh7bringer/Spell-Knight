@@ -6,7 +6,7 @@
 #include <maths.h>
 #include <mutex>
 #include <string>
-#include "SFML/Graphics.hpp"
+#include "../../src/parallax_background.h"
 
 class Scene {
 public:
@@ -27,7 +27,8 @@ public:
 protected:
   void setLoaded(bool);
   sf::View _view;
-  sf::Sprite _background;
+  ParallaxBackground _parBackground;
+  
 private:
   mutable bool _loaded;
   mutable std::future<void> _loaded_future;

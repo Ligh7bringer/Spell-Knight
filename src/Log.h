@@ -29,7 +29,7 @@ public:
     explicit LOG(typelog type) {
         msglevel = type;
         if(LOGCFG.headers) {
-            operator << ("["+getLabel(type)+"] ");
+            operator << ("["+getLabel(type)+"]");
         }
     }
     ~LOG() {
