@@ -105,7 +105,7 @@ void Engine::Start(unsigned int width, unsigned int height,
   //set up logging:
   //display logging level
   LOGCFG.headers = true; 
-  //default logging level
+  //min logging level
   LOGCFG.level = DEBUG;
 
   RenderWindow window(VideoMode(width, height), gameName, sf::Style::Close | sf::Style::Resize);
@@ -187,7 +187,7 @@ void Scene::Update(const double& dt) {
 }
 
 void Scene::Render() { 
-  Engine::GetWindow().draw(_background);
+  //Engine::GetWindow().draw(_background);
   ents.render(); 
   //Renderer::queue(&_background);
 }
