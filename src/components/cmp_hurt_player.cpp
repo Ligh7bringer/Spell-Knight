@@ -2,6 +2,7 @@
 #include "cmp_player_lives.h"
 #include "cmp_player_animated_sprite.h"
 #include <engine.h>
+#include "cmp_score.h"
 
 using namespace std;
 using namespace sf;
@@ -20,9 +21,12 @@ void HurtComponent::update(double dt) {
       if (touching.size() > 0 && parentPhysics->isTouching(*playerPhysics) && !anim->isHurt()) {
         //change the player animation
         auto lives = pl->get_components<PlayerLivesComponent>()[0];
+		auto score = pl->get_components<PlayerScoreComponent>()[0];
         anim->setHurt(true);
         //decrease the player's lives
         lives->decreaseLives(1);
+		//decrease the player's score (not below zero)
+		score->decreasePoints(30);
       }
     }
   }

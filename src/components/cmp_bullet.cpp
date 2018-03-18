@@ -8,6 +8,7 @@
 #include "../../engine/src/engine.h"
 #include "../../engine/lib_ecm/ecm.h"
 #include <iostream>
+#include "cmp_score.h"
 
 using namespace std;
 using namespace sf;
@@ -15,7 +16,8 @@ using namespace sf;
 /*
 * This component, when attached to a bullet entity, handles its lifetime and collisions.
 */
-
+BulletComponent::BulletComponent(Entity* p, float lifetime)
+	: Component(p), _lifetime(lifetime), _player(_parent->scene->ents.find("player")[0]), _exploded(false), _explosionTime(0.5f), _enemies(_parent->scene->ents.find("enemy")) {}
 void BulletComponent::update(double dt) {
   //get the collisions from the physics component
   auto contacts = _parent->get_components<PhysicsComponent>()[0]->getTouching();
@@ -38,23 +40,29 @@ void BulletComponent::update(double dt) {
   }
 }
 
+
 //finds out if the bullet has hit an enemy
 void BulletComponent::checkCollisions(const std::vector<const b2Contact*>& contacts) {
   //get necessary component
   const auto parentPhysics = _parent->get_components<PhysicsComponent>()[0];
 
+  //get player component to set the players score based on enemy's death
   //make sure the bullet is still colliding with something
   if(contacts.size() > 0) {
     //check each enemy for collisions with the bullet
     for(auto enemy : _enemies) {
       //get enemy physics component, have to use GetCompatibleComponent because enemies have an EnemyPhysicsComponent
       auto enemyPhysics = enemy->GetCompatibleComponent<PhysicsComponent>()[0];
+	  
       //if they are colliding
       if(parentPhysics->isTouching(*enemyPhysics)) {
+		  auto plr = _player.lock();
+		  auto score = plr->get_components<PlayerScoreComponent>()[0];
         //start the explosion animation
         //explode();
         //delete enemy
         enemy->setForDelete();
+		score->increasePoints(30);
           //update the list of enemies!!
         _enemies = _parent->scene->ents.find("enemy");
         break;
@@ -86,10 +94,5 @@ bool BulletComponent::isExploded() const {
   return _exploded;
 }
 
-BulletComponent::BulletComponent(Entity* p, float lifetime)
-    : Component(p), _lifetime(lifetime), _exploded(false), _explosionTime(0.5f), _enemies(_parent->scene->ents.find("enemy")) {
 
-      
-       
-    }
 
