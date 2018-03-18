@@ -10,14 +10,14 @@ using namespace std;
 Texture bg, trees, ground;
 
 /*
-* Allows the creation of parallax backgrounds. They consist of layers and every layer moves at different speed 
-* to create an effect of depth.
+* Allows the creation of parallax backgrounds. They consist of layers and every layer 
+* moves at different speed to create an effect of depth.
 */
 
 ParallaxBackground::ParallaxBackground(const sf::Vector2f& size) : _target(Vector2f(0.f, 0.f)) {
     //this variable allows the sprites to be repeated. Each sprite's width is multiplied by this factor which creates a
     //scrolling background. A big multiplie may reduce performance and fps.
-    _widthMultiplier = 5;
+    _widthMultiplier = 10;
     //size will be used to set origins and positions
     _size = size;
 }
@@ -71,4 +71,9 @@ void ParallaxBackground::addLayer(float coeff, const string& tex) {
 //this is used to pass the main view's centre to this class
 void ParallaxBackground::setTarget(const Vector2f& target) {
     _target = target;
+}
+
+//sets the number of times the background should be repeated
+void ParallaxBackground::setWidthMultiplier(int mult) {
+    _widthMultiplier = mult;
 }

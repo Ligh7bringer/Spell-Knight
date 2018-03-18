@@ -1,8 +1,5 @@
 #include "cmp_score.h"
-#include <iostream>
-#include "../../engine/src/system_resources.h"
 #include <engine.h>
-#include "../../engine/src/system_renderer.h"
 
 using namespace sf;
 
@@ -11,30 +8,20 @@ using namespace sf;
 */
 
 //load font, set up text and panel behind the text
-PlayerScoreComponent::PlayerScoreComponent(Entity* p) : Component(p), _points(0), _panel(RectangleShape(Vector2f(100.f, 34.f))) {
-    _font = Resources::get<sf::Font>("DoctorSoos.ttf");
-    _panel.setFillColor(sf::Color(255,255,255,128));
-    _text.setFont(*_font);
-    _text.setCharacterSize(32);
-    _text.setFillColor(Color::Black);
+PlayerScoreComponent::PlayerScoreComponent(Entity* p) : Component(p), _points(0) {
+    _panel = Panel(Vector2f(150.f, 32.f), Vector2f(500.f, 0), "DoctorSoos.ttf");
+    _panel.setPanelColour(Color(192, 192, 192, 128));
 }
 
 
 void PlayerScoreComponent::update(double dt) {
-    //convert world coordinates to view coordinates
-     auto pos = Engine::GetWindow().mapPixelToCoords(Vector2i(500, 0));
-     //set positions
-    _panel.setPosition(pos);
-
-    //update text
-    _text.setPosition(_panel.getPosition());
-    _text.setString("Score " + std::to_string(_points));
+    _panel.setText("Score " + std::to_string(_points));
+    _panel.update(dt);
 }
 
 //render the panel and the text
 void PlayerScoreComponent::render() {
-    Renderer::queue(&_panel);
-    Renderer::queue(&_text);
+    _panel.render();
 }
 
 //increases points 

@@ -1,18 +1,14 @@
 #pragma once
 #include "../../engine/lib_ecm/ecm.h"
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/Text.hpp>
-#include <SFML/Graphics/Font.hpp>
+#include "../GUI/panel.h"
 //#include <SFML/Font.hpp>
 
 class PlayerLivesComponent : public Component {
 private:
     int _maxLives;
     int _lives;
-    sf::RectangleShape _panel;
-    sf::Text _text;
-    std::shared_ptr<sf::Font> _font;
-    
+    Panel _panel;
+
 public:
     PlayerLivesComponent() = delete;
     explicit PlayerLivesComponent(Entity* p, int maxLives);

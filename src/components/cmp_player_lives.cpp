@@ -1,6 +1,4 @@
 #include "cmp_player_lives.h"
-#include "../../engine/src/system_renderer.h"
-#include "../../engine/src/system_resources.h"
 #include <engine.h>
 
 using namespace sf;
@@ -10,29 +8,18 @@ using namespace sf;
 */
 
 PlayerLivesComponent::PlayerLivesComponent(Entity* p, int maxLives) : Component(p), _maxLives(maxLives), _lives(_maxLives) {
-    _panel = RectangleShape(Vector2f(100.f, 34.f));
-    _panel.setFillColor(sf::Color(255,255,255,128));
-    _font = Resources::get<sf::Font>("DoctorSoos.ttf");
-    _text.setFont(*_font);
-    _text.setCharacterSize(32);
-    _text.setFillColor(Color::Black);
+    _panel = Panel(Vector2f(100.f, 32.f), Vector2f(0, 0), "DoctorSoos.ttf");
+    _panel.setPanelColour(Color(192, 192, 192, 128));
 }
 
 //update positions of GUI stuff
 void PlayerLivesComponent::update(double dt) {
-    //convert view coordinates to world coordinates to ensure the GUI is always drawn at the top left corner of the view!!
-    auto pos = Engine::GetWindow().mapPixelToCoords(Vector2i(0, 0));
-    _panel.setPosition(pos);
-
-    //update text
-    _text.setPosition(_panel.getPosition());
-    _text.setString("HP " + std::to_string(_lives));
+    _panel.setText("HP " + std::to_string(_lives));
+    _panel.update(dt);
 }
 
 void PlayerLivesComponent::render() {
-    //render panel and text
-    Renderer::queue(&_panel);
-    Renderer::queue(&_text);
+    _panel.render();
 }
 
 //increases the number of lives by adding num to current lives
@@ -53,6 +40,12 @@ void PlayerLivesComponent::decreaseLives(int num) {
         _lives = 0;
         //the player is dead
         _parent->setForDelete();
+    }
+
+    if(_lives <= 1) {
+        _panel.setTextColour(Color(204, 0, 0));
+    } else {
+        _panel.setTextColour(Color(0, 0, 0));
     }
     
 }

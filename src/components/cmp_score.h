@@ -1,14 +1,10 @@
 #pragma once
 #include "../../engine/lib_ecm/ecm.h"
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/Text.hpp>
-#include <SFML/Graphics/Font.hpp>
+#include "../GUI/panel.h"
 
 class PlayerScoreComponent : public Component {
 protected:
-    sf::RectangleShape _panel;
-    sf::Text _text;
-    std::shared_ptr<sf::Font> _font;
+    Panel _panel;
     int _points;
 
 public:
