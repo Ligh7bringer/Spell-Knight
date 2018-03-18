@@ -48,7 +48,7 @@ std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& p
     slime->addComponent<HurtComponent>();
     // Add EnemyAIComponent
     //slime->addComponent<EnemyAIComponent>();
-    //slime->addComponent<EnemyPhysicsComponent>(Vector2f(32.f, 32.f), false);	
+	//slime->addComponent<EnemyPhysicsComponent>(Vector2f(32.f, 32.f), false);
     auto physics = slime->addComponent<PhysicsComponent>(true, Vector2f(32.f, 32.f));
     physics->setLinearVelocity(Vector2f(10.f, 0.f));
 

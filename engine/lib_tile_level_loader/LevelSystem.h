@@ -44,6 +44,7 @@ public:
 		START = 'S',
 		END = 'E',
 		ENEMY = 'N',
+		DEADFALL = 'D',
 		WAYPOINT = '+'
 	 };
   };

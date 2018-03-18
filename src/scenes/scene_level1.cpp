@@ -38,7 +38,10 @@ void Level1Scene::Load() {
   //setup view
   _view = View(FloatRect(0, 0, windowSize.x, windowSize.y));
   //_view.zoom(0.7f);
-  
+
+  // Add physics colliders to level tiles.  
+  EntityFactory::makeWalls(this);
+
   // Create player
   player = EntityFactory::makePlayer(this, Vector2f(100.f, 100.f));
   
@@ -55,9 +58,6 @@ void Level1Scene::Load() {
       EntityFactory::makeEyeDemon(this, p);
     }
   } 
-
-  // Add physics colliders to level tiles.  
-	EntityFactory::makeWalls(this);  
 
   auto flamePos = ls::findTiles(ls::groundTiles::COIN);
   for(int i = 0; i < flamePos.size(); ++i) {
@@ -82,10 +82,10 @@ void Level1Scene::UnLoad() {
 }
 
 void Level1Scene::Update(const double& dt) {
-  if (ls::getTileAt(player->getPosition()) == ls::baseTiles::END) {
-	  cout << "yeh won!!" << endl;
-    Engine::ChangeScene((Scene*)&level2);
-  }
+  //if (ls::getTileAt(player->getPosition()) == ls::baseTiles::END) {
+	  //cout << "yeh won!!" << endl;
+   // Engine::ChangeScene((Scene*)&level2);
+  //}
 
   //move the view with the player
   if(player != nullptr) {

@@ -3,6 +3,7 @@
 #include <LevelSystem.h>
 #include "cmp_animated_sprite.h"
 #include "cmp_enemy_ai.h"
+#include "../Log.h"
 
 using namespace std;
 using namespace sf;
@@ -47,38 +48,50 @@ void EnemyPhysicsComponent::update(double dt) {
 		auto c = _parent->get_components<EnemyAIComponent>()[0];
 		auto dir = c->getDirection();
 
+		// Handle Jump
+		//check if the creature is certain height above ground
+		/*if (isGrounded()) {
+			setVelocity(Vector2f(getVelocity().x, 0.f));
+			teleport(Vector2f(pos.x, pos.y - 1.0f));
+			impulse(Vector2f(0, -8.f));
+
+			// Dampen X axis movement
+			//dampen({ 0.9f, 1.0f });
+			//_direction = 0;
+		}*/
+
 		switch (_state)
 		{
 		case ROAMING:
-			cout << "ROAMING"<< endl;
+			LOG(DEBUG) << "ROAMING";
 			//find the nextpos and compare with currentpos and if the tile types are different then chage state to rotating
 			if (LevelSystem::getTileAt(Vector2f(pos.x + (_direction*dt +_groundspeed), pos.y)) != LevelSystem::getTileAt(pos)) {
-				_state = ROTATED;
+				_state = ROAMING;
 			}
 			else
 			{
 				//if the tile types are the same then head in the same direction
 				if (getVelocity().x < _maxVelocity.x) {
 					cout << "impulse" << endl;
-					impulse({ _direction*(float)(dt* _groundspeed),1 });
+					impulse({ _direction*(float)(dt* _groundspeed),0 });
 				}
 			}
 			break;
-		/*case ROTATING:
+		case ROTATING:
 			cout << "ROTATING" << endl;
-			while (LevelSystem::getTileAt(Vector2f(pos.x + (_direction*dt+_groundspeed), pos.y)) == LevelSystem::getTileAt(pos)) {
+			//if the current tile is not equal to the next tile then change the direction 
+			if (LevelSystem::getTileAt(Vector2f(pos.x + (_direction*dt+_groundspeed), pos.y)) != LevelSystem::getTileAt(pos)) {
 				_direction *= -1;
 			}
 			_state = ROTATED;
-			break;*/
+			break;
 		case ROTATED:
-			cout << "ROTATED" << endl;
+			LOG(DEBUG) << "ROTATED";
 			//put back to roaming if the nexttile is not the same as the current and impulse in an opposite direction
-			if (LevelSystem::getTileAt(Vector2f(pos.x + (_direction*dt+_groundspeed), pos.y)) != LevelSystem::getTileAt(pos)) {
+			if (LevelSystem::getTileAt(Vector2f(pos.x + (_direction*dt+_groundspeed), pos.y)) == LevelSystem::getTileAt(pos)) {
 				if (getVelocity().x < _maxVelocity.x) {
-					_direction *= -1;
 					cout << "impoulse" << endl;
-					impulse({ _direction*(float)(dt* _groundspeed),1 });
+					impulse({ _direction*(float)(dt* _groundspeed),0 });
 				}
 				_state = ROAMING;
 			}
@@ -153,14 +166,14 @@ EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,
 	_size = sv2_to_bv2(size, true);
 	_isAir = isAir;
 	_maxVelocity = Vector2f(200.f, 400.f);
-	_direction = 1;
+	_direction = -1;
 	_state = ROAMING;
 	_groundspeed = 30.f;
 	_grounded = false;
 	_body->SetSleepingAllowed(false);
 	_body->SetFixedRotation(true);
 	//Bullet items have higher-res collision detection
-	_body->SetBullet(true);
+	_body->SetBullet(false);
 }
 
 int EnemyPhysicsComponent::getDirection() const {
