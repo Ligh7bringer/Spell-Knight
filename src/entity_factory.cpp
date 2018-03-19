@@ -1,10 +1,8 @@
 #include "entity_factory.h"
 #include "components/cmp_player_physics.h"
-#include "components/cmp_player_animated_sprite.h"
 #include "components/cmp_animated_sprite.h"
 #include "components/cmp_enemy_ai.h"
 #include "components/cmp_hurt_player.h"
-#include "components/cmp_enemy_animated_sprite.h"
 #include "components/cmp_player_lives.h"
 #include "components/cmp_player_bullet.h"
 #include "components/cmp_enemy_physics.h"
@@ -27,7 +25,11 @@ std::shared_ptr<Entity> EntityFactory::makePlayer(Scene* scene, const Vector2f& 
     player->setPosition(pos);
     player->addTag("player");
   
-    player->addComponent<PlayerAnimatedSpriteComponent>(64, 64);
+    auto anim = player->addComponent<AnimatedSpriteComponent>(64, 64);
+    anim->setSpritesheet(TextureManager::getTexture("WIZARD.png"));
+    anim->setNumberOfFrames(4);
+    anim->setSpriteSheetPadding(2);
+    anim->setFrameTime(0.2f);
     player->addComponent<PlayerPhysicsComponent>(Vector2f(27.f, 62.f));
     player->addComponent<PlayerBulletComponent>();
     player->addComponent<PlayerLivesComponent>(3);
@@ -68,7 +70,7 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
     eyeDemon->addComponent<HurtComponent>();
     //eyeDemon->addComponent<EnemyAIComponent>();
     eyeDemon->addComponent<EnemyPhysicsComponent>(Vector2f(64.f, 37.f), true);
-    eyeDemon->addComponent<EnemyHealthComponent>(4);
+    eyeDemon->addComponent<EnemyHealthComponent>(3);
 
     return eyeDemon;
 }

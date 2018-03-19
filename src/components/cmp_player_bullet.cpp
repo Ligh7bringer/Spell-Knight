@@ -30,7 +30,8 @@ void PlayerBulletComponent::fire() {
     //make sure the player hasn't shot in the last 1 second
     if(_cooldown <= 0.0f) {
         //find out which way the player is facing
-        auto right = _parent->get_components<PlayerPhysicsComponent>()[0]->facingRight();
+        auto right = _parent->get_components<AnimatedSpriteComponent>()[0]->isFacingRight();
+        //auto right = true;
         auto offset = _posOffset;
 
         //invert the offset if the player is facing left
