@@ -36,5 +36,6 @@ public:
   void setSpriteSheetPadding(int padding);
   void setFacingRight(bool b);
   void setSize(const sf::Vector2f& size);
+  sf::Vector2f getSize() const;
 };
 

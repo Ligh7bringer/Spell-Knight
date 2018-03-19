@@ -132,3 +132,7 @@ void AnimatedSpriteComponent::setSize(const Vector2f& size) {
     _currentFrame.left = _width;
     _currentFrame.top = _height;
 }
+
+Vector2f AnimatedSpriteComponent::getSize() const {
+    return Vector2f(_currentFrame.width, _currentFrame.height);
+}

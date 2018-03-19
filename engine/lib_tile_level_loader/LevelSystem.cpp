@@ -1,5 +1,6 @@
 #include "LevelSystem.h"
 #include <fstream>
+#include "../../src/Log.h"
 
 using namespace std;
 using namespace sf;
@@ -74,7 +75,7 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
     f.read(&buffer[0], buffer.size());
     f.close();
   } else {
-    throw string("Couldn't open level file: ") + path;
+    LOG(ERROR) << "Couldn't open level file: " << path;
   }
 
   std::vector<Tile> temp_tiles;
@@ -92,7 +93,7 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
       if (w == 0) {  // if we haven't written width yet
         w = i;       // set width
       } else if (w != (widthCheck - 1)) {
-        throw string("non uniform width:" + to_string(h) + " ") + path;
+        LOG(ERROR) << "non uniform width:" << to_string(h) << " " << path;
       }
       widthCheck = 0;
       h++; // increment height
@@ -103,7 +104,7 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
   }
 
   if (temp_tiles.size() != (w * h)) {
-    throw string("Can't parse level file") + path;
+    LOG(ERROR) << "Can't parse level file" << path;
   }
   _tiles = std::make_unique<Tile[]>(w * h);
   _groundTiles = std::make_unique<Tile[]>(w*h);
@@ -238,16 +239,14 @@ void LevelSystem::render(RenderWindow& window) {
 
 LevelSystem::Tile LevelSystem::getTile(sf::Vector2ul p) {
   if (p.x > _width || p.y > _height) {
-    throw string("Tile out of range: ") + to_string(p.x) + "," +
-        to_string(p.y) + ")";
+    LOG(ERROR) << "Tile out of range: " << to_string(p.x) << "," << to_string(p.y) << ")";
   }
   return _tiles[(p.y * _width) + p.x];
 }
 
 LevelSystem::Tile LevelSystem::getGroundTile(sf::Vector2ul p) {
 	if (p.x > _width || p.y > _height) {
-		throw string("Tile out of range: ") + to_string(p.x) + "," +
-			to_string(p.y) + ")";
+		LOG(ERROR) << "Tile out of range: " << to_string(p.x) << "," <<	to_string(p.y) << ")";
 	}
 	auto v = vector<sf::Vector2ul>();
 	for (size_t i = 0; i < _width * _height; ++i) {
@@ -293,7 +292,7 @@ LevelSystem::Tile LevelSystem::getTileAt(Vector2f v) {
   auto a = v - _offset;
   if (a.x < 0 || a.y < 0) {
 
-    throw string("Tile out of range ");
+    LOG(ERROR) << "Tile out of range ";
   }
   return getTile(Vector2ul((v - _offset) / (_tileSize)));
 }
@@ -302,7 +301,7 @@ LevelSystem::Tile LevelSystem::getGroundTileAt(Vector2f v)
 {
 	auto a = v - _offset;
 	if (a.x < 0 || a.y < 0) {
-		throw string("Tile out of range ");
+		LOG(ERROR) << "Tile out of range ";
 	}
 	return getGroundTile(Vector2ul((v - _offset) / (_tileSize)));
 }

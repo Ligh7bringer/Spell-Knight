@@ -12,6 +12,7 @@ protected:
     sf::RectangleShape _rect;
     sf::Text _text;
     std::shared_ptr<sf::Font> _font;
+    bool _isGUI;
 
     void recentreText();
     void resizePanel();
@@ -27,4 +28,7 @@ public:
 
     void setPanelColour(const sf::Color& colour);
     void setTextColour(const sf::Color& colour);
+    void setPosition(const sf::Vector2f& pos);
+    void setTextSize(const int size);
+    void setGUI(bool value);
 };

@@ -13,6 +13,7 @@
 #include "../engine/lib_texture_manager/TextureManager.h"
 #include "components/cmp_pickup.h"
 #include "components/cmp_score.h"
+#include "components/cmp_enemy_health.h"
 
 using namespace sf;
 
@@ -46,6 +47,7 @@ std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& p
     anim->setNumberOfFrames(4);
     // Add HurtComponent
     slime->addComponent<HurtComponent>();
+    slime->addComponent<EnemyHealthComponent>(1);
     // Add EnemyAIComponent
     //slime->addComponent<EnemyAIComponent>();
 	//slime->addComponent<EnemyPhysicsComponent>(Vector2f(32.f, 32.f), false);
@@ -66,6 +68,7 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
     eyeDemon->addComponent<HurtComponent>();
     //eyeDemon->addComponent<EnemyAIComponent>();
     eyeDemon->addComponent<EnemyPhysicsComponent>(Vector2f(64.f, 37.f), true);
+    eyeDemon->addComponent<EnemyHealthComponent>(4);
 
     return eyeDemon;
 }
