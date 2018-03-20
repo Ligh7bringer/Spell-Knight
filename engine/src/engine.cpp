@@ -10,6 +10,7 @@
 #include "../lib_texture_manager/TextureManager.h"
 #include "../../src/Log.h"
 #include "../../src/input_manager.h"
+#include "../../src/settings_parsers.h"
 
 using namespace sf;
 using namespace std;
@@ -106,7 +107,7 @@ void Engine::Start(unsigned int width, unsigned int height,
   //set up logging:
   //display logging level
   LOGCFG.headers = true; 
-  //min logging level
+  //min logging level 
   LOGCFG.level = DEBUG;
 
   //initialise input manager
@@ -114,6 +115,9 @@ void Engine::Start(unsigned int width, unsigned int height,
   
   //initialise texture manager
   TextureManager::initialise();
+
+  SettingsParser settings;
+  settings.readFile("settings.txt");
 
   RenderWindow window(VideoMode(width, height), gameName, sf::Style::Close | sf::Style::Resize);
   _gameName = gameName;

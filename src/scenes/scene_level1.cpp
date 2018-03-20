@@ -19,8 +19,6 @@ using namespace sf;
 static shared_ptr<Entity> player;
 
 void Level1Scene::Load() {
-  LOG(INFO) << " Scene 1 Load starting...";
-
   //setup view
   Vector2f windowSize = static_cast<Vector2f>(Engine::getWindowSize());  
   _view = View(FloatRect(0, 0, windowSize.x, windowSize.y));
