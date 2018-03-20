@@ -46,7 +46,7 @@ public:
   static void setVsync(bool b);
   static sf::View& getCurrentView();
   static void setView(const sf::View& view);
-  //static bool _pause;
+  static bool _pause;
 
 private:
   static Scene* _activeScene;

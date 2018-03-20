@@ -69,10 +69,10 @@ void Engine::Update() {
   if (loading) {
     Loading_update(dt, _activeScene);
   } else if (_activeScene != nullptr) {
-	  //while (!_pause) {
+	  if (!_pause) {
 		  Physics::update(dt);
 		  _activeScene->Update(dt);
-	  //}
+	  }
   }
 }
 
@@ -98,7 +98,7 @@ void Engine::setView(const sf::View& view) {
   _activeScene->setView(view);
 }
 
-//bool Engine::_pause = false;
+bool Engine::_pause = false;
 void Engine::Start(unsigned int width, unsigned int height,
                    const std::string& gameName, Scene* scn) {
 
@@ -126,27 +126,29 @@ void Engine::Start(unsigned int width, unsigned int height,
         window.close();
       }
 	  
-	  if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
+	  if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P) && _pause ==false)
 	  {
-		  //_pause = true;
+		  _pause = true;
 	  }
+        else if((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P) && _pause ==true)
+      {
+          _pause =false;
+      }
       if(event.type == Event::Resized) {
         //resize view when window is resized so textures are not stretched
         _activeScene->getView().setSize(event.size.width, event.size.height);
       }
     }
     
-    //if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-     // window.close();
-   // }
+    if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+      window.close();
+   }
 
 	window.clear();
 	Update();
 	Render(window);
 	window.display();
-	//while(!Keyboard::isKeyPressed(Keyboard::Escape)) {
-		
-	//}
+
   }
   if (_activeScene != nullptr) {
     _activeScene->UnLoad();

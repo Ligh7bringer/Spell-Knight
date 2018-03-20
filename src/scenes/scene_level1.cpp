@@ -8,7 +8,6 @@
 #include "../../engine/lib_texture_manager/TextureManager.h"
 #include "../entity_factory.h"
 #include "../Log.h"
-#include "../parallax_background.h"
 
 using namespace std;
 using namespace sf;
@@ -25,15 +24,15 @@ void Level1Scene::Load() {
   _parBackground.addLayer(0.8f, "trees.png");
   _parBackground.addLayer(1.2f, "ground.png");
 
-  Vector2f windowSize = static_cast<Vector2f>(Engine::getWindowSize());
+  //Vector2f windowSize = static_cast<Vector2f>(Engine::getWindowSize());
 
   cout << " Scene 1 Load" << endl;
-  ls::loadLevelFile("res/lvl1.txt", 32.0f);
+  ls::loadLevelFile("res/lvl1_test.txt", 32.0f);
   //auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);
   //ls::setOffset(Vector2f(0, ho));
 
   //setup view
-  _view = View(FloatRect(0, 0, windowSize.x, windowSize.y));
+  _view = View(FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
   //_view.zoom(0.7f);
 
   // Add physics colliders to level tiles.  
