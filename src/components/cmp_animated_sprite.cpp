@@ -28,6 +28,8 @@ AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, int width, int heigh
         //all online spritesheet packers seem to add padding for some reason
         _spriteSheetPadding = 0;
 		_currentRow = 0;
+        _hurt = false;
+        _hurtTimer = 1.0f;
 }
 
 void AnimatedSpriteComponent::update(double dt) {
@@ -74,6 +76,22 @@ void AnimatedSpriteComponent::update(double dt) {
     //calculate spritesheet y coordinate, don't forget padding
     _currentFrame.top = _currentImage.y * _height + _spriteSheetPadding;
 
+    //if entity is hurt start changing alpha
+    if(_hurt) {
+        _hurtTimer -= dt;
+        static int alpha = 128;
+        alpha -= 5;
+        _sprite.setColor(Color(255, 255, 255, alpha));
+    }
+
+    //after the timer reaches 0
+    //stop the hurt "animation"
+    if(_hurt && _hurtTimer <= 0.f) {
+        _hurt = false;
+        _hurtTimer = 1.0f;
+        _sprite.setColor(Color(255, 255, 255, 255));
+    }
+
     //update sprite: set texture rect, update position and origin
     _sprite.setTextureRect(_currentFrame);
     _sprite.setPosition(_parent->getPosition());
@@ -83,15 +101,6 @@ void AnimatedSpriteComponent::update(double dt) {
 //render current sprite
 void AnimatedSpriteComponent::render() {
     Renderer::queue(&_sprite);
-}
-
-//sets the sprite sheet for the animation, loaded from path
-void AnimatedSpriteComponent::setSpritesheet(const string& path) {
-    if(!_spritesheet.loadFromFile(path)) {
-        cout << "Couldn't load component's spritesheet!";
-    }
-    //update spritesheet
-    _sprite.setTexture(_spritesheet);
 }
 
 //sets the spritesheet, using the passed reference to a spritesheet
@@ -131,4 +140,22 @@ void AnimatedSpriteComponent::setSize(const Vector2f& size) {
     _height = size.y;
     _currentFrame.left = _width;
     _currentFrame.top = _height;
+}
+
+Vector2f AnimatedSpriteComponent::getSize() const {
+    return Vector2f(_currentFrame.width, _currentFrame.height);
+}
+
+//get or set if the entity is hurt
+void AnimatedSpriteComponent::setHurt(bool h) {
+    _hurt = h;
+}
+
+bool AnimatedSpriteComponent::isHurt() {
+    return _hurt;
+}
+
+//returns whether the entity is facing right
+bool AnimatedSpriteComponent::isFacingRight() const {
+    return _facingRight;
 }

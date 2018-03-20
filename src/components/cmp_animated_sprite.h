@@ -20,6 +20,8 @@ protected:
   int _width;
   int _height;
   bool _facingRight;
+  bool _hurt;
+  float _hurtTimer;
 
 public:
   AnimatedSpriteComponent() = delete;
@@ -28,7 +30,6 @@ public:
   void update(double dt) override;
   void render() override;
 
-  void setSpritesheet(const std::string& path);
   void setSpritesheet(const sf::Texture& sh);
   void setFrameTime(float t);
   void setNumberOfFrames(int num);
@@ -36,5 +37,10 @@ public:
   void setSpriteSheetPadding(int padding);
   void setFacingRight(bool b);
   void setSize(const sf::Vector2f& size);
+  sf::Vector2f getSize() const;
+  bool isFacingRight() const;
+
+  void setHurt(bool h);
+  bool isHurt();
 };
 

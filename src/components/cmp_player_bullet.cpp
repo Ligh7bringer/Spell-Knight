@@ -30,7 +30,8 @@ void PlayerBulletComponent::fire() {
     //make sure the player hasn't shot in the last 1 second
     if(_cooldown <= 0.0f) {
         //find out which way the player is facing
-        auto right = _parent->get_components<PlayerPhysicsComponent>()[0]->facingRight();
+        auto right = _parent->get_components<AnimatedSpriteComponent>()[0]->isFacingRight();
+        //auto right = true;
         auto offset = _posOffset;
 
         //invert the offset if the player is facing left
@@ -62,19 +63,6 @@ void PlayerBulletComponent::fire() {
         
         _cooldown = 1.f;
     }    
-
-    // if(_bullets.size() > 0) {
-    //     auto it = _bullets.begin();
-    //     while(it != _bullets.end()) {
-    //         auto c = (*it)->get_components<BulletComponent>()[0];
-    //         if(c->isExploded()) {
-    //             it = _bullets.erase(it);
-    //         } else {
-    //             ++it;
-    //         }
-    //     }
-    // }
-
 }
 
 void PlayerBulletComponent::update(double dt) {
@@ -82,11 +70,4 @@ void PlayerBulletComponent::update(double dt) {
     _cooldown -= dt;
 }
 
-const std::vector<std::shared_ptr<Entity>>& PlayerBulletComponent::getBullets() const {
-    return _bullets;
-}
 
-void PlayerBulletComponent::removeBullet(std::shared_ptr<Entity> b) {
-    std::cout << "--------DELETING BULLET" << std::endl;
-    _bullets.erase(std::remove(_bullets.begin(), _bullets.end(), b), _bullets.end());    
-}

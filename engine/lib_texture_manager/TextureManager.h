@@ -5,6 +5,7 @@
 
 class TextureManager {
 public:
+    static void initialise();
     static const sf::Texture& getTexture(const std::string& filename);
     static void deleteImage(const std::string& filename);
     static void deleteImage(const sf::Texture* texture);

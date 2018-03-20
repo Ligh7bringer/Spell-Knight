@@ -9,6 +9,7 @@
 #include "../../engine/lib_ecm/ecm.h"
 #include <iostream>
 #include "cmp_score.h"
+#include "cmp_enemy_health.h"
 
 using namespace std;
 using namespace sf;
@@ -56,16 +57,18 @@ void BulletComponent::checkCollisions(const std::vector<const b2Contact*>& conta
 	  
       //if they are colliding
       if(parentPhysics->isTouching(*enemyPhysics)) {
-		  auto plr = _player.lock();
-		  auto score = plr->get_components<PlayerScoreComponent>()[0];
-        //start the explosion animation
-        //explode();
-        //delete enemy
-        enemy->setForDelete();
-		score->increasePoints(30);
+        if(auto plr = _player.lock()) {
+          auto score = plr->get_components<PlayerScoreComponent>()[0];
+          //delete enemy
+          auto enemyHealth = enemy->get_components<EnemyHealthComponent>()[0];
+          //this hardocoded damage will become something like
+          //plr->getWeaponDamage() when we add power ups
+          enemyHealth->decreaseHealth(1);
+          score->increasePoints(30);
           //update the list of enemies!!
-        _enemies = _parent->scene->ents.find("enemy");
-        break;
+          _enemies = _parent->scene->ents.find("enemy");
+          break;
+        }
       }          
     }
   }

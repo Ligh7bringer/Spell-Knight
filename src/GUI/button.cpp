@@ -16,6 +16,7 @@ Button::Button(const Vector2f& size, const std::string& text) {
     //Font font;
     _font = Resources::get<sf::Font>("TravelingTypewriter.ttf");
     _text.setFont(*_font); 
+    _clicked = false;
 }
 
 //sets position of the button

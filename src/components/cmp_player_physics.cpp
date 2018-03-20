@@ -5,6 +5,7 @@
 #include "../../engine/lib_ecm/ecm.h"
 #include "cmp_player_bullet.h"
 #include <SFML/Window/Keyboard.hpp>
+#include "../input_manager.h"
 
 using namespace std;
 using namespace sf;
@@ -34,7 +35,7 @@ bool PlayerPhysicsComponent::isGrounded() const {
 }
 
 void PlayerPhysicsComponent::update(double dt) {
-  _shooting = false;
+  auto anim = _parent->get_components<AnimatedSpriteComponent>()[0];
 
   const auto pos = _parent->getPosition();
 
@@ -44,39 +45,50 @@ void PlayerPhysicsComponent::update(double dt) {
     teleport(ls::getTilePosition(ls::findTiles(ls::baseTiles::START)[0]));
   }
 
-  if (Keyboard::isKeyPressed(Keyboard::A) ||
-      Keyboard::isKeyPressed(Keyboard::D)) {
+  if (Keyboard::isKeyPressed(InputManager::getKey("walkLeft")) ||
+      Keyboard::isKeyPressed(InputManager::getKey("walkRight"))) {
     // Moving Either Left or Right
-    if (Keyboard::isKeyPressed(Keyboard::D)) {
+    if (Keyboard::isKeyPressed(InputManager::getKey("walkRight"))) {
       if (getVelocity().x < _maxVelocity.x) {
         impulse({(float)(dt * _groundspeed), 0});
-        _direction = 1;
-        _facing = true;
+
+        //play walking right animation
+        anim->setFacingRight(true);
+        anim->setCurrentRow(1);
       }
     } else {
       if (getVelocity().x > -_maxVelocity.x) {
         impulse({-(float)(dt * _groundspeed), 0});
-        _direction = -1;
-        _facing = false;
+
+        //play walking left animation
+        anim->setFacingRight(false);
+        anim->setCurrentRow(1);
       }
     }
   } else {
     // Dampen X axis movement
     dampen({0.9f, 1.0f});
-    _direction = 0;
+    
+    //play idle animation
+    anim->setCurrentRow(0);
   }
-
+  
   // Handle Jump
-  if (Keyboard::isKeyPressed(Keyboard::W)) {
+  if (Keyboard::isKeyPressed(InputManager::getKey("jump"))) {
     _grounded = isGrounded();
+    //play jumping animation
+    anim->setCurrentRow(2);
     if (_grounded) {
       setVelocity(Vector2f(getVelocity().x, 0.f));
-	  //temporary solution to the box jump bug
-	  if (_body->GetPosition().y < 10.f)
-	  {
-		  teleport(Vector2f(pos.x, pos.y - 1.0f));
-		  impulse(Vector2f(0, -8.f));
-	  }
+
+      //play idle animation
+      anim->setCurrentRow(0);
+      //temporary solution to the box jump bug
+      if (_body->GetPosition().y < 10.f)
+      {
+        teleport(Vector2f(pos.x, pos.y - 1.0f));
+        impulse(Vector2f(0, -8.f));
+      }
     }
   }
 
@@ -96,10 +108,12 @@ void PlayerPhysicsComponent::update(double dt) {
   v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
   setVelocity(v);
 
-  //shoot, TODO: move this to a another component or somewhere else!!
-  if(Keyboard::isKeyPressed(Keyboard::Space)) {
+  //shoot
+  if(Keyboard::isKeyPressed(InputManager::getKey("shoot"))) {
     _parent->get_components<PlayerBulletComponent>()[0]->fire();
-    _shooting = true;
+
+    //play shooting animation
+    anim->setCurrentRow(3);
   }
 
   PhysicsComponent::update(dt);
@@ -116,21 +130,8 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
   _body->SetFixedRotation(true);
   //Bullet items have higher-res collision detection
   _body->SetBullet(true);
-  _facing = true;
-}
-
-int PlayerPhysicsComponent::getDirection() const {
-  return _direction;
 }
 
 bool PlayerPhysicsComponent::isJumping() const {
   return !_grounded;
-}
-
-bool PlayerPhysicsComponent::facingRight() const {
-  return _facing;
-}
-
-bool PlayerPhysicsComponent::isShooting() const {
-  return _shooting;
 }

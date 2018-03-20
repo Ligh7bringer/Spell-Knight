@@ -7,7 +7,7 @@
 using namespace sf;
 
 /*
-* A GUI panel. Displays a rectangle with a string centered in it.
+* A panel which displays a rectangle with a string centered in it.
 */
 
 //initialise everything needed
@@ -20,14 +20,18 @@ Panel::Panel(const Vector2f& size, const Vector2f& pos, const std::string& font)
     _text.setPosition(pos);
     _rect = RectangleShape(size);
     _rect.setFillColor(sf::Color(255,255,255,128));
+    _isGUI = true;
 }
 
 void Panel::update(double dt) {
-    //recalculate position of the panel so that it is always at the same position as the view moves
-    auto pos = Engine::GetWindow().mapPixelToCoords(static_cast<Vector2i>(_position));
+    //if panel is a GUI panel
+    if(_isGUI) {
+        //recalculate position of the panel so that it is always at the same position as the view moves
+        auto pos = Engine::GetWindow().mapPixelToCoords(static_cast<Vector2i>(_position));
 
-    //set the position
-    _rect.setPosition(pos);
+        //set the position
+        _rect.setPosition(pos);
+    }
 }
 
 //render the panel and the text
@@ -51,7 +55,7 @@ void Panel::recentreText() {
     _text.setPosition(newPos);
 }
 
-//------ setters
+//------ SETTERS ------
 
 //sets the text displayed in the panel
 void Panel::setText(const std::string& text) {
@@ -69,4 +73,28 @@ void Panel::setPanelColour(const Color& colour) {
 //sets the colour of the text
 void Panel::setTextColour(const Color& colour) {
     _text.setFillColor(colour);
+}
+
+//sets the position of the panel
+void Panel::setPosition(const Vector2f& pos) {
+    _rect.setPosition(pos);
+    recentreText();
+}
+
+//sets the size of the text
+void Panel::setTextSize(const int size) {
+    _text.setCharacterSize(size);
+}
+
+//sets wheter the panel is a GUI panel or not
+//if a panel is a GUI panel, then it "moves" with the view, i.e. it is always at a constant position within the view (e.g. the player HP)
+//the enemy health bars are not GUI and they follow the enemies
+void Panel::setGUI(bool value) {
+    _isGUI = value;
+
+    if(!_isGUI) {
+        _rect.setOrigin(Vector2f(_size.x / 2.f, _size.y / 2.f));
+    } else {
+        _rect.setOrigin(Vector2f(0, 0));
+    }
 }
