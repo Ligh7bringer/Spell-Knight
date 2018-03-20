@@ -29,7 +29,7 @@ public:
     explicit LOG(typelog type) {
         msglevel = type;
         if(LOGCFG.headers) {
-            operator << ("["+getLabel(type)+"]");
+            operator << ("["+getLabel(type)+"] ");
         }
     }
     ~LOG() {
@@ -53,8 +53,8 @@ private:
         string label;
         switch(type) {
             case DEBUG: label = "DEBUG"; break;
-            case INFO:  label = "INFO "; break;
-            case WARN:  label = "WARN "; break;
+            case INFO:  label = "INFO"; break;
+            case WARN:  label = "WARN"; break;
             case ERROR: label = "ERROR"; break;
         }
         return label;

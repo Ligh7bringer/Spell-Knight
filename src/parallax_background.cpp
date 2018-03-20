@@ -14,16 +14,29 @@ Texture bg, trees, ground;
 * moves at different speed to create an effect of depth.
 */
 
+Vector2f mainViewSize, mainViewCentre, mainViewPosition;
+View mainView;
+
 ParallaxBackground::ParallaxBackground(const sf::Vector2f& size) : _target(Vector2f(0.f, 0.f)) {
     //this variable allows the sprites to be repeated. Each sprite's width is multiplied by this factor which creates a
     //scrolling background. A big multiplie may reduce performance and fps.
     _widthMultiplier = 10;
-    //size will be used to set origins and positions
+    //size will be used positions
+    //size will NOT be used to set origins
     _size = size;
 }
 
 //updates each layer
 void ParallaxBackground::update(double dt) {
+    //get the current view size and centre
+    mainView = Engine::getCurrentView();
+    mainViewSize = mainView.getSize();
+    mainViewCentre = mainView.getCenter(); 
+    mainViewPosition = Vector2f(mainView.getViewport().left, mainView.getViewport().top);
+}
+
+void ParallaxBackground::render() {
+    
     //iterate over the layers
     for (auto iter = _layers.begin(); iter != _layers.end(); iter++) {
         //get the parallax coefficient 
@@ -31,19 +44,22 @@ void ParallaxBackground::update(double dt) {
         //get the actual image
         auto layer = iter->second;
         //to create the effect a view is needed for every layer
-        View v;
+        View v; 
         //set the view position and size
-        v.reset(FloatRect(0, 0, _size.x, _size.y));
+        //use the size of the current view so that when the window is resized sprites are not stretched
+        v.reset(FloatRect(mainViewPosition.x, mainViewPosition.y, mainViewSize.x, mainViewSize.y));
         //set the center, change the x position by multiplying it by the parallax coefficient
-        v.setCenter(Vector2f(coefficient * _target.x, 0));
+        v.setCenter(Vector2f(coefficient * mainViewCentre.x, mainViewCentre.y));
+
         //set the view
         Renderer::setView(v);
-        //unfortunately the rendering has to happen in the update
+        //render
         Engine::GetWindow().draw(*layer);
     }
-}
 
-void ParallaxBackground::render() {}
+    //don't forget to set the view back to the main view!!
+    Renderer::setView(mainView);
+}
 
 //adds another "layer" to the background
 void ParallaxBackground::addLayer(float coeff, const string& tex) {
@@ -61,16 +77,10 @@ void ParallaxBackground::addLayer(float coeff, const string& tex) {
     //multiply width by the mutiplier to create a repeated background
     sprite->setTextureRect(IntRect(0, 0, (int)_size.x * _widthMultiplier, (int)_size.y));
     //set origin to the centre of the image
-    sprite->setOrigin(_size / 2.f);
 
     //and finally add the layer to the vector of layers 
     _layers.push_back(std::pair<float, shared_ptr<Sprite>>(coeff, sprite));
     LOG(INFO) << "Adding a new layer to Parallax Background with coefficient of " << coeff;
-}
-
-//this is used to pass the main view's centre to this class
-void ParallaxBackground::setTarget(const Vector2f& target) {
-    _target = target;
 }
 
 //sets the number of times the background should be repeated

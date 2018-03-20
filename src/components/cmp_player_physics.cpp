@@ -5,6 +5,7 @@
 #include "../../engine/lib_ecm/ecm.h"
 #include "cmp_player_bullet.h"
 #include <SFML/Window/Keyboard.hpp>
+#include "../input_manager.h"
 
 using namespace std;
 using namespace sf;
@@ -44,10 +45,10 @@ void PlayerPhysicsComponent::update(double dt) {
     teleport(ls::getTilePosition(ls::findTiles(ls::baseTiles::START)[0]));
   }
 
-  if (Keyboard::isKeyPressed(Keyboard::A) ||
-      Keyboard::isKeyPressed(Keyboard::D)) {
+  if (Keyboard::isKeyPressed(InputManager::getKey("walkLeft")) ||
+      Keyboard::isKeyPressed(InputManager::getKey("walkRight"))) {
     // Moving Either Left or Right
-    if (Keyboard::isKeyPressed(Keyboard::D)) {
+    if (Keyboard::isKeyPressed(InputManager::getKey("walkRight"))) {
       if (getVelocity().x < _maxVelocity.x) {
         impulse({(float)(dt * _groundspeed), 0});
 
@@ -71,9 +72,9 @@ void PlayerPhysicsComponent::update(double dt) {
     //play idle animation
     anim->setCurrentRow(0);
   }
-
+  
   // Handle Jump
-  if (Keyboard::isKeyPressed(Keyboard::W)) {
+  if (Keyboard::isKeyPressed(InputManager::getKey("jump"))) {
     _grounded = isGrounded();
     //play jumping animation
     anim->setCurrentRow(2);
@@ -108,7 +109,7 @@ void PlayerPhysicsComponent::update(double dt) {
   setVelocity(v);
 
   //shoot
-  if(Keyboard::isKeyPressed(Keyboard::Space)) {
+  if(Keyboard::isKeyPressed(InputManager::getKey("shoot"))) {
     _parent->get_components<PlayerBulletComponent>()[0]->fire();
 
     //play shooting animation

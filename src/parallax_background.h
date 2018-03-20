@@ -21,6 +21,5 @@ public:
     void render();
 
     void addLayer(float coeff, const std::string& tex);
-    void setTarget(const sf::Vector2f& target);
     void setWidthMultiplier(int mult);
 };

@@ -57,15 +57,15 @@ void EnemyHealthComponent::decreaseHealth(int num) {
     }
 
     //if at 75% health, change the panel colour to yellow
-    if(_health == (int)(3.f/4.f * (float)_maxHealth)) {
+    if(_health <= (int)(3.f/4.f * (float)_maxHealth)) {
         _panel.setPanelColour(COL_75_PERCENT);
-    } else   
+    }   
     //if at 50% health, change the panel to orange
-    if(_health == _maxHealth / 2) {
+    if(_health <= _maxHealth / 2) {
         _panel.setPanelColour(COL_50_PERCENT);
-    } else 
+    }  
     //if at 25% health, change the panel colour to red
-    if(_health == (int)(1.f/4.f * (float)_maxHealth)) {
+    if(_health <= (int)(1.f/4.f * (float)_maxHealth)) {
         _panel.setPanelColour(COL_25_PERCENT);
     }
 }

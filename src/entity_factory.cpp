@@ -70,7 +70,7 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
     eyeDemon->addComponent<HurtComponent>();
     //eyeDemon->addComponent<EnemyAIComponent>();
     eyeDemon->addComponent<EnemyPhysicsComponent>(Vector2f(64.f, 37.f), true);
-    eyeDemon->addComponent<EnemyHealthComponent>(3);
+    eyeDemon->addComponent<EnemyHealthComponent>(4);
 
     return eyeDemon;
 }
@@ -84,7 +84,7 @@ void EntityFactory::makeWalls(Scene* scene) {
         
         auto e = scene->makeEntity();
         e->setPosition(pos);
-        e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
+        auto physics = e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
   }
 }
 

@@ -122,7 +122,7 @@ void LevelSystem::buildSprites(bool optimise) {
 
   //Texture spritesheet;
   if(!_spritesheet.loadFromFile("res/img/tiles5.png")) {
-    cout << "Error!" << endl;
+    LOG(ERROR) << "Couldn't load level system spritesheet!";
   }
 
   struct tp {
