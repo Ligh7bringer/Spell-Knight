@@ -8,7 +8,7 @@ protected:
 	sf::Vector2f _maxVelocity;
 	bool _grounded;
 	float _groundspeed;
-	int _direction;
+	sf::Vector2f _direction;
 	bool _isAir; 
 	enum state { DEADEND, ROAMING, ROTATING, ROTATED };
 	state _state;
@@ -22,7 +22,7 @@ public:
 
 	EnemyPhysicsComponent() = delete;
 
-	int getDirection() const;
+	sf::Vector2f getDirection() const;
 
 	bool isJumping() const;
 };

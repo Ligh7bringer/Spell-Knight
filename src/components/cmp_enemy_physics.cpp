@@ -4,6 +4,7 @@
 #include "cmp_animated_sprite.h"
 #include "cmp_enemy_ai.h"
 #include "../Log.h"
+#include "cmp_actor_movement.h"
 
 using namespace std;
 using namespace sf;
@@ -34,7 +35,9 @@ bool EnemyPhysicsComponent::isGrounded() const {
 
 void EnemyPhysicsComponent::update(double dt) {
 
-	const auto pos = _parent->getPosition();
+	const auto pos = _parent->getPosition() ;
+    auto mov = _direction * (float)(dt * 100);
+    mov.x += _direction.x * 16.f;
 	
 
 	//enemy falling off map
@@ -45,84 +48,54 @@ void EnemyPhysicsComponent::update(double dt) {
 
 	if (!_isAir)
 	{
-		auto c = _parent->get_components<EnemyAIComponent>()[0];
-		auto dir = c->getDirection();
+		//auto c = _parent->get_components<EnemyAIComponent>()[0];
+		//auto dir = c->getDirection();
 
-		// Handle Jump
-		//check if the creature is certain height above ground
-		/*if (isGrounded()) {
-			setVelocity(Vector2f(getVelocity().x, 0.f));
-			teleport(Vector2f(pos.x, pos.y - 1.0f));
-			impulse(Vector2f(0, -8.f));
+        LOG(DEBUG) << "ROAMING";
+        if(LevelSystem::getTileAt(pos + mov) == '2' || LevelSystem::getTileAt(pos + mov) == '0'){
+            _state = ROTATING;
+            _direction *= -1.f;
+        }
+        else {
+            LOG(DEBUG) << "impulse";
+            //if((getVelocity().x <_maxVelocity.x)){
+            impulse(_direction * (float)(dt*100));
+            LOG(DEBUG) << "speed: "<< getVelocity().x;
+            //}
 
-			// Dampen X axis movement
-			//dampen({ 0.9f, 1.0f });
-			//_direction = 0;
-		}*/
+        }
+        /*switch(_state){
+            //case ROAMING:
+                LOG(DEBUG) << "ROAMING";
+                if(LevelSystem::getTileAt(pos + mov) == '2' || LevelSystem::getTileAt(pos + mov) == '0'){
+                    _state = ROTATING;
+                    _direction *= -1.f;
+                }
+                else {
+                    LOG(DEBUG) << "impulse";
+					//if((getVelocity().x <_maxVelocity.x)){
+						impulse(_direction * (float)(dt*100));
+                        LOG(DEBUG) << "speed: "<< getVelocity().x;
+					//}
 
-		switch (_state)
-		{
-		case ROAMING:
-			LOG(DEBUG) << "ROAMING";
-			//find the nextpos and compare with currentpos and if the tile types are different then chage state to rotating
-			if (LevelSystem::getTileAt(Vector2f(pos.x + (_direction*dt +_groundspeed), pos.y)) != LevelSystem::getTileAt(pos)) {
-				_state = ROAMING;
-			}
-			else
-			{
-				//if the tile types are the same then head in the same direction
-				if (getVelocity().x < _maxVelocity.x) {
-					cout << "impulse" << endl;
-					impulse({ _direction*(float)(dt* _groundspeed),0 });
-				}
-			}
-			break;
-		case ROTATING:
-			cout << "ROTATING" << endl;
-			//if the current tile is not equal to the next tile then change the direction 
-			if (LevelSystem::getTileAt(Vector2f(pos.x + (_direction*dt+_groundspeed), pos.y)) != LevelSystem::getTileAt(pos)) {
-				_direction *= -1;
-			}
-			_state = ROTATED;
-			break;
-		case ROTATED:
-			LOG(DEBUG) << "ROTATED";
-			//put back to roaming if the nexttile is not the same as the current and impulse in an opposite direction
-			if (LevelSystem::getTileAt(Vector2f(pos.x + (_direction*dt+_groundspeed), pos.y)) == LevelSystem::getTileAt(pos)) {
-				if (getVelocity().x < _maxVelocity.x) {
-					cout << "impoulse" << endl;
-					impulse({ _direction*(float)(dt* _groundspeed),0 });
-				}
-				_state = ROAMING;
-			}
-			
-			break;
-		}
-		/*
-		if (dir == Vector2f(1.f, 0.f) ||
-			dir == Vector2f(-1.f, 0.f)) {
-			// Moving Either Left or Right
-			if (dir == Vector2f(1.f, 0.f)) {
-				//cout << "enemy going right" << endl;
-				if (getVelocity().x < _maxVelocity.x) {
-					impulse({ (float)(dt * _groundspeed), 0 });
-					_direction = 1;
-				}
-			}
-			else {
-				//cout << "enemy going left" << endl;
-				if (getVelocity().x > -_maxVelocity.x) {
-					impulse({ -(float)(dt * _groundspeed), 0 });
-					_direction = -1;
-				}
-			}
-		}
-		else {
-			// Dampen X axis movement
-			dampen({ 0.9f, 1.0f });
-			//_direction = 0;
-		}
-	*/	
+                }
+            case ROTATING:
+                LOG(DEBUG) << "ROTATING";
+                while(LevelSystem::getTileAt(pos + mov) == '2' || LevelSystem::getTileAt(pos + mov) == '0') {
+                    _direction *= -1.f;
+                }
+                _state = ROTATED;
+
+            case ROTATED:
+                LOG(DEBUG) << "ROTATED";
+                if(LevelSystem::getTileAt(pos + mov) != '2' || LevelSystem::getTileAt(pos + mov) != '0'){
+                    LOG(DEBUG) << "impulse2";
+                    impulse(_direction * (float)(dt*100));
+                }
+                _state = ROAMING;
+
+        }*/
+
 	}
 	
 	else
@@ -136,7 +109,7 @@ void EnemyPhysicsComponent::update(double dt) {
 
 			// Dampen X axis movement
 			dampen({ 0.9f, 1.0f });
-			_direction = 0;
+			_direction = Vector2f(0,0);
 		}
 	}
 	
@@ -166,7 +139,7 @@ EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,
 	_size = sv2_to_bv2(size, true);
 	_isAir = isAir;
 	_maxVelocity = Vector2f(200.f, 400.f);
-	_direction = -1;
+	_direction = Vector2f(1,0);
 	_state = ROAMING;
 	_groundspeed = 30.f;
 	_grounded = false;
@@ -176,7 +149,7 @@ EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,
 	_body->SetBullet(false);
 }
 
-int EnemyPhysicsComponent::getDirection() const {
+sf::Vector2f EnemyPhysicsComponent::getDirection() const {
 	return _direction;
 }
 

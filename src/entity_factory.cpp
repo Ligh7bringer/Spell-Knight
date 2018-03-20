@@ -11,6 +11,7 @@
 #include "../engine/lib_texture_manager/TextureManager.h"
 #include "components/cmp_pickup.h"
 #include "components/cmp_score.h"
+#include "Log.h"
 #include "components/cmp_enemy_health.h"
 
 using namespace sf;
@@ -52,9 +53,9 @@ std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& p
     slime->addComponent<EnemyHealthComponent>(1);
     // Add EnemyAIComponent
     //slime->addComponent<EnemyAIComponent>();
-	//slime->addComponent<EnemyPhysicsComponent>(Vector2f(32.f, 32.f), false);
-    auto physics = slime->addComponent<PhysicsComponent>(true, Vector2f(32.f, 32.f));
-    physics->setLinearVelocity(Vector2f(10.f, 0.f));
+	slime->addComponent<EnemyPhysicsComponent>(Vector2f(32.f, 32.f), false);
+    //auto physics = slime->addComponent<PhysicsComponent>(true, Vector2f(32.f, 32.f));
+    //physics->setLinearVelocity(Vector2f(10.f, 0.f));
 
     return slime;
 }
@@ -78,15 +79,101 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
 //creates the physics colliders for the tiles in the currently loaded level in Scene scene
 void EntityFactory::makeWalls(Scene* scene) {
     auto walls = (ls::getGroundTiles());
-    for (auto w : walls) {  
+    for(auto w: walls){
         auto pos = ls::getTilePosition(w);
-        pos += Vector2f(16.f, 16.f); //offset to center
-        
+        pos += Vector2f(16.f,16.f);
         auto e = scene->makeEntity();
         e->setPosition(pos);
-        auto physics = e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
-  }
+        e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
+    }
+
+/*
+    auto walls = (ls::getGroundTiles());
+    struct tp {
+        sf::Vector2f p;
+        sf::Vector2f s;
+    };
+    std::vector<tp> tps;
+    const auto tls = Vector2f(ls::getTileSize(), ls::getTileSize());
+    //loop through all the ground tiles
+    for (auto w : walls) {
+        auto pos = ls::getTilePosition(w);
+        pos += Vector2f(16.f, 16.f);
+        //ls::Tile t = ls::getTile({pos.x, pos.y});
+        tp temp;
+        temp.p = pos;
+        temp.s = tls;
+        tps.push_back(temp);
+    }
+
+    const auto nonempty = tps.size();
+
+    //if tile 1 is touching tile 2
+    //we can use one large body instead of 2
+    if (nonempty) {
+        std::vector<tp> tpo;
+        tp last = tps[0];
+        size_t samecount = 0;
+
+        for (size_t i = 1; i < nonempty; ++i) {
+            //is this tile compressible with the last?
+            bool same = ((tps[i].p.y == last.p.y) &&
+                         tps[i].p.x == last.p.x + (tls.x * (1 + samecount)));
+            if (same) {
+                ++samecount;
+            } else {
+                if (samecount) {
+                    last.s.x = (1 + samecount) * tls.x; //expand tile
+                }
+                //write tile to list
+                tpo.push_back(last);
+                samecount = 0;
+                last = tps[i];
+            }
+        }
+        //catch the last tile
+        if (samecount) {
+            last.s.x = (1 + samecount) * tls.x;
+            tpo.push_back(last);
+        }
+
+        const auto xsave = tpo.size();
+        samecount = 0;
+        std::vector<tp> tpox;
+        for (size_t i = 0; i < tpo.size(); ++i) {
+            last = tpo[i];
+            for (size_t j = i + 1; j < tpo.size(); ++j) {
+                bool same = ((tpo[j].p.x == last.p.x) && (tpo[j].s == last.s) &&
+                             (tpo[j].p.y == last.p.y + (tls.y * (1 + samecount))));
+                if (same) {
+                    ++samecount;
+                    tpo.erase(tpo.begin() + j);
+                    --j;
+                }
+            }
+            if (samecount) {
+                last.s.y = (1 + samecount) * tls.y; // Expand tile
+            }
+            // write tile to list
+            tpox.push_back(last);
+            samecount = 0;
+        }
+
+        tps.swap(tpox);
+    }
+    for (auto &t : tps) {
+        LOG(DEBUG) << "HERE" << t.p;
+
+        auto s = scene->makeEntity();
+        s->setPosition(t.p);
+        s->addComponent<PhysicsComponent>(false, t.s);
+    }
+    */
 }
+
+        //auto e = scene->makeEntity();
+       // e->setPosition(pos);
+        //e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
 
 //makes a collectible in Scene scene at position pos
 std::shared_ptr<Entity> EntityFactory::makePowerUp(Scene* scene, sf::Vector2f& pos) {

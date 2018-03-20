@@ -12,6 +12,7 @@ Button::Button(const Vector2f& size, const std::string& text) {
     _shape.setSize(size);
     _shape.setFillColor(Color::Green);
     _text.setString(text);
+    _clicked = false;
     //Font font;
     _font = Resources::get<sf::Font>("TravelingTypewriter.ttf");
     _text.setFont(*_font); 

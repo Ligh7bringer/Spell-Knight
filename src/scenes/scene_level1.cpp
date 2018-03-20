@@ -11,6 +11,7 @@
 #include "../parallax_background.h"
 #include "../input_manager.h"
 
+
 using namespace std;
 using namespace sf;
 
