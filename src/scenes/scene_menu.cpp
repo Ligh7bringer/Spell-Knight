@@ -2,7 +2,7 @@
 #include "../components/cmp_text.h"
 #include "../game.h"
 #include <SFML/Window/Keyboard.hpp>
-#include <iostream>
+#include "../Log.h"
 #include "../GUI/button.h"
 
 using namespace std;
@@ -11,7 +11,7 @@ using namespace sf;
 Button play;
 
 void MenuScene::Load() {
-  cout << "Menu Load \n";
+   LOG(INFO)<< "Menu Load \n";
   {
     auto txt = makeEntity();
     auto t = txt->addComponent<TextComponent>(

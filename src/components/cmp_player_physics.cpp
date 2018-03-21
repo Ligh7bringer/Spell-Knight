@@ -6,6 +6,7 @@
 #include "cmp_player_bullet.h"
 #include <SFML/Window/Keyboard.hpp>
 #include "../input_manager.h"
+#include "../scenes/scene_level1.h"
 
 using namespace std;
 using namespace sf;
@@ -38,12 +39,6 @@ void PlayerPhysicsComponent::update(double dt) {
   auto anim = _parent->get_components<AnimatedSpriteComponent>()[0];
 
   const auto pos = _parent->getPosition();
-
-  //Teleport to start if we fall off map.
-  if (pos.y > ls::getHeight() * ls::getTileSize()) {
-	  cout << "no map left!!" << endl;
-    teleport(ls::getTilePosition(ls::findTiles(ls::baseTiles::START)[0]));
-  }
 
   if (Keyboard::isKeyPressed(InputManager::getKey("walkLeft")) ||
       Keyboard::isKeyPressed(InputManager::getKey("walkRight"))) {

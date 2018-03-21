@@ -39,6 +39,7 @@ void PlayerLivesComponent::decreaseLives(int num) {
         //if they are 
         _lives = 0;
         //the player is dead
+        //restart level
         _parent->setForDelete();
     }
 
