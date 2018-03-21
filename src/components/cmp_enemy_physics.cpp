@@ -51,16 +51,16 @@ void EnemyPhysicsComponent::update(double dt) {
 		//auto c = _parent->get_components<EnemyAIComponent>()[0];
 		//auto dir = c->getDirection();
 
-        LOG(DEBUG) << "ROAMING";
+        //LOG(DEBUG) << "ROAMING";
         if(LevelSystem::getTileAt(pos + mov) == '2' || LevelSystem::getTileAt(pos + mov) == '0'){
             _state = ROTATING;
             _direction *= -1.f;
         }
         else {
-            LOG(DEBUG) << "impulse";
+            //LOG(DEBUG) << "impulse";
             //if((getVelocity().x <_maxVelocity.x)){
             impulse(_direction * (float)(dt*100));
-            LOG(DEBUG) << "speed: "<< getVelocity().x;
+            //LOG(DEBUG) << "speed: "<< getVelocity().x;
             //}
 
         }
