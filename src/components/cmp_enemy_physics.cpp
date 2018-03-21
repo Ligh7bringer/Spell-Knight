@@ -57,7 +57,7 @@ void EnemyPhysicsComponent::update(double dt) {
             _direction *= -1.f;
         }
         else {
-           //LOG(DEBUG) << "impulse";
+            //LOG(DEBUG) << "impulse";
             //if((getVelocity().x <_maxVelocity.x)){
             impulse(_direction * (float)(dt*100));
             //LOG(DEBUG) << "speed: "<< getVelocity().x;

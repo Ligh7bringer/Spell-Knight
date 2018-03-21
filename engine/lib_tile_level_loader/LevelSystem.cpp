@@ -1,6 +1,7 @@
 #include "LevelSystem.h"
 #include <fstream>
 #include "../../src/Log.h"
+#include "../../engine/src/system_renderer.h"
 
 using namespace std;
 using namespace sf;
@@ -44,7 +45,7 @@ size_t LevelSystem::_height;
 float LevelSystem::_tileSize(32.f);
 Vector2f LevelSystem::_offset(0.0f, 30.0f);
 // Vector2f LevelSystem::_offset(0,0);
-vector<std::unique_ptr<sf::RectangleShape>> LevelSystem::_sprites;
+vector<std::unique_ptr<sf::Sprite>> LevelSystem::_sprites;
 
 void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
   _tileSize = tileSize;
@@ -99,8 +100,8 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
   _height = h;
   std::copy(temp_tiles.begin(), temp_tiles.end(), &_tiles[0]);
   std::copy(tempGroundTiles.begin(), tempGroundTiles.end(), &_groundTiles[0]);
-  cout << "Level " << path << " Loaded. " << w << "x" << h << std::endl;
-  buildSprites(true);
+  LOG(INFO) << "Level " << path << " Loaded. " << w << "x" << h;
+  buildSprites(false);
 }
 
 void LevelSystem::buildSprites(bool optimise) {
@@ -138,84 +139,85 @@ void LevelSystem::buildSprites(bool optimise) {
 
   const auto nonempty = tps.size();
 
-  // If tile of the same type are next to each other,
-  // We can use one large sprite instead of two.
-  if (optimise && nonempty) {
+  // // If tile of the same type are next to each other,
+  // // We can use one large sprite instead of two.
+  // if (optimise && nonempty) {
 
-    vector<tp> tpo;
-    tp last = tps[0];
-    size_t samecount = 0;
+  //   vector<tp> tpo;
+  //   tp last = tps[0];
+  //   size_t samecount = 0;
 
-    for (size_t i = 1; i < nonempty; ++i) {
-      // Is this tile compressible with the last?
-      bool same = ((tps[i].p.y == last.p.y) &&
-                   (tps[i].p.x == last.p.x + (tls.x * (1 + samecount))) &&
-        tps[i].sprite.getTexture() == last.sprite.getTexture() &&
-        tps[i].sprite.getTextureRect() == last.sprite.getTextureRect());
-      if (same) {
-        ++samecount; // Yes, keep going
-      } else {
-        if (samecount) {
-          last.s.x = (1 + samecount) * tls.x; // Expand tile
-        }
-        // write tile to list
-        tpo.push_back(last);
-        samecount = 0;
-        last = tps[i];
-      }
-    }
-    // catch the last tile
-    if (samecount) {
-      last.s.x = (1 + samecount) * tls.x;
-      tpo.push_back(last);
-    }
+  //   for (size_t i = 1; i < nonempty; ++i) {
+  //     // Is this tile compressible with the last?
+  //     bool same = ((tps[i].p.y == last.p.y) &&
+  //                  (tps[i].p.x == last.p.x + (tls.x * (1 + samecount))) &&
+  //       tps[i].sprite.getTexture() == last.sprite.getTexture() &&
+  //       tps[i].sprite.getTextureRect() == last.sprite.getTextureRect());
+  //     if (same) {
+  //       ++samecount; // Yes, keep going
+  //     } else {
+  //       if (samecount) {
+  //         last.s.x = (1 + samecount) * tls.x; // Expand tile
+  //       }
+  //       // write tile to list
+  //       tpo.push_back(last);
+  //       samecount = 0;
+  //       last = tps[i];
+  //     }
+  //   }
+  //   // catch the last tile
+  //   if (samecount) {
+  //     last.s.x = (1 + samecount) * tls.x;
+  //     tpo.push_back(last);
+  //   }
 
-    // No scan down Y, using different algo now that compressible blocks may
-    // not be contiguous
-    const auto xsave = tpo.size();
-    samecount = 0;
-    vector<tp> tpox;
-    for (size_t i = 0; i < tpo.size(); ++i) {
-      last = tpo[i];
-      for (size_t j = i + 1; j < tpo.size(); ++j) {
-        bool same = ((tpo[j].p.x == last.p.x) && (tpo[j].s == last.s) &&
-                     (tpo[j].p.y == last.p.y + (tls.y * (1 + samecount))) &&
-                     tpo[j].sprite.getTexture() == last.sprite.getTexture() &&
-                     tpo[j].sprite.getTextureRect() == last.sprite.getTextureRect());
-        if (same) {
-          ++samecount;
-          tpo.erase(tpo.begin() + j);
-          --j;
-        }
-      }
-      if (samecount) {
-        last.s.y = (1 + samecount) * tls.y; // Expand tile
-      }
-      // write tile to list
-      tpox.push_back(last);
-      samecount = 0;
-    }
+  //   // No scan down Y, using different algo now that compressible blocks may
+  //   // not be contiguous
+  //   const auto xsave = tpo.size();
+  //   samecount = 0;
+  //   vector<tp> tpox;
+  //   for (size_t i = 0; i < tpo.size(); ++i) {
+  //     last = tpo[i];
+  //     for (size_t j = i + 1; j < tpo.size(); ++j) {
+  //       bool same = ((tpo[j].p.x == last.p.x) && (tpo[j].s == last.s) &&
+  //                    (tpo[j].p.y == last.p.y + (tls.y * (1 + samecount))) &&
+  //                    tpo[j].sprite.getTexture() == last.sprite.getTexture() &&
+  //                    tpo[j].sprite.getTextureRect() == last.sprite.getTextureRect());
+  //       if (same) {
+  //         ++samecount;
+  //         tpo.erase(tpo.begin() + j);
+  //         --j;
+  //       }
+  //     }
+  //     if (samecount) {
+  //       last.s.y = (1 + samecount) * tls.y; // Expand tile
+  //     }
+  //     // write tile to list
+  //     tpox.push_back(last);
+  //     samecount = 0;
+  //   }
 
-    tps.swap(tpox);
-  }
+  //   tps.swap(tpox);
+  // }
 
   for (auto& t : tps) {
-    auto s = make_unique<sf::RectangleShape>();
+    auto s = make_unique<sf::Sprite>();
     //auto s = t.sprite;
     s->setPosition(t.p);
-    s->setSize(t.s);
-    s->setTexture(t.sprite.getTexture());
-      s->setTextureRect((t.sprite.getTextureRect()));
+    //s->setSize(t.s);
+    s->setTexture(*t.sprite.getTexture());
+    s->setTextureRect((t.sprite.getTextureRect()));
     _sprites.push_back(move(s));
   }
 
-  cout << "Level with " << (_width * _height) << " Tiles, With " << nonempty
-       << " Not Empty, using: " << _texs.size() << " Sprites\n";
+  LOG(INFO) << "Level with " << (_width * _height) << " Tiles, With " << nonempty
+       << " Not Empty, using: " << _sprites.size() << " Sprites\n";
 }
 
 void LevelSystem::render(RenderWindow& window) {
     for (auto& t : _sprites) {
-        window.draw(*t);
+       Renderer::queueAndOptimise((*t));
+       //Renderer::queue(&(*t));
     }
 }
 
@@ -304,7 +306,7 @@ bool LevelSystem::isOnGrid(sf::Vector2f v) {
 
 void LevelSystem::setOffset(const Vector2f& _offset) {
   LevelSystem::_offset = _offset;
-  buildSprites();
+  buildSprites(false);
 }
 
 void LevelSystem::unload() {

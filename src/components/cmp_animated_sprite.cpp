@@ -100,7 +100,7 @@ void AnimatedSpriteComponent::update(double dt) {
 
 //render current sprite
 void AnimatedSpriteComponent::render() {
-    Renderer::queue(&_sprite);
+    Renderer::queueAndOptimise(_sprite);
 }
 
 //sets the spritesheet, using the passed reference to a spritesheet
