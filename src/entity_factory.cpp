@@ -13,6 +13,8 @@
 #include "components/cmp_score.h"
 #include "Log.h"
 #include "components/cmp_enemy_health.h"
+#include "components/cmp_state_machine.h"
+#include "states/slime_states.h"
 
 using namespace sf;
 
@@ -51,11 +53,10 @@ std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& p
     // Add HurtComponent
     slime->addComponent<HurtComponent>();
     slime->addComponent<EnemyHealthComponent>(1);
-    // Add EnemyAIComponent
-    //slime->addComponent<EnemyAIComponent>();
 	slime->addComponent<EnemyPhysicsComponent>(Vector2f(32.f, 32.f), false);
-    //auto physics = slime->addComponent<PhysicsComponent>(true, Vector2f(32.f, 32.f));
-    //physics->setLinearVelocity(Vector2f(10.f, 0.f));
+    auto sm = slime->addComponent<StateMachineComponent>();
+    sm->addState("roaming", make_shared<RoamingState>());
+    sm->changeState("roaming");
 
     return slime;
 }
@@ -69,11 +70,25 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
     anim->setSpritesheet(TextureManager::getTexture("sheet_eye_flyer.png"));
     anim->setNumberOfFrames(5);
     eyeDemon->addComponent<HurtComponent>();
-    //eyeDemon->addComponent<EnemyAIComponent>();
     eyeDemon->addComponent<EnemyPhysicsComponent>(Vector2f(64.f, 37.f), true);
     eyeDemon->addComponent<EnemyHealthComponent>(4);
 
     return eyeDemon;
+}
+
+//makes a collectible in Scene scene at position pos
+std::shared_ptr<Entity> EntityFactory::makePowerUp(Scene* scene, sf::Vector2f& pos) {
+    auto pu = scene->makeEntity();
+    pu->addTag("flame");
+    pu->setPosition(pos);
+    pu->addComponent<PickUpComponent>();
+
+    auto anim = pu->addComponent<AnimatedSpriteComponent>(32, 32);
+    anim->setSpritesheet(TextureManager::getTexture("flame.png"));
+    anim->setNumberOfFrames(4);
+    anim->setFrameTime(0.1f);
+
+    return pu;
 }
 
 //creates the physics colliders for the tiles in the currently loaded level in Scene scene
@@ -85,7 +100,7 @@ void EntityFactory::makeWalls(Scene* scene) {
         auto e = scene->makeEntity();
         e->setPosition(pos);
         e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
-    }
+}
 
 /*
     auto walls = (ls::getGroundTiles());
@@ -175,17 +190,3 @@ void EntityFactory::makeWalls(Scene* scene) {
        // e->setPosition(pos);
         //e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
 
-//makes a collectible in Scene scene at position pos
-std::shared_ptr<Entity> EntityFactory::makePowerUp(Scene* scene, sf::Vector2f& pos) {
-    auto pu = scene->makeEntity();
-    pu->addTag("flame");
-    pu->setPosition(pos);
-    pu->addComponent<PickUpComponent>();
-
-    auto anim = pu->addComponent<AnimatedSpriteComponent>(32, 32);
-    anim->setSpritesheet(TextureManager::getTexture("flame.png"));
-    anim->setNumberOfFrames(4);
-    anim->setFrameTime(0.1f);
-
-    return pu;
-}

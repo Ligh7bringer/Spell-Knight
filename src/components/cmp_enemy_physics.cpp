@@ -46,61 +46,8 @@ void EnemyPhysicsComponent::update(double dt) {
 		//teleport(ls::getTilePosition(ls::findTiles(ls::baseTiles::START)[0]));
 	}
 
-	if (!_isAir)
-	{
-		//auto c = _parent->get_components<EnemyAIComponent>()[0];
-		//auto dir = c->getDirection();
-
-        //LOG(DEBUG) << "ROAMING";
-        if(LevelSystem::getTileAt(pos + mov) == '2' || LevelSystem::getTileAt(pos + mov) == '0'){
-            _state = ROTATING;
-            _direction *= -1.f;
-        }
-        else {
-            //LOG(DEBUG) << "impulse";
-            //if((getVelocity().x <_maxVelocity.x)){
-            impulse(_direction * (float)(dt*100));
-            //LOG(DEBUG) << "speed: "<< getVelocity().x;
-            //}
-
-        }
-        /*switch(_state){
-            //case ROAMING:
-                LOG(DEBUG) << "ROAMING";
-                if(LevelSystem::getTileAt(pos + mov) == '2' || LevelSystem::getTileAt(pos + mov) == '0'){
-                    _state = ROTATING;
-                    _direction *= -1.f;
-                }
-                else {
-                    LOG(DEBUG) << "impulse";
-					//if((getVelocity().x <_maxVelocity.x)){
-						impulse(_direction * (float)(dt*100));
-                        LOG(DEBUG) << "speed: "<< getVelocity().x;
-					//}
-
-                }
-            case ROTATING:
-                LOG(DEBUG) << "ROTATING";
-                while(LevelSystem::getTileAt(pos + mov) == '2' || LevelSystem::getTileAt(pos + mov) == '0') {
-                    _direction *= -1.f;
-                }
-                _state = ROTATED;
-
-            case ROTATED:
-                LOG(DEBUG) << "ROTATED";
-                if(LevelSystem::getTileAt(pos + mov) != '2' || LevelSystem::getTileAt(pos + mov) != '0'){
-                    LOG(DEBUG) << "impulse2";
-                    impulse(_direction * (float)(dt*100));
-                }
-                _state = ROAMING;
-
-        }*/
-
-	}
-	
-	else
+	if(_isAir)
 	{ 
-		// Handle Jump
 		//check if the creature is certain height above ground
 		if (isGrounded()) {
 			setVelocity(Vector2f(getVelocity().x, 0.f));
@@ -140,7 +87,6 @@ EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,
 	_isAir = isAir;
 	_maxVelocity = Vector2f(200.f, 400.f);
 	_direction = Vector2f(1,0);
-	_state = ROAMING;
 	_groundspeed = 30.f;
 	_grounded = false;
 	_body->SetSleepingAllowed(false);

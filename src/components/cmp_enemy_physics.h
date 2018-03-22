@@ -10,8 +10,6 @@ protected:
 	float _groundspeed;
 	sf::Vector2f _direction;
 	bool _isAir; 
-	enum state { DEADEND, ROAMING, ROTATING, ROTATED };
-	state _state;
 
 	bool isGrounded() const;
 

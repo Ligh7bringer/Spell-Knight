@@ -53,7 +53,7 @@ void Renderer::resetView() {
   rw->setView(v);
 }
 
-//use this method for frustrum culling optimisation
+//use this method for frustum culling optimisation
 void Renderer::queueAndOptimise(const Sprite& sprite) {
   if(shouldRender(sprite.getGlobalBounds())) {
     _sprites.push(sprite);
