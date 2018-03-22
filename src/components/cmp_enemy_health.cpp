@@ -16,9 +16,9 @@ const Color COL_25_PERCENT = Color(255, 0, 0, ALPHA);
 */
 
 //initialise needed stuff
-EnemyHealthComponent::EnemyHealthComponent(Entity* p, int health) : Component(p), _health(health), _maxHealth(health) {
+EnemyHealthComponent::EnemyHealthComponent(Entity* p, int health) : Component(p), _health(health), _maxHealth(health),
+                                        _panel(Panel(Vector2f(50.f, 20.f), _parent->getPosition(), "DoctorSoos.ttf")) {
     //create panel
-    _panel = Panel(Vector2f(50.f, 20.f), _parent->getPosition(), "DoctorSoos.ttf");
     _panel.setTextSize(20);
     _panel.setPanelColour(Col_100_PERCENT);
     _panel.setGUI(false);
@@ -33,7 +33,7 @@ EnemyHealthComponent::EnemyHealthComponent(Entity* p, int health) : Component(p)
 
 void EnemyHealthComponent::update(double dt) {
     //update text to current health
-    _panel.setText(std::to_string(_health));
+    _panel.setText("HP " + std::to_string(_health));
     //update position
     _panel.setPosition(_parent->getPosition() - _offset);
     //update panel

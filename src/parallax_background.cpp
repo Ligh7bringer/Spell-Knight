@@ -68,7 +68,6 @@ void ParallaxBackground::addLayer(float coeff, const string& tex) {
     //set repeated to true in order to have a scrolling background
     _currTexture->setRepeated(true);
     //add texture to the vector of textures which might not be needed at all
-
     _textures.push_back(_currTexture);
     //initilise sprite
     shared_ptr<Sprite> sprite = make_shared<Sprite>();    

@@ -30,6 +30,7 @@ AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, int width, int heigh
 		_currentRow = 0;
         _hurt = false;
         _hurtTimer = 1.0f;
+        _numOfFrames = 1;
 }
 
 void AnimatedSpriteComponent::update(double dt) {

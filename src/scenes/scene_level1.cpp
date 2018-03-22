@@ -11,7 +11,6 @@
 #include "../parallax_background.h"
 #include "../input_manager.h"
 
-
 using namespace std;
 using namespace sf;
 
@@ -88,7 +87,11 @@ void Level1Scene::Update(const double& dt) {
 
   //move the view with the player
   if(player != nullptr) {
-    _view.setCenter(player->getPosition().x, Engine::getWindowSize().y / 2.f);
+    float vx = player->getPosition().x;
+    float vy = Engine::getWindowSize().y / 2.f;
+    vx = floor(vx);
+    vy = floor(vy);
+    _view.setCenter(vx, vy);
     Renderer::setView(_view);
   }
 
