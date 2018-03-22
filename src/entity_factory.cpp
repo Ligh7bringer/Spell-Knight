@@ -178,6 +178,7 @@ void EntityFactory::makeWalls(Scene* scene) {
 //makes a collectible in Scene scene at position pos
 std::shared_ptr<Entity> EntityFactory::makePowerUp(Scene* scene, sf::Vector2f& pos) {
     auto pu = scene->makeEntity();
+    pu->addTag("flame");
     pu->setPosition(pos);
     pu->addComponent<PickUpComponent>();
 
