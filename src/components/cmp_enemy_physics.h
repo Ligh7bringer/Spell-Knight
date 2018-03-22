@@ -23,4 +23,6 @@ public:
 	sf::Vector2f getDirection() const;
 
 	bool isJumping() const;
+
+	void setAir(bool b);
 };

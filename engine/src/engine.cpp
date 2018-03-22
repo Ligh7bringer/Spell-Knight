@@ -116,9 +116,6 @@ void Engine::Start(unsigned int width, unsigned int height,
   //initialise texture manager
   TextureManager::initialise();
 
-  SettingsParser settings;
-  //settings.readFile("settings.txt");
-
   RenderWindow window(VideoMode(width, height), gameName, sf::Style::Close | sf::Style::Resize);
   _gameName = gameName;
   _window = &window;
@@ -132,15 +129,12 @@ void Engine::Start(unsigned int width, unsigned int height,
       if (event.type == Event::Closed) {
         window.close();
       }
-	  
-	  if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P) && _pause ==false)
-	  {
-		  _pause = true;
-	  }
-        else if((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P) && _pause ==true)
+    
+      if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P))
       {
-          _pause =false;
+        _pause = !_pause;
       }
+
       if(event.type == Event::Resized) {
         //resize view when window is resized so textures are not stretched
         _activeScene->getView().setSize(event.size.width, event.size.height);

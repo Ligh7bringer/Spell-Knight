@@ -80,6 +80,7 @@ void EnemyPhysicsComponent::update(double dt) {
 
 	PhysicsComponent::update(dt);
 }
+
 EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,
 	const Vector2f& size, bool isAir)
 	: PhysicsComponent(p, true, size) {
@@ -101,4 +102,8 @@ sf::Vector2f EnemyPhysicsComponent::getDirection() const {
 
 bool EnemyPhysicsComponent::isJumping() const {
 	return !_grounded;
+}
+
+void EnemyPhysicsComponent::setAir(bool b) {
+	_isAir = b;
 }

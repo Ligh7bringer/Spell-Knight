@@ -3,6 +3,10 @@
 #include "../components/cmp_animated_sprite.h"
 #include "../../engine/lib_tile_level_loader/LevelSystem.h"
 
+/*
+* Behaviour of the slime enemy.
+*/
+
 // ----- ROAMING STATE -----
 void RoamingState::execute(Entity* owner, double dt) noexcept {
     auto physics = owner->GetCompatibleComponent<PhysicsComponent>()[0];

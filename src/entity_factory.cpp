@@ -15,6 +15,7 @@
 #include "components/cmp_enemy_health.h"
 #include "components/cmp_state_machine.h"
 #include "states/slime_states.h"
+#include "states/eye_states.h"
 
 using namespace sf;
 
@@ -66,12 +67,16 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
     auto eyeDemon = scene->makeEntity();
     eyeDemon->addTag("enemy");
     eyeDemon->setPosition(pos);
-    auto anim = eyeDemon->addComponent<AnimatedSpriteComponent>(64, 37);
-    anim->setSpritesheet(TextureManager::getTexture("sheet_eye_flyer.png"));
-    anim->setNumberOfFrames(5);
+    auto anim = eyeDemon->addComponent<AnimatedSpriteComponent>(50, 50);
+    anim->setSpritesheet(TextureManager::getTexture("eyesleep.png"));
+    anim->setNumberOfFrames(4);
     eyeDemon->addComponent<HurtComponent>();
-    eyeDemon->addComponent<EnemyPhysicsComponent>(Vector2f(64.f, 37.f), true);
     eyeDemon->addComponent<EnemyHealthComponent>(4);
+    eyeDemon->addComponent<EnemyPhysicsComponent>(sf::Vector2f(50.f, 50.f), false);
+    auto sm = eyeDemon->addComponent<StateMachineComponent>();
+    sm->addState("sleeping", std::make_shared<SleepingState>(scene->ents.find("player")[0]));
+    sm->addState("flying", std::make_shared<FlyingState>());
+    sm->changeState("sleeping");
 
     return eyeDemon;
 }
