@@ -40,6 +40,10 @@ void PlayerPhysicsComponent::update(double dt) {
 
   const auto pos = _parent->getPosition();
 
+  if (pos.y > ls::getHeight() * ls::getTileSize()) {
+    _parent->setAlive(false);
+  }
+
   if (Keyboard::isKeyPressed(InputManager::getKey("walkLeft")) ||
       Keyboard::isKeyPressed(InputManager::getKey("walkRight"))) {
     // Moving Either Left or Right

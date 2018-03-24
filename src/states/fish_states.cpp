@@ -34,9 +34,10 @@ void JumpingState::execute(Entity* owner, double dt) noexcept {
     anim->setFacingRight(!(_direction.x > 0));
     auto pos = owner->getPosition();
     auto physics = owner->get_components<EnemyPhysicsComponent>()[0];
-    if(physics->isGrounded()) {
-        physics->teleport(Vector2f(pos.x, pos.y - 1.0f));
-        physics->impulse(Vector2f(1.f * _direction.x, -10.f));
+    if(ls::getTileAt(pos) == ls::baseTiles::DEADFALL || ls::getTileAt(pos) == '4' || ls::getTileAt(pos) == '6') {
+        physics->setFriction(0.0f);
+        physics->teleport(Vector2f(pos.x, pos.y - 2.0f));
+        physics->impulse(Vector2f(1.f * _direction.x, -20.f));
         _direction.x *= -1.f;
         physics->setGravityScale(1);
     }

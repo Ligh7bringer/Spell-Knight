@@ -74,56 +74,6 @@ void Level1Scene::Restart() {
   UnLoad();
   Load();
   LOG(INFO) << "Scene 1 Restarted!";
-  //todo: optimised restart level
-  /*
-  //setup view
-  //Vector2f windowSize = static_cast<Vector2f>(Engine::getWindowSize());
-  //_view = View(FloatRect(0, 0, windowSize.x, windowSize.y));
-  Renderer::resetView();
-
-
-  ls::loadLevelFile("res/lvl1.txt", 32.0f);
-  // reset player
-  // delete player
-  //player.reset();
-  // remake player
-  player = EntityFactory::makePlayer(this, Vector2f(100.f, 100.f));
-  _view.setCenter(player->getPosition());
-
-  // reset enemies
-  auto enemyPos = ls::findTiles(ls::baseTiles::ENEMY);
-
-  //if the enemies are no full health
-  //else reset the pos
-  //if(){}
-  //or just delete them and make them again
-  auto enemies = ents.find("enemy");
-  for(auto enemy: enemies){
-    ents.find("enemy").clear();
-    enemy.reset();
-  }
-  for(int i = 0; i < enemyPos.size(); ++i)
-  {
-    auto p = ls::getTilePosition(enemyPos[i]);
-
-    if(i == 0) {
-      EntityFactory::makeSlime(this, p);
-    } else {
-      EntityFactory::makeEyeDemon(this, p);
-    }
-  }
-
-  //create a power up
-  //if there are no powerups
-  //if(){}
-  //or just delete and then remake
-  auto flames = ents.find("flame");
-  auto flamePos = ls::findTiles(ls::groundTiles::COIN);
-  for(int i = 0; i < flamePos.size(); ++i) {
-    auto fp = ls::getTilePosition(flamePos[i]);
-    EntityFactory::makePowerUp(this, fp);
-  }
-   */
 }
 
 void Level1Scene::UnLoad() {
@@ -154,9 +104,7 @@ void Level1Scene::Update(const double& dt) {
   }
   //Teleport to start if we fall off map.
   //restart level if we fall off map
-  if (player->getPosition().y > ls::getHeight() * ls::getTileSize()) {
-    LOG(DEBUG) << "no map left!!";
-    //teleport(ls::getTilePosition(ls::findTiles(ls::baseTiles::START)[0]));
+  if (!player->isAlive()) {
     Restart();
   }
 
