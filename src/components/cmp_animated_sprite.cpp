@@ -121,7 +121,10 @@ void AnimatedSpriteComponent::setNumberOfFrames(int num) {
 
 //sets current row in the spritesheet 
 void AnimatedSpriteComponent::setCurrentRow(int r) {
-    _currentRow = r;
+    if(_currentRow != r) {
+        _currentRow = r;    
+        _currentImage.x = 0;
+    }
 }
 
 //sets padding

@@ -37,18 +37,24 @@ void Level1Scene::Load() {
   _parBackground.addLayer(1.2f, "ground.png");
   
   // Create some enemies  
-  auto enemyPos = ls::findTiles(ls::baseTiles::ENEMY);
+  auto slimePos = LevelSystem::findTiles(LevelSystem::enemyTiles::SLIME);
+  for(auto sp : slimePos) {
+    auto p = LevelSystem::getTilePosition(sp);
+    EntityFactory::makeSlime(this, p);
+  }
 
-  for(int i = 0; i < enemyPos.size(); ++i)
-  {
-    auto p = ls::getTilePosition(enemyPos[i]);
-    
-    if(i == 0) {
-      EntityFactory::makeSlime(this, p);	  		
-    } else {
-      EntityFactory::makeEyeDemon(this, p);
-    }
-  } 
+  auto eyePos = LevelSystem::findTiles(LevelSystem::enemyTiles::EYE);
+  for(auto ep : eyePos) {
+    auto p = LevelSystem::getTilePosition(ep);
+    EntityFactory::makeEyeDemon(this, p);
+  }
+
+  auto plantPos = LevelSystem::findTiles(LevelSystem::enemyTiles::PLANT);
+  for(auto pp : plantPos) {
+    auto p = LevelSystem::getTilePosition(pp);
+    EntityFactory::makePlant(this, p);
+  }
+  
   
   // Add physics colliders to level tiles.  
   EntityFactory::makeWalls(this);
@@ -88,10 +94,10 @@ void Level1Scene::UnLoad() {
 void Level1Scene::Update(const double& dt) {  
   _parBackground.update(dt);
 
-  if (ls::getTileAt(player->getPosition()) == ls::baseTiles::END) {
-	  cout << "yeh won!!" << endl;
-    Engine::ChangeScene((Scene*)&menu);
-  }
+  // if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+  //   UnLoad();
+  //   Engine::ChangeScene((Scene*)&menu);
+  // }
 
   //move the view with the player
   if(player != nullptr) {

@@ -42,24 +42,21 @@ void PlayerBulletComponent::fire() {
         auto bullet = _parent->scene->makeEntity();
         bullet->setPosition(_parent->getPosition() + offset);
         bullet->addComponent<BulletComponent>();
-
-        //add a sprite, it is not animated at the moment
-        auto sprite = bullet->addComponent<AnimatedSpriteComponent>(Vector2f(64.f, 64.f));
-        sprite->setNumberOfFrames(1);
+          
+        auto sprite = bullet->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
         sprite->setCurrentRow(4);
-        sprite->setSpriteSheetPadding(2);
-        sprite->setSpritesheet(TextureManager::getTexture("WIZARD.png"));
-        sprite->setFacingRight(right);
-        
+        sprite->setSpritesheet(TextureManager::getTexture("projectiles2.png"));
+        sprite->setNumberOfFrames(6);
+        sprite->setFrameTime(0.15f);
+
         //add a physics component
         auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(32.f, 20.f));
         //the bullet shouldn't be affected by gravity 
         p->setGravityScale(0.0f);
-        p->setRestitution(0.0f);
+        p->setRestitution(.4f);
+        p->setFriction(.005f);
         //set the appropirate direction
         p->setLinearVelocity(right ? Vector2f(_speed, 0) : Vector2f(-_speed, 0));
-
-        //_bullets.push_back(bullet);
         
         _cooldown = 1.f;
     }    

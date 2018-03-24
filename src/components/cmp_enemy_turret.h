@@ -1,12 +1,13 @@
 #pragma once
 #include "cmp_physics.h"
 #include <ecm.h>
-#include <SFML/Graphics/CircleShape.hpp>
 
 class EnemyTurretComponent : public Component {
 protected:
   void fire() const;
   float _firetime;
+  sf::Vector2f _offset;
+  sf::Vector2f _direction;
 
 public:
   void update(double dt) override;

@@ -1,8 +1,6 @@
 #include "button.h"
 #include "../../engine/src/system_renderer.h"
-#include "../../engine/src/system_resources.h"
 #include "../../engine/src/engine.h"
-#include <iostream>
 
 using namespace sf;
 
@@ -10,24 +8,11 @@ using namespace sf;
 Button::Button(const Vector2f& pos, const Vector2f& size, const std::string& text) {
     _panel = Panel(pos, size, "DoctorSoos.ttf");
     _panel.setText(text);
-    // _size = size;
-    // _position = pos;
-    // _shape.setSize(size);
-    // _shape.setFillColor(Color::Green);
-    // _shape.setPosition(pos);
-    // _text.setString(text);
-    // _text.setPosition(pos);
     _clicked = false;
-
-    //Font font;
-    // _font = Resources::get<sf::Font>("DoctorSoos.ttf");
-    // _text.setFont(*_font); 
 }
 
 //sets position of the button
 void Button::setPosition(const Vector2f& pos) {
-    // _shape.setPosition(pos);
-    // _text.setPosition(pos);
     _panel.setPosition(pos);
 }
 
@@ -54,7 +39,7 @@ void Button::render() {
     _panel.render();
 }
 
-//called when the button is clicked, override to implement functionality
+//called when the button is clicked
 void Button::onClick() {
     _panel.setPanelColour(Color::White);
 }
@@ -79,11 +64,6 @@ FloatRect Button::getMouseRect(int width, int height) {
 
     return mouseBox;
 }
-
-// //returns the "hitbox" of the button
-// FloatRect Button::getBtnRect() {
-//     return FloatRect(_shape.getPosition().x, _shape.getPosition().y, _size.x, _size.y);
-// }
 
 //returns whether the button has been clicked
 bool Button::isClicked() const {

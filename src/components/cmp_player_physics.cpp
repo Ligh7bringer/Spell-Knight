@@ -82,12 +82,8 @@ void PlayerPhysicsComponent::update(double dt) {
 
       //play idle animation
       anim->setCurrentRow(0);
-      //temporary solution to the box jump bug
-      if (_body->GetPosition().y < 10.f)
-      {
-        teleport(Vector2f(pos.x, pos.y - 1.0f));
-        impulse(Vector2f(0, -8.f));
-      }
+      teleport(Vector2f(pos.x, pos.y - 1.0f));
+      impulse(Vector2f(0, -8.f));      
     }
   }
 

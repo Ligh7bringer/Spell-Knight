@@ -15,10 +15,9 @@ protected:
     Panel _panel;
 
     sf::FloatRect getMouseRect(int width, int height);
-    //sf::FloatRect getBtnRect();
-    virtual void onClick();
-    virtual void onHover();
-    virtual void reset();
+    void onClick();
+    void onHover();
+    void reset();
 
 public:
     explicit Button(const sf::Vector2f& pos, const sf::Vector2f& size, const std::string& text);
@@ -29,7 +28,4 @@ public:
 
     void setPosition(const sf::Vector2f& pos);
     bool isClicked() const;
-
-    //sf::RectangleShape& getShape();
-
 };

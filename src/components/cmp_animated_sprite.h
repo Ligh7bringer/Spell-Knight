@@ -12,6 +12,7 @@ protected:
   sf::Texture _spritesheet;
   sf::IntRect _currentFrame;
   sf::Vector2u _currentImage;
+  int _startX;
   float _totalTime;
   int _spriteSheetPadding;
   int _currentRow;
