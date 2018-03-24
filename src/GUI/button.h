@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "panel.h"
 #include <memory>
 
 class Button {
@@ -12,14 +12,16 @@ protected:
     std::shared_ptr<sf::Font> _font;
     bool _clicked;
 
+    Panel _panel;
+
     sf::FloatRect getMouseRect(int width, int height);
-    sf::FloatRect getBtnRect();
+    //sf::FloatRect getBtnRect();
     virtual void onClick();
     virtual void onHover();
     virtual void reset();
 
 public:
-    Button(const sf::Vector2f& pos, const std::string& text);
+    explicit Button(const sf::Vector2f& pos, const sf::Vector2f& size, const std::string& text);
     Button() = default;
 
     void update(double dt);

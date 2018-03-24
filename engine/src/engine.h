@@ -47,6 +47,7 @@ public:
   static sf::View& getCurrentView();
   static void setView(const sf::View& view);
   static bool _pause;
+  static void Exit();
 
 private:
   static Scene* _activeScene;

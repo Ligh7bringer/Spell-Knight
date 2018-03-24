@@ -19,7 +19,7 @@ protected:
 
 public:
     Panel() = default;
-    Panel(const sf::Vector2f& size, const sf::Vector2f& pos, const std::string& font);
+    Panel(const sf::Vector2f& pos, const sf::Vector2f& size, const std::string& font);
 
     void update(double dt);
     void render();
@@ -31,4 +31,5 @@ public:
     void setPosition(const sf::Vector2f& pos);
     void setTextSize(const int size);
     void setGUI(bool value);
+    sf::FloatRect getBoundingBox() const;
 };

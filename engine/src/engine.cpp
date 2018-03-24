@@ -160,6 +160,12 @@ void Engine::Start(unsigned int width, unsigned int height,
   // Render::shutdown();
 }
 
+//this is to be used only in the menu scene!
+void Engine::Exit() {
+  _activeScene->UnLoad();
+  _window->close();
+}
+
 std::shared_ptr<Entity> Scene::makeEntity() {
   auto e = make_shared<Entity>(this);
   ents.list.push_back(e);

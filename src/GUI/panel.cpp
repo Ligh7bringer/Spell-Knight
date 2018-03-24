@@ -11,7 +11,7 @@ using namespace sf;
 */
 
 //initialise everything needed
-Panel::Panel(const Vector2f& size, const Vector2f& pos, const std::string& font) : _size(size), _position(pos) {
+Panel::Panel(const Vector2f& pos, const Vector2f& size, const std::string& font) : _size(size), _position(pos) {
     _font = Resources::get<sf::Font>(font);
     _text.setFont(*_font);
     _text.setCharacterSize(32);
@@ -19,6 +19,7 @@ Panel::Panel(const Vector2f& size, const Vector2f& pos, const std::string& font)
     _text.setString("----");
     _text.setPosition(pos);
     _rect = RectangleShape(size);
+    _rect.setPosition(pos);
     _rect.setFillColor(sf::Color(255,255,255,128));
     _isGUI = true;
 }
@@ -97,4 +98,8 @@ void Panel::setGUI(bool value) {
     } else {
         _rect.setOrigin(Vector2f(0, 0));
     }
+}
+
+FloatRect Panel::getBoundingBox() const {
+    return _rect.getGlobalBounds();
 }

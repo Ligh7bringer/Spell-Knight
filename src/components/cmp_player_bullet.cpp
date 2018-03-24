@@ -44,7 +44,7 @@ void PlayerBulletComponent::fire() {
         bullet->addComponent<BulletComponent>();
 
         //add a sprite, it is not animated at the moment
-        auto sprite = bullet->addComponent<AnimatedSpriteComponent>(64, 64);
+        auto sprite = bullet->addComponent<AnimatedSpriteComponent>(Vector2f(64.f, 64.f));
         sprite->setNumberOfFrames(1);
         sprite->setCurrentRow(4);
         sprite->setSpriteSheetPadding(2);

@@ -17,8 +17,7 @@ protected:
   int _currentRow;
   float _frameTime;
   int _numOfFrames;
-  int _width;
-  int _height;
+  sf::Vector2f _size;
   bool _facingRight;
   bool _hurt;
   float _hurtTimer;
@@ -26,7 +25,7 @@ protected:
 public:
   AnimatedSpriteComponent() = delete;
 
-  explicit AnimatedSpriteComponent(Entity* p, int width, int height);
+  explicit AnimatedSpriteComponent(Entity* p, sf::Vector2f size);
   void update(double dt) override;
   void render() override;
 
@@ -37,7 +36,7 @@ public:
   void setSpriteSheetPadding(int padding);
   void setFacingRight(bool b);
   void setSize(const sf::Vector2f& size);
-  sf::Vector2f getSize() const;
+  const sf::Vector2f& getSize() const;
   bool isFacingRight() const;
 
   void setHurt(bool h);

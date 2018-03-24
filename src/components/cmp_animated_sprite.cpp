@@ -8,16 +8,12 @@ using namespace std;
 int prevRow;
 
 //constructor, initialises default sprite size and default animation speed
-AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, int width, int height)
-    : Component(p) {
-        //width and height of the sprite
-        _width = width;
-        _height = height;
+AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, Vector2f size) : Component(p), _size(size) {
         //total accumulated time, used to tell when to switch to the next frame
         _totalTime = 0.0f;
         //the texture rect's width and height
-        _currentFrame.width = _width;
-        _currentFrame.height = _height;
+        _currentFrame.width = _size.x;
+        _currentFrame.height = _size.y;
         //current frame, default 0, 0
         _currentImage = Vector2u(0, 0);
         //default animation speed
@@ -65,7 +61,7 @@ void AnimatedSpriteComponent::update(double dt) {
     //if the sprite is supposed to be facing right
     if(_facingRight) {
         //set the texture rect's x to the correct x coordinate on the spritesheet
-        _currentFrame.left = _currentImage.x * _width;
+        _currentFrame.left = _currentImage.x * _size.x;
         //make sure the width is correct!!
         _currentFrame.width = abs(_currentFrame.width);
     } else { //if facing left
@@ -75,7 +71,7 @@ void AnimatedSpriteComponent::update(double dt) {
     }
     
     //calculate spritesheet y coordinate, don't forget padding
-    _currentFrame.top = _currentImage.y * _height + _spriteSheetPadding;
+    _currentFrame.top = _currentImage.y * _size.y + _spriteSheetPadding;
 
     //if entity is hurt start changing alpha
     if(_hurt) {
@@ -96,7 +92,10 @@ void AnimatedSpriteComponent::update(double dt) {
     //update sprite: set texture rect, update position and origin
     _sprite.setTextureRect(_currentFrame);
     _sprite.setPosition(_parent->getPosition());
-    _sprite.setOrigin(_width/2, _height/2);
+    auto origin = _size / 2.f;
+    origin.x = floor(origin.x);
+    origin.y = floor(origin.y);
+    _sprite.setOrigin(origin);
 }
 
 //render current sprite
@@ -137,14 +136,13 @@ void AnimatedSpriteComponent::setFacingRight(bool b) {
 
 //sets the size of the sprite 
 void AnimatedSpriteComponent::setSize(const Vector2f& size) {
-    _width = size.x;
-    _height = size.y;
-    _currentFrame.left = _width;
-    _currentFrame.top = _height;
+    _size = size;
+    _currentFrame.left = _size.x;
+    _currentFrame.top = _size.y;
 }
 
-Vector2f AnimatedSpriteComponent::getSize() const {
-    return Vector2f(_currentFrame.width, _currentFrame.height);
+const Vector2f& AnimatedSpriteComponent::getSize() const {
+    return _size;
 }
 
 //get or set if the entity is hurt

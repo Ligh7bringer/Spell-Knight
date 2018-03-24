@@ -30,7 +30,7 @@ std::shared_ptr<Entity> EntityFactory::makePlayer(Scene* scene, const Vector2f& 
     player->setPosition(pos);
     player->addTag("player");
   
-    auto anim = player->addComponent<AnimatedSpriteComponent>(64, 64);
+    auto anim = player->addComponent<AnimatedSpriteComponent>(Vector2f(64.f, 64.f));
     anim->setSpritesheet(TextureManager::getTexture("WIZARD.png"));
     anim->setNumberOfFrames(4);
     anim->setSpriteSheetPadding(2);
@@ -49,7 +49,7 @@ std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& p
     slime->addTag("enemy");
     // set position
     slime->setPosition(pos);
-    auto anim = slime->addComponent<AnimatedSpriteComponent>(32, 32);
+    auto anim = slime->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
     anim->setSpritesheet(TextureManager::getTexture("slime.png"));
     anim->setNumberOfFrames(4);
     // Add HurtComponent
@@ -68,7 +68,7 @@ std::shared_ptr<Entity> EntityFactory::makeFish(Scene* scene, const Vector2f& po
     fish->addTag("enemy");
     // set position
     fish->setPosition(pos);
-    auto anim = fish->addComponent<AnimatedSpriteComponent>(50, 32);
+    auto anim = fish->addComponent<AnimatedSpriteComponent>(Vector2f(50.f, 32.f));
     anim->setSpritesheet(TextureManager::getTexture("sheet_fish.png"));
     anim->setNumberOfFrames(5);
     // Add HurtComponent
@@ -89,7 +89,7 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
     auto eyeDemon = scene->makeEntity();
     eyeDemon->addTag("enemy");
     eyeDemon->setPosition(pos);
-    auto anim = eyeDemon->addComponent<AnimatedSpriteComponent>(50, 50);
+    auto anim = eyeDemon->addComponent<AnimatedSpriteComponent>(Vector2f(50.f, 50.f));
     anim->setSpritesheet(TextureManager::getTexture("eyesleep.png"));
     anim->setNumberOfFrames(4);
     eyeDemon->addComponent<HurtComponent>();
@@ -110,7 +110,7 @@ std::shared_ptr<Entity> EntityFactory::makePowerUp(Scene* scene, const sf::Vecto
     pu->setPosition(pos);
     pu->addComponent<PickUpComponent>();
 
-    auto anim = pu->addComponent<AnimatedSpriteComponent>(32, 32);
+    auto anim = pu->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
     anim->setSpritesheet(TextureManager::getTexture("flame.png"));
     anim->setNumberOfFrames(4);
     anim->setFrameTime(0.1f);

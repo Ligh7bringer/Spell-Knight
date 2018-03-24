@@ -20,7 +20,7 @@ static shared_ptr<Entity> player;
 void Level1Scene::Load() {
   //setup view
   auto windowSize = Engine::getWindowSize();  
-  _view = View(FloatRect(0, 0, windowSize.x, windowSize.y));
+  _view.reset(FloatRect(0, 0, windowSize.x, windowSize.y));
 
   ls::loadLevelFile("res/lvl1.txt", 32.0f);
   //auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);
@@ -129,7 +129,7 @@ void Level1Scene::Restart() {
 void Level1Scene::UnLoad() {
   cout << "Scene 1 Unload" << endl;
   //_view.reset();
-  Renderer::resetView();
+  //Renderer::resetView();
   player.reset();
   ls::unload();
   Scene::UnLoad();
