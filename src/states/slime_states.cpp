@@ -1,11 +1,13 @@
 #include "slime_states.h"
-#include "../components/cmp_physics.h"
+#include "../components/cmp_enemy_physics.h"
 #include "../components/cmp_animated_sprite.h"
 #include "../../engine/lib_tile_level_loader/LevelSystem.h"
 
 /*
 * Behaviour of the slime enemy.
 */
+
+using namespace sf;
 
 // ----- ROAMING STATE -----
 void RoamingState::execute(Entity* owner, double dt) noexcept {
@@ -21,6 +23,5 @@ void RoamingState::execute(Entity* owner, double dt) noexcept {
     }
 
     physics->impulse(_direction * (float)(dt*100));
-    anim->setFacingRight(_direction.x > 0 ? false : true);
+    anim->setFacingRight(_direction.x > 0);
 }
-

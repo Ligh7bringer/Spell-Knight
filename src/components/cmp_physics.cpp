@@ -179,5 +179,3 @@ const Vector2f& PhysicsComponent::getSize() {
 const b2Vec2& PhysicsComponent::getPosition() {
   return _body->GetPosition();
 }
-
-//const b2Body& PhysicsComponent::getBody()

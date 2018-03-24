@@ -10,7 +10,6 @@ using namespace std;
 using namespace sf;
 using namespace Physics;
 
-
 bool EnemyPhysicsComponent::isGrounded() const {
 	auto touch = getTouching();
 	const auto& pos = _body->GetPosition();
@@ -35,30 +34,30 @@ bool EnemyPhysicsComponent::isGrounded() const {
 
 void EnemyPhysicsComponent::update(double dt) {
 
-	const auto pos = _parent->getPosition() ;
-    auto mov = _direction * (float)(dt * 100);
-    mov.x += _direction.x * 16.f;
+	// const auto pos = _parent->getPosition() ;
+    // auto mov = _direction * (float)(dt * 100);
+    // mov.x += _direction.x * 16.f;
 	
 
-	//enemy falling off map
-	if (pos.y > ls::getHeight() * ls::getTileSize()) {
-		cout << "enemy has been affected by the forces of gravity!!" << endl;
-		//teleport(ls::getTilePosition(ls::findTiles(ls::baseTiles::START)[0]));
-	}
+	// //enemy falling off map
+	// if (pos.y > ls::getHeight() * ls::getTileSize()) {
+	// 	cout << "enemy has been affected by the forces of gravity!!" << endl;
+	// 	//teleport(ls::getTilePosition(ls::findTiles(ls::baseTiles::START)[0]));
+	// }
 
-	if(_isAir)
-	{ 
-		//check if the creature is certain height above ground
-		if (isGrounded()) {
-			setVelocity(Vector2f(getVelocity().x, 0.f));
-			teleport(Vector2f(pos.x, pos.y - 1.0f));
-			impulse(Vector2f(0, -8.f));
+	// if(_isAir)
+	// { 
+	// 	//check if the creature is certain height above ground
+	// 	if (isGrounded()) {
+	// 		setVelocity(Vector2f(getVelocity().x, 0.f));
+	// 		teleport(Vector2f(pos.x, pos.y - 1.0f));
+	// 		impulse(Vector2f(0, -8.f));
 
-			// Dampen X axis movement
-			dampen({ 0.9f, 1.0f });
-			_direction = Vector2f(0,0);
-		}
-	}
+	// 		// Dampen X axis movement
+	// 		dampen({ 0.9f, 1.0f });
+	// 		_direction = Vector2f(0,0);
+	// 	}
+	// }
 	
 
 	//Are we in air?

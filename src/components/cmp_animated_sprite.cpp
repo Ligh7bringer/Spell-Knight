@@ -160,3 +160,11 @@ bool AnimatedSpriteComponent::isHurt() {
 bool AnimatedSpriteComponent::isFacingRight() const {
     return _facingRight;
 }
+
+int AnimatedSpriteComponent::getFrameCount() const {
+    return _numOfFrames;
+}
+
+float AnimatedSpriteComponent::getFrameTime() const {
+    return _frameTime;
+}

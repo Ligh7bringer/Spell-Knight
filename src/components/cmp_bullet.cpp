@@ -37,7 +37,6 @@ void BulletComponent::update(double dt) {
   if(_explosionTime <= 0.f && _exploded) {
     //delete it
     _parent->setForDelete();
-
   }
 }
 
@@ -83,13 +82,14 @@ void BulletComponent::explode() {
   ac->setNumberOfFrames(8);
   ac->setCurrentRow(0);
   ac->setSpriteSheetPadding(0);
+  ac->setFrameTime(0.2f);
 
   //set exploded to true so we know it has exploded
   _exploded = true;
   //reset explosion time!!
-  _explosionTime = 0.8f;
+  _explosionTime = (float)ac->getFrameCount() * ac->getFrameTime();
   //and life time
-  _lifetime = 0.4f;
+  _lifetime = 0.8f;
 }
 
 //returns whether the bullet has exploded

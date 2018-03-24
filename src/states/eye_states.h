@@ -16,9 +16,10 @@ public:
 class FlyingState : public State {
 private:   
     bool _setup = true;
+    sf::Vector2f _direction;
 
 public:
-    FlyingState() = default;
+    FlyingState();
 
     void execute(Entity*, double) noexcept override;
 };

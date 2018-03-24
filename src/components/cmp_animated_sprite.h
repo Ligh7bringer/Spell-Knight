@@ -42,5 +42,7 @@ public:
 
   void setHurt(bool h);
   bool isHurt();
+  int getFrameCount() const;
+  float getFrameTime() const;
 };
 

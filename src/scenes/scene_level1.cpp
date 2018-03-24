@@ -4,12 +4,10 @@
 #include <thread>
 #include "system_renderer.h"
 #include <string>
-#include <iostream>
 #include "../../engine/lib_texture_manager/TextureManager.h"
 #include "../entity_factory.h"
 #include "../Log.h"
 #include "../parallax_background.h"
-#include "../input_manager.h"
 #include "ecm.h"
 
 using namespace std;
@@ -21,7 +19,7 @@ static shared_ptr<Entity> player;
 
 void Level1Scene::Load() {
   //setup view
-  Vector2f windowSize = static_cast<Vector2f>(Engine::getWindowSize());  
+  auto windowSize = Engine::getWindowSize();  
   _view = View(FloatRect(0, 0, windowSize.x, windowSize.y));
 
   ls::loadLevelFile("res/lvl1.txt", 32.0f);
@@ -62,10 +60,13 @@ void Level1Scene::Load() {
     EntityFactory::makePowerUp(this, fp);
   }
 
+  auto waterTiles = LevelSystem::findTiles(ls::baseTiles::DEADFALL);
+  auto fishPos = ls::getTilePosition(waterTiles[0]);
+  EntityFactory::makeFish(this, fishPos);
+
   //Simulate long loading times
   //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   LOG(INFO) << "Scene 1 loaded!";
-
   setLoaded(true);
 }
 

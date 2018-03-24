@@ -11,8 +11,6 @@ protected:
 	sf::Vector2f _direction;
 	bool _isAir; 
 
-	bool isGrounded() const;
-
 public:
 	void update(double dt) override;
 
@@ -25,4 +23,6 @@ public:
 	bool isJumping() const;
 
 	void setAir(bool b);
+
+	bool isGrounded() const;
 };

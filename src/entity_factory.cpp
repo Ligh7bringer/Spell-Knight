@@ -16,6 +16,7 @@
 #include "components/cmp_state_machine.h"
 #include "states/slime_states.h"
 #include "states/eye_states.h"
+#include "states/fish_states.h"
 
 using namespace sf;
 
@@ -62,6 +63,27 @@ std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& p
     return slime;
 }
 
+std::shared_ptr<Entity> EntityFactory::makeFish(Scene* scene, const Vector2f& pos) {
+    auto fish = scene->makeEntity();
+    fish->addTag("enemy");
+    // set position
+    fish->setPosition(pos);
+    auto anim = fish->addComponent<AnimatedSpriteComponent>(50, 32);
+    anim->setSpritesheet(TextureManager::getTexture("sheet_fish.png"));
+    anim->setNumberOfFrames(5);
+    // Add HurtComponent
+    fish->addComponent<HurtComponent>();
+    fish->addComponent<EnemyHealthComponent>(1);
+	auto physics = fish->addComponent<EnemyPhysicsComponent>(Vector2f(32.f, 32.f), false);
+    physics->setGravityScale(0);
+    auto sm = fish->addComponent<StateMachineComponent>();
+    sm->addState("jumping", make_shared<JumpingState>());
+    sm->addState("swimming", make_shared<SwimmingState>(scene->ents.find("player")[0]));
+    sm->changeState("swimming");
+
+    return fish;
+}
+
 //creates an eye demon enemy at position pos in Scene scene
 std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vector2f& pos) {
     auto eyeDemon = scene->makeEntity();
@@ -82,7 +104,7 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
 }
 
 //makes a collectible in Scene scene at position pos
-std::shared_ptr<Entity> EntityFactory::makePowerUp(Scene* scene, sf::Vector2f& pos) {
+std::shared_ptr<Entity> EntityFactory::makePowerUp(Scene* scene, const sf::Vector2f& pos) {
     auto pu = scene->makeEntity();
     pu->addTag("flame");
     pu->setPosition(pos);
