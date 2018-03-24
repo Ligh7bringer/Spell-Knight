@@ -17,7 +17,7 @@ const Color COL_25_PERCENT = Color(255, 0, 0, ALPHA);
 
 //initialise needed stuff
 EnemyHealthComponent::EnemyHealthComponent(Entity* p, int health) : Component(p), _health(health), _maxHealth(health),
-                                        _panel(Panel(Vector2f(50.f, 20.f), _parent->getPosition(), "DoctorSoos.ttf")) {
+                                        _panel(Panel(_parent->getPosition(), Vector2f(50.f, 20.f), "DoctorSoos.ttf")) {
     //create panel
     _panel.setTextSize(20);
     _panel.setPanelColour(Col_100_PERCENT);

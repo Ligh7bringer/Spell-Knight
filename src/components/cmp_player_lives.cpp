@@ -8,7 +8,7 @@ using namespace sf;
 */
 
 PlayerLivesComponent::PlayerLivesComponent(Entity* p, int maxLives) : Component(p), _maxLives(maxLives), _lives(_maxLives),
-                                                    _panel(Panel(Vector2f(100.f, 32.f), Vector2f(0, 0), "DoctorSoos.ttf")) {    
+                                                    _panel(Panel(Vector2f(0, 0), Vector2f(100.f, 32.f), "DoctorSoos.ttf")) {    
     _panel.setPanelColour(Color(192, 192, 192, 128));
 }
 

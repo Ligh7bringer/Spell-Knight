@@ -4,42 +4,47 @@
 #include <SFML/Window/Keyboard.hpp>
 #include "../Log.h"
 #include "../GUI/button.h"
+#include "../GUI/menu.h"
+#include "../../engine/src/engine.h"
 
 using namespace std;
 using namespace sf;
 
-Button play;
+Menu mainMenu;
+Panel title;
 
 void MenuScene::Load() {
-   LOG(INFO)<< "Menu Load \n";
-  {
-    auto txt = makeEntity();
-    auto t = txt->addComponent<TextComponent>(
-        "Platformer\nPress Space to Start");
-  }
-  setLoaded(true);
+  mainMenu = Menu();
+  title = Panel(Vector2f(500, 200), Vector2f(100, 100), "DoctorSoos.ttf");
+  title.setPanelColour(Color::Transparent);
+  title.setText("Spell Knight");
+  title.setTextColour(Color::White);
 
-  play = Button(Vector2f(100, 50), "PLAY");
-  play.setPosition(Vector2f(500, 500));
+  setLoaded(true);
 }
 
 void MenuScene::Update(const double& dt) {
   // cout << "Menu Update "<<dt<<"\n";
+  mainMenu.update(dt);
+  title.update(dt);
 
-  if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
+  if(mainMenu.getMenuResponse() == Menu::PLAY) {
     Engine::ChangeScene(&level1);
+  } 
+  if(mainMenu.getMenuResponse() == Menu::OPTIONS) {
+    //go to options scene
   }
-
-  play.update(dt);
-  if(play.isClicked()) {
-      Engine::ChangeScene(&level1);
+  if(mainMenu.getMenuResponse() == Menu::EXIT) {
+    //exit
+    Engine::Exit();
   }
 
   Scene::Update(dt);
 }
 
 void MenuScene::Render() {
-  play.render();
+  mainMenu.render();
+  title.render();
 
   Scene::Render();
 }
