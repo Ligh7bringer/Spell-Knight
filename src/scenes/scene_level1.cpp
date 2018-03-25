@@ -94,11 +94,6 @@ void Level1Scene::UnLoad() {
 void Level1Scene::Update(const double& dt) {  
   _parBackground.update(dt);
 
-  // if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-  //   UnLoad();
-  //   Engine::ChangeScene((Scene*)&menu);
-  // }
-
   //move the view with the player
   if(player != nullptr) {
     float vx = player->getPosition().x;
