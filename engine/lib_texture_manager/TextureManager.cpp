@@ -15,7 +15,7 @@ const sf::Texture& TextureManager::getTexture(const std::string& filename) {
     //check if texture exists
     for(std::map<std::string, sf::Texture>::const_iterator it = _textures.begin(); it != _textures.end(); ++it) {
         if(filename == it->first) {
-            LOG(INFO) << "TextureManager: using existing image for " << filename;
+            //LOG(INFO) << "TextureManager: using existing image for " << filename;
             return it->second;
         }
     }
@@ -51,6 +51,7 @@ void TextureManager::deleteImage(const std::string& filename) {
     }
 }
 
+//adds a resource dir to the list of know dirs
 void TextureManager::addResourceDirectory(const std::string& dir) {
     //check if the path already exists
     for(std::vector<std::string>::const_iterator it = _resource_directories.begin(); it != _resource_directories.end(); ++it) {
@@ -66,12 +67,13 @@ void TextureManager::addResourceDirectory(const std::string& dir) {
     LOG(INFO) << "TextureManager: registering resource directory " << dir;
 }
 
+//removes a previously added res dir
 void TextureManager::removeResourceDirectory(const std::string& dir) {
      for(std::vector<std::string>::const_iterator it = _resource_directories.begin(); it != _resource_directories.end(); ++it) {
         if(dir == (*it)) {
             it = _resource_directories.erase(it);
             LOG(INFO) << "TextureManager: deleting resource directory " << dir;
-        } else {
+        } else if(it != _resource_directories.end()) {
             ++it;
         }
      }

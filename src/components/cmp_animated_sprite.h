@@ -22,6 +22,8 @@ protected:
   bool _facingRight;
   bool _hurt;
   float _hurtTimer;
+  bool _locked = false;
+  bool _done;
 
 public:
   AnimatedSpriteComponent() = delete;
@@ -41,8 +43,10 @@ public:
   bool isFacingRight() const;
 
   void setHurt(bool h);
-  bool isHurt();
+  bool isHurt() const;
   int getFrameCount() const;
   float getFrameTime() const;
+  void lockInAnimation(int row);
+  bool isDone() const;
 };
 

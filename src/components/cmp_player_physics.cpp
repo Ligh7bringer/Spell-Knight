@@ -105,10 +105,9 @@ void PlayerPhysicsComponent::update(double dt) {
 
   //shoot
   if(Keyboard::isKeyPressed(InputManager::getKey("shoot"))) {
-    _parent->get_components<PlayerBulletComponent>()[0]->fire();
-
     //play shooting animation
-    anim->setCurrentRow(3);
+    anim->lockInAnimation(3);
+    _parent->get_components<PlayerBulletComponent>()[0]->fire();
   }
 
   PhysicsComponent::update(dt);
