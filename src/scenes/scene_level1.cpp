@@ -70,8 +70,6 @@ void Level1Scene::Load() {
   auto fishPos = ls::getTilePosition(waterTiles[0]);
   EntityFactory::makeFish(this, fishPos);
 
-  //Simulate long loading times
-  //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   LOG(INFO) << "Scene 1 loaded!";
   setLoaded(true);
 }
