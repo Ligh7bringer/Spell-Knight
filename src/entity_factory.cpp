@@ -17,6 +17,7 @@
 #include "states/slime_states.h"
 #include "states/eye_states.h"
 #include "states/fish_states.h"
+#include "components/cmp_ai_steering.h"
 
 using namespace sf;
 
@@ -55,7 +56,8 @@ std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& p
     // Add HurtComponent
     slime->addComponent<HurtComponent>();
     slime->addComponent<EnemyHealthComponent>(1);
-	slime->addComponent<EnemyPhysicsComponent>(Vector2f(32.f, 32.f), false);
+	  slime->addComponent<EnemyPhysicsComponent>(Vector2f(32.f, 32.f), false);
+    //slime->addComponent<SteeringComponent>(scene->ents.find("player")[0]);
     auto sm = slime->addComponent<StateMachineComponent>();
     sm->addState("roaming", make_shared<RoamingState>());
     sm->changeState("roaming");
