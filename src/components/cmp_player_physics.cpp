@@ -3,7 +3,7 @@
 #include <LevelSystem.h>
 #include "cmp_animated_sprite.h"
 #include "../../engine/lib_ecm/ecm.h"
-#include "cmp_player_bullet.h"
+#include "cmp_player_attack.h"
 #include <SFML/Window/Keyboard.hpp>
 #include "../input_manager.h"
 #include "../scenes/scene_level1.h"
@@ -107,7 +107,7 @@ void PlayerPhysicsComponent::update(double dt) {
   if(Keyboard::isKeyPressed(InputManager::getKey("shoot"))) {
     //play shooting animation
     anim->lockInAnimation(3);
-    _parent->get_components<PlayerBulletComponent>()[0]->fire();
+    _parent->get_components<PlayerAttackComponent>()[0]->fire();
   }
 
   PhysicsComponent::update(dt);

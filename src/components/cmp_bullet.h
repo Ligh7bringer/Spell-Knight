@@ -7,6 +7,7 @@ protected:
   float _lifetime;
   float _explosionTime;
   bool _exploded;
+  int _damage;
   void checkCollisions(const std::vector<const b2Contact*>& contacts);
   std::vector<std::shared_ptr<Entity>> _enemies;
   std::weak_ptr<Entity> _player;
@@ -19,4 +20,7 @@ public:
 
   explicit BulletComponent(Entity* p, float lifetime = 3.f);
   BulletComponent() = delete;
+
+  void setDamage(int dmg);
+  int getDamage() const;
 };

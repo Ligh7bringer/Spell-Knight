@@ -1,5 +1,6 @@
 #include "cmp_pickup.h"
 #include "cmp_score.h"
+#include "cmp_player_attack.h"
 
 /*
 * Component which allows pickups to be picked up and increase the player's score.
@@ -16,6 +17,8 @@ void PickUpComponent::update(double dt) {
             //get score component and increase score
             auto score = player->get_components<PlayerScoreComponent>()[0];
             score->increasePoints(10);
+            auto attack = player->get_components<PlayerAttackComponent>()[0];
+            attack->changeAttack(PlayerAttackComponent::FIREBALL);
         }
     }
 }

@@ -4,7 +4,7 @@
 #include "components/cmp_enemy_ai.h"
 #include "components/cmp_hurt_player.h"
 #include "components/cmp_player_lives.h"
-#include "components/cmp_player_bullet.h"
+#include "components/cmp_player_attack.h"
 #include "components/cmp_enemy_physics.h"
 #include "components/cmp_physics.h"
 #include "components/cmp_enemy_turret.h"
@@ -38,7 +38,7 @@ std::shared_ptr<Entity> EntityFactory::makePlayer(Scene* scene, const Vector2f& 
     anim->setSpriteSheetPadding(2);
     anim->setFrameTime(0.2f);
     player->addComponent<PlayerPhysicsComponent>(Vector2f(27.f, 62.f));
-    player->addComponent<PlayerBulletComponent>();
+    player->addComponent<PlayerAttackComponent>();
     player->addComponent<PlayerLivesComponent>(3);
     player->addComponent<PlayerScoreComponent>();
 
@@ -57,7 +57,7 @@ std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& p
     // Add HurtComponent
     slime->addComponent<HurtComponent>();
     slime->addComponent<EnemyHealthComponent>(1);
-	  slime->addComponent<EnemyPhysicsComponent>(Vector2f(32.f, 32.f), false);
+    slime->addComponent<EnemyPhysicsComponent>(Vector2f(32.f, 32.f), false);
     //slime->addComponent<SteeringComponent>(scene->ents.find("player")[0]);
     auto sm = slime->addComponent<StateMachineComponent>();
     sm->addState("roaming", make_shared<RoamingState>());
@@ -96,7 +96,7 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
     anim->setSpritesheet(TextureManager::getTexture("eyesleep.png"));
     anim->setNumberOfFrames(4);
     eyeDemon->addComponent<HurtComponent>();
-    eyeDemon->addComponent<EnemyHealthComponent>(1);
+    eyeDemon->addComponent<EnemyHealthComponent>(4);
     eyeDemon->addComponent<EnemyPhysicsComponent>(sf::Vector2f(50.f, 50.f), false);
     auto sm = eyeDemon->addComponent<StateMachineComponent>();
     sm->addState("sleeping", std::make_shared<SleepingState>(scene->ents.find("player")[0]));

@@ -1,5 +1,5 @@
 #include "cmp_bullet.h"
-#include "cmp_player_bullet.h"
+#include "cmp_player_attack.h"
 #include "cmp_physics.h"
 #include "cmp_animated_sprite.h"
 #include "cmp_enemy_physics.h"
@@ -18,8 +18,11 @@ using namespace sf;
 /*
 * This component, when attached to a bullet entity, handles its lifetime and collisions.
 */
+
 BulletComponent::BulletComponent(Entity* p, float lifetime)
-	: Component(p), _lifetime(lifetime), _player(_parent->scene->ents.find("player")[0]), _exploded(false), _explosionTime(0.5f), _enemies(_parent->scene->ents.find("enemy")) {}
+	: Component(p), _lifetime(lifetime), _player(_parent->scene->ents.find("player")[0]), _exploded(false), 
+  _explosionTime(0.5f), _enemies(_parent->scene->ents.find("enemy")), _damage(1) {}
+
 void BulletComponent::update(double dt) {
   //get the collisions from the physics component
   auto contacts = _parent->get_components<PhysicsComponent>()[0]->getTouching();
@@ -66,9 +69,9 @@ void BulletComponent::checkCollisions(const std::vector<const b2Contact*>& conta
             auto score = plr->get_components<PlayerScoreComponent>()[0];
             //delete enemy
             auto enemyHealth = enemy->get_components<EnemyHealthComponent>()[0];
-            //this hardocoded damage will become something like
-            //plr->getWeaponDamage() when we add power ups
-            enemyHealth->decreaseHealth(1);
+            //use the set bullet damage
+            enemyHealth->decreaseHealth(_damage);
+            //this will become enemy->getPoints() or something instead of hardcoded value
             score->increasePoints(30);
             //update the list of enemies!!
             _enemies = _parent->scene->ents.find("enemy");
@@ -102,6 +105,16 @@ void BulletComponent::explode() {
 //returns whether the bullet has exploded
 bool BulletComponent::isExploded() const {
   return _exploded;
+}
+
+//sets the damage done by the bullet
+void BulletComponent::setDamage(int dmg) {
+  _damage = dmg;
+} 
+
+//returns the damage done by the bullet
+int BulletComponent::getDamage() const {
+  return _damage;
 }
 
 
