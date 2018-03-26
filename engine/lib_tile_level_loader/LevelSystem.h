@@ -48,6 +48,13 @@ public:
 		WAYPOINT = '+'
 	 };
   };
+  struct enemyTiles {
+    enum types {
+      EYE = 'e',
+      SLIME = 's',
+      PLANT = 'p'
+    };
+  };
 
   static Tile getTile(sf::Vector2ul);
 

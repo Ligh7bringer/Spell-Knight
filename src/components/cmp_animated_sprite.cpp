@@ -27,18 +27,21 @@ AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, Vector2f size) : Com
         _hurt = false;
         _hurtTimer = 1.0f;
         _numOfFrames = 1;
+        _done = false;
+        //set origin
+        auto origin = _size / 2.f;
+        origin.x = floor(origin.x);
+        origin.y = floor(origin.y);
+        _sprite.setOrigin(origin);
 }
 
 void AnimatedSpriteComponent::update(double dt) {
-    //make sure we are at the right row in the spritesheet
-    _currentImage.y = _currentRow;
-
-    //reset to the 1st frame of new animation whenever animation is changed
-    //fixes a number of problems, especially when the animations don't have the same number of frames
-    //  if(_currentRow != prevRow) {
-    //      _currentImage.x = 0;
-    //     cout << _currentRow << ", " << _currentImage.y << endl;
-    //  }
+    //make sure we're not locked in an animation
+    if(!_locked) {
+        //make sure we are at the right row in the spritesheet
+        _currentImage.y = _currentRow;
+        _done = false;
+    }
 
     //accumulate time
     _totalTime += dt;
@@ -50,6 +53,9 @@ void AnimatedSpriteComponent::update(double dt) {
         _currentImage.x++;
         //if there are no more frames
         if(_currentImage.x >= _numOfFrames) {
+            //unlock
+            _locked = false;
+            _done = true;
             //restart from the first frame
             _currentImage.x = 0;
         }
@@ -92,15 +98,18 @@ void AnimatedSpriteComponent::update(double dt) {
     //update sprite: set texture rect, update position and origin
     _sprite.setTextureRect(_currentFrame);
     _sprite.setPosition(_parent->getPosition());
-    auto origin = _size / 2.f;
-    origin.x = floor(origin.x);
-    origin.y = floor(origin.y);
-    _sprite.setOrigin(origin);
 }
 
 //render current sprite
 void AnimatedSpriteComponent::render() {
     Renderer::queueAndOptimise(_sprite);
+}
+
+//makes sure the animation is played fully before playing any other animation
+void AnimatedSpriteComponent::lockInAnimation(int row) {
+    _currentImage.y = row;
+    _currentImage.x = 0;
+    _locked = true;
 }
 
 //sets the spritesheet, using the passed reference to a spritesheet
@@ -110,6 +119,8 @@ void AnimatedSpriteComponent::setSpritesheet(const sf::Texture& sh) {
 }
 
 //sets animation speed
+//t should be the time each frame is visible for
+//so lower values = faster animation!
 void AnimatedSpriteComponent::setFrameTime(float t) {
     _frameTime = t;
 }
@@ -121,7 +132,12 @@ void AnimatedSpriteComponent::setNumberOfFrames(int num) {
 
 //sets current row in the spritesheet 
 void AnimatedSpriteComponent::setCurrentRow(int r) {
-    _currentRow = r;
+    //if changing to a new animation
+    if(_currentRow != r) {
+        _currentRow = r;    
+        //reset to first frame
+        _currentImage.x = 0;
+    }
 }
 
 //sets padding
@@ -139,8 +155,14 @@ void AnimatedSpriteComponent::setSize(const Vector2f& size) {
     _size = size;
     _currentFrame.left = _size.x;
     _currentFrame.top = _size.y;
+    //update origin
+    auto origin = _size / 2.f;
+    origin.x = floor(origin.x);
+    origin.y = floor(origin.y);
+    _sprite.setOrigin(origin);
 }
 
+//returns the size of the sprite
 const Vector2f& AnimatedSpriteComponent::getSize() const {
     return _size;
 }
@@ -150,7 +172,8 @@ void AnimatedSpriteComponent::setHurt(bool h) {
     _hurt = h;
 }
 
-bool AnimatedSpriteComponent::isHurt() {
+//returns whether a hurt animation is being played
+bool AnimatedSpriteComponent::isHurt() const {
     return _hurt;
 }
 
@@ -159,10 +182,20 @@ bool AnimatedSpriteComponent::isFacingRight() const {
     return _facingRight;
 }
 
+//returns the number of frames in current animation
 int AnimatedSpriteComponent::getFrameCount() const {
     return _numOfFrames;
 }
 
+//returns the speed of the current animation
 float AnimatedSpriteComponent::getFrameTime() const {
     return _frameTime;
+}
+
+bool AnimatedSpriteComponent::isDone() const {
+    return _done;
+}
+
+const Sprite& AnimatedSpriteComponent::getSprite() const {
+    return _sprite;
 }

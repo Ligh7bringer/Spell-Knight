@@ -22,6 +22,6 @@ namespace Renderer {
 
     void queueAndOptimise(const sf::Sprite& sprite);
 
-    bool shouldRender(sf::FloatRect bounds);
+    bool isInView(sf::FloatRect bounds);
 
 }; // namespace Renderer

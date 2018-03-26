@@ -82,12 +82,8 @@ void PlayerPhysicsComponent::update(double dt) {
 
       //play idle animation
       anim->setCurrentRow(0);
-      //temporary solution to the box jump bug
-      if (_body->GetPosition().y < 10.f)
-      {
-        teleport(Vector2f(pos.x, pos.y - 1.0f));
-        impulse(Vector2f(0, -8.f));
-      }
+      teleport(Vector2f(pos.x, pos.y - 1.0f));
+      impulse(Vector2f(0, -8.f));      
     }
   }
 
@@ -109,10 +105,9 @@ void PlayerPhysicsComponent::update(double dt) {
 
   //shoot
   if(Keyboard::isKeyPressed(InputManager::getKey("shoot"))) {
-    _parent->get_components<PlayerBulletComponent>()[0]->fire();
-
     //play shooting animation
-    anim->setCurrentRow(3);
+    anim->lockInAnimation(3);
+    _parent->get_components<PlayerBulletComponent>()[0]->fire();
   }
 
   PhysicsComponent::update(dt);

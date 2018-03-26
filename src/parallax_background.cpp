@@ -21,8 +21,7 @@ ParallaxBackground::ParallaxBackground(const sf::Vector2f& size) : _target(Vecto
     //this variable allows the sprites to be repeated. Each sprite's width is multiplied by this factor which creates a
     //scrolling background. A big multiplie may reduce performance and fps.
     _widthMultiplier = 10;
-    //size will be used positions
-    //size will NOT be used to set origins
+    //set size
     _size = size;
 }
 
@@ -76,7 +75,7 @@ void ParallaxBackground::addLayer(float coeff, const string& tex) {
     //multiply width by the mutiplier to create a repeated background
     sprite->setTextureRect(IntRect(0, 0, (int)_size.x * _widthMultiplier, (int)_size.y));
     //set origin to the centre of the image
-
+    sprite->setOrigin(Vector2f(_size.x / 2.f, 0));
     //and finally add the layer to the vector of layers 
     _layers.push_back(std::pair<float, shared_ptr<Sprite>>(coeff, sprite));
     LOG(INFO) << "Adding a new layer to Parallax Background with coefficient of " << coeff;

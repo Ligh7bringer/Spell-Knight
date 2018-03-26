@@ -55,14 +55,14 @@ void Renderer::resetView() {
 
 //use this method for frustum culling optimisation
 void Renderer::queueAndOptimise(const Sprite& sprite) {
-  if(shouldRender(sprite.getGlobalBounds())) {
+  if(isInView(sprite.getGlobalBounds())) {
     _sprites.push(sprite);
   }
 }
 
 //checks whether a sprite is within the view
 //used to tell whether to render something or not
-bool Renderer::shouldRender(sf::FloatRect bounds) {
+bool Renderer::isInView(sf::FloatRect bounds) {
   auto view = rw->getView();
   IntRect viewRect;
   viewRect.width = view.getSize().x;

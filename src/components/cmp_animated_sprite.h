@@ -12,6 +12,7 @@ protected:
   sf::Texture _spritesheet;
   sf::IntRect _currentFrame;
   sf::Vector2u _currentImage;
+  int _startX;
   float _totalTime;
   int _spriteSheetPadding;
   int _currentRow;
@@ -21,6 +22,8 @@ protected:
   bool _facingRight;
   bool _hurt;
   float _hurtTimer;
+  bool _locked = false;
+  bool _done;
 
 public:
   AnimatedSpriteComponent() = delete;
@@ -38,10 +41,12 @@ public:
   void setSize(const sf::Vector2f& size);
   const sf::Vector2f& getSize() const;
   bool isFacingRight() const;
-
   void setHurt(bool h);
-  bool isHurt();
+  bool isHurt() const;
   int getFrameCount() const;
   float getFrameTime() const;
+  void lockInAnimation(int row);
+  bool isDone() const;
+  const sf::Sprite& getSprite() const;
 };
 

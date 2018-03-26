@@ -7,6 +7,7 @@
 #include "components/cmp_player_bullet.h"
 #include "components/cmp_enemy_physics.h"
 #include "components/cmp_physics.h"
+#include "components/cmp_enemy_turret.h"
 #include "../engine/lib_tile_level_loader/LevelSystem.h"
 #include "../engine/lib_texture_manager/TextureManager.h"
 #include "components/cmp_pickup.h"
@@ -95,7 +96,7 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
     anim->setSpritesheet(TextureManager::getTexture("eyesleep.png"));
     anim->setNumberOfFrames(4);
     eyeDemon->addComponent<HurtComponent>();
-    eyeDemon->addComponent<EnemyHealthComponent>(4);
+    eyeDemon->addComponent<EnemyHealthComponent>(1);
     eyeDemon->addComponent<EnemyPhysicsComponent>(sf::Vector2f(50.f, 50.f), false);
     auto sm = eyeDemon->addComponent<StateMachineComponent>();
     sm->addState("sleeping", std::make_shared<SleepingState>(scene->ents.find("player")[0]));
@@ -103,6 +104,25 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
     sm->changeState("sleeping");
 
     return eyeDemon;
+}
+
+//makes a plant "turret"
+std::shared_ptr<Entity> EntityFactory::makePlant(Scene* scene, const sf::Vector2f& pos) {
+    auto plant = scene->makeEntity();
+    plant->addTag("enemy");
+    plant->setPosition(pos);
+    auto anim = plant->addComponent<AnimatedSpriteComponent>(Vector2f(64.f, 45.f));
+    anim->setSpritesheet(TextureManager::getTexture("plant-attack.png"));
+    anim->setNumberOfFrames(4);
+    anim->setFacingRight(false);
+    auto physics = plant->addComponent<EnemyPhysicsComponent>(Vector2f(50.f, 45.f), false);
+    physics->setRestitution(0.f);
+    physics->setFriction(20.f);
+    plant->addComponent<EnemyTurretComponent>();
+    plant->addComponent<EnemyHealthComponent>(1);
+    plant->addComponent<HurtComponent>();
+
+    return plant;
 }
 
 //makes a collectible in Scene scene at position pos
