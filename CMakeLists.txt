@@ -70,15 +70,19 @@ target_link_libraries(Coursework lib_engine lib_texture_manager)
 set(EXECUTABLES ${EXECUTABLES} Coursework)
 
 #### Target for copying resources to build dir####
+#### put res folder in the correct location based on OS ####
 if(UNIX)
-message("Copying resources...")
+  message("Detected Linux! Copying resources to bin/build/...")
    add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND} -E copy_directory
-          "${PROJECT_SOURCE_DIR}/res" ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/res
-          )
+          "${PROJECT_SOURCE_DIR}/res" ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/res)
+elseif(MSVC)
+    message("Detected MSCV! Copying resources....")
+    add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${PROJECT_SOURCE_DIR}/res" ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIGURATION>/res)
 else()
+  message("Not Linux or MSVC! Copying resources...")
   add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND} -E copy_directory
-          "${PROJECT_SOURCE_DIR}/res" ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/res
-          )
+          "${PROJECT_SOURCE_DIR}/res" ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/res)
 endif()
 
 #### Link Dependencies ####

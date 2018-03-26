@@ -8,6 +8,8 @@ protected:
   float _firetime;
   sf::Vector2f _offset;
   sf::Vector2f _direction;
+  std::weak_ptr<Entity> _player;
+  float _rotationCooldown;
 
 public:
   void update(double dt) override;

@@ -9,6 +9,8 @@
 #include "../../engine/lib_ecm/ecm.h"
 #include "cmp_score.h"
 #include "cmp_enemy_health.h"
+#include "../../engine/src/system_renderer.h"
+#include "../Log.h"
 
 using namespace std;
 using namespace sf;
@@ -50,24 +52,30 @@ void BulletComponent::checkCollisions(const std::vector<const b2Contact*>& conta
   if(contacts.size() > 0) {
     //check each enemy for collisions with the bullet
     for(auto enemy : _enemies) {
-      //get enemy physics component, have to use GetCompatibleComponent because enemies have an EnemyPhysicsComponent
-      auto enemyPhysics = enemy->GetCompatibleComponent<PhysicsComponent>()[0];
-	  
-      //if they are colliding
-      if(parentPhysics->isTouching(*enemyPhysics)) {
-        if(auto plr = _player.lock()) {
-          auto score = plr->get_components<PlayerScoreComponent>()[0];
-          //delete enemy
-          auto enemyHealth = enemy->get_components<EnemyHealthComponent>()[0];
-          //this hardocoded damage will become something like
-          //plr->getWeaponDamage() when we add power ups
-          enemyHealth->decreaseHealth(1);
-          score->increasePoints(30);
-          //update the list of enemies!!
-          _enemies = _parent->scene->ents.find("enemy");
-          break;
-        }
-      }          
+      //get bounds of enemy sprite
+      auto anim = enemy->get_components<AnimatedSpriteComponent>()[0];
+      auto bounds = anim->getSprite().getGlobalBounds();
+      //check for collision if enemy is in the view
+      if(Renderer::isInView(bounds)) {
+        //get enemy physics component, have to use GetCompatibleComponent because enemies have an EnemyPhysicsComponent
+        auto enemyPhysics = enemy->GetCompatibleComponent<PhysicsComponent>()[0];
+      
+        //if they are colliding
+        if(parentPhysics->isTouching(*enemyPhysics)) {
+          if(auto plr = _player.lock()) {
+            auto score = plr->get_components<PlayerScoreComponent>()[0];
+            //delete enemy
+            auto enemyHealth = enemy->get_components<EnemyHealthComponent>()[0];
+            //this hardocoded damage will become something like
+            //plr->getWeaponDamage() when we add power ups
+            enemyHealth->decreaseHealth(1);
+            score->increasePoints(30);
+            //update the list of enemies!!
+            _enemies = _parent->scene->ents.find("enemy");
+            break;
+          }
+        }          
+      }
     }
   }
 

@@ -41,12 +41,12 @@ public:
   void setSize(const sf::Vector2f& size);
   const sf::Vector2f& getSize() const;
   bool isFacingRight() const;
-
   void setHurt(bool h);
   bool isHurt() const;
   int getFrameCount() const;
   float getFrameTime() const;
   void lockInAnimation(int row);
   bool isDone() const;
+  const sf::Sprite& getSprite() const;
 };
 

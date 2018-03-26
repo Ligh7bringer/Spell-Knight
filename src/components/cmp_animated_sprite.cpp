@@ -195,3 +195,7 @@ float AnimatedSpriteComponent::getFrameTime() const {
 bool AnimatedSpriteComponent::isDone() const {
     return _done;
 }
+
+const Sprite& AnimatedSpriteComponent::getSprite() const {
+    return _sprite;
+}

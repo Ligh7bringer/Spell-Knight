@@ -104,19 +104,21 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
     return eyeDemon;
 }
 
+//makes a plant "turret"
 std::shared_ptr<Entity> EntityFactory::makePlant(Scene* scene, const sf::Vector2f& pos) {
     auto plant = scene->makeEntity();
     plant->addTag("enemy");
     plant->setPosition(pos);
-    auto anim = plant->addComponent<AnimatedSpriteComponent>(Vector2f(64.f, 41.f));
+    auto anim = plant->addComponent<AnimatedSpriteComponent>(Vector2f(64.f, 45.f));
     anim->setSpritesheet(TextureManager::getTexture("plant-attack.png"));
     anim->setNumberOfFrames(4);
     anim->setFacingRight(false);
-    auto physics = plant->addComponent<EnemyPhysicsComponent>(Vector2f(64.f, 41.f), false);
+    auto physics = plant->addComponent<EnemyPhysicsComponent>(Vector2f(50.f, 45.f), false);
     physics->setRestitution(0.f);
-    physics->setFriction(5.f);
+    physics->setFriction(20.f);
     plant->addComponent<EnemyTurretComponent>();
     plant->addComponent<EnemyHealthComponent>(1);
+    plant->addComponent<HurtComponent>();
 
     return plant;
 }

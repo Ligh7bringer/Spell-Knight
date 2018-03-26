@@ -4,16 +4,17 @@
 #include "cmp_animated_sprite.h"
 #include "../../engine/lib_texture_manager/TextureManager.h"
 #include "engine.h"
+#include "../Log.h"
 
 using namespace std;
 using namespace sf;
 
 void EnemyTurretComponent::update(double dt) {
   _firetime -= dt;
-  
+
   if (_firetime <= 0.f) {
     fire();
-    _firetime = 2.f;
+    _firetime = 3.f;
   }
 }
 
@@ -34,8 +35,9 @@ void EnemyTurretComponent::fire() const {
   auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(32.f, 32.f));
   p->setRestitution(.4f);
   p->setFriction(.005f);
-  p->impulse(sf::rotate(Vector2f(7.f, 8.f) * _direction, -_parent->getRotation()));
+  p->impulse(Vector2f(7.f, 8.f) * _direction);
 }
 
 EnemyTurretComponent::EnemyTurretComponent(Entity* p)
-    : Component(p), _firetime(2.f), _offset(Vector2f(-32.f, -16.f)), _direction(Vector2f(-1.f, 1.f)) {}
+    : Component(p), _firetime(2.f), _offset(Vector2f(-32.f, -16.f)),
+     _direction(Vector2f(-1.f, 1.f)), _player(_parent->scene->ents.find("player")[0]), _rotationCooldown(10.f) {}
