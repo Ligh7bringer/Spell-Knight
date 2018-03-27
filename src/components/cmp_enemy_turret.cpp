@@ -14,7 +14,7 @@ void EnemyTurretComponent::update(double dt) {
 
   if (_firetime <= 0.f) {
     fire();
-    _firetime = 3.f;
+    _firetime = 2.f;
   }
 }
 

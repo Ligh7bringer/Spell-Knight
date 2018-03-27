@@ -25,4 +25,6 @@ public:
 	void setAir(bool b);
 
 	bool isGrounded() const;
-};
+		void setGravity(int32 gs);
+
+		};

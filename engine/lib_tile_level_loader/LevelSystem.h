@@ -52,7 +52,8 @@ public:
     enum types {
       EYE = 'e',
       SLIME = 's',
-      PLANT = 'p'
+      PLANT = 'p',
+				BIRD = 'b'
     };
   };
 

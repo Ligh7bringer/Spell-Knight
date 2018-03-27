@@ -79,3 +79,7 @@ bool EnemyPhysicsComponent::isJumping() const {
 void EnemyPhysicsComponent::setAir(bool b) {
 	_isAir = b;
 }
+
+void EnemyPhysicsComponent::setGravity(int32 gs){
+  _body->SetGravityScale(gs);
+}

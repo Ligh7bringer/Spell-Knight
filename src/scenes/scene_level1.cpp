@@ -68,6 +68,11 @@ void Level1Scene::Restart() {
     auto p = LevelSystem::getTilePosition(pp);
     EntityFactory::makePlant(this, p);
   }
+  auto birdPos = LevelSystem::findTiles(LevelSystem::enemyTiles::BIRD);
+  for(auto bp : birdPos) {
+    auto p = LevelSystem::getTilePosition(bp);
+    EntityFactory::makeBird(this, p);
+  }
   
   // Add physics colliders to level tiles.  
   EntityFactory::makeWalls(this);

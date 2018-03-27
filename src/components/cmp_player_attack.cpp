@@ -87,9 +87,9 @@ void PlayerAttackComponent::initAttacks() {
     Attack fireball;
     fireball.type = FIREBALL;
     fireball.damage = 4;
-    fireball.spriteSize = Vector2f(153.f, 153.f);
-    fireball.spriteSheet = "test.png";    
-    fireball.frameCount = 6;
+    fireball.spriteSize = Vector2f(45.f, 45.f);
+    fireball.spriteSheet = "icicle_1.2.png";
+    fireball.frameCount = 5;
     fireball.row = 0;
     _availableAttacks.push_back(fireball);
 }

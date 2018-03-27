@@ -18,6 +18,7 @@
 #include "states/slime_states.h"
 #include "states/eye_states.h"
 #include "states/fish_states.h"
+#include "states/bird_states.h"
 #include "components/cmp_ai_steering.h"
 
 using namespace sf;
@@ -61,6 +62,7 @@ std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& p
     //slime->addComponent<SteeringComponent>(scene->ents.find("player")[0]);
     auto sm = slime->addComponent<StateMachineComponent>();
     sm->addState("roaming", make_shared<RoamingState>());
+  //sm->addState("steering", make_shared<SteeringState>());
     sm->changeState("roaming");
 
     return slime;
@@ -123,6 +125,29 @@ std::shared_ptr<Entity> EntityFactory::makePlant(Scene* scene, const sf::Vector2
     plant->addComponent<HurtComponent>();
 
     return plant;
+}
+
+std::shared_ptr<Entity> EntityFactory::makeBird(Scene *scene, const sf::Vector2f &pos) {
+  auto bird = scene->makeEntity();
+  bird->addTag("enemy");
+  bird->setPosition(pos);
+  auto anim = bird->addComponent<AnimatedSpriteComponent>(Vector2f(50.f, 50.f));
+  anim->setSpritesheet(TextureManager::getTexture("eyesleep.png"));
+  anim->setNumberOfFrames(4);
+  auto physics = bird->addComponent<EnemyPhysicsComponent>(Vector2f(50.f, 50.f), false);
+  physics->setGravityScale(0);
+  physics->setRestitution(0.f);
+  physics->setFriction(20.f);
+  bird->addComponent<EnemyTurretComponent>();
+  bird->addComponent<HurtComponent>();
+  bird->addComponent<EnemyHealthComponent>(1);
+  bird->addComponent<SteeringComponent>(scene->ents.find("player")[0]);
+  auto sm = bird->addComponent<StateMachineComponent>();
+  sm->addState("sleepingbird", std::make_shared<SleepingbirdState>());
+  sm->addState("flyingbird", std::make_shared<FlyingbirdState>(scene->ents.find("player")[0]));
+  sm->changeState("flyingbird");
+
+  return bird;
 }
 
 //makes a collectible in Scene scene at position pos
