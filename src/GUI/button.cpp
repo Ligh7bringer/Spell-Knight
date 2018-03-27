@@ -8,6 +8,8 @@ using namespace sf;
 Button::Button(const Vector2f& pos, const Vector2f& size, const std::string& text) {
     _panel = Panel(pos, size, "DoctorSoos.ttf");
     _panel.setText(text);
+    _panel.setTextSize(30);
+    _panel.setGUI(true);
     _clicked = false;
 }
 

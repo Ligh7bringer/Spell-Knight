@@ -58,12 +58,12 @@ void PlayerAttackComponent::fire() {
         auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(32.f, 32.f));
         //the bullet shouldn't be affected by gravity 
         p->setGravityScale(0.0f);
-        p->setRestitution(.4f);
+        p->setRestitution(.1f);
         p->setFriction(.005f);
         //set the appropirate direction
         p->setLinearVelocity(right ? Vector2f(_speed, 0) : Vector2f(-_speed, 0));
-        
-        _cooldown = 1.f;
+  
+        _cooldown = _currentAttack.cooldown;
     }    
 }
 
@@ -77,6 +77,7 @@ void PlayerAttackComponent::initAttacks() {
     Attack normal;
     normal.type = NORMAL;
     normal.damage = 1;
+    normal.cooldown = 1.0f;
     normal.spriteSize = Vector2f(32.f, 32.f);
     normal.spriteSheet = "projectiles2.png";
     normal.frameCount = 6;
@@ -86,10 +87,11 @@ void PlayerAttackComponent::initAttacks() {
     //fireball attack
     Attack fireball;
     fireball.type = FIREBALL;
-    fireball.damage = 4;
-    fireball.spriteSize = Vector2f(45.f, 45.f);
-    fireball.spriteSheet = "icicle_1.2.png";
-    fireball.frameCount = 5;
+    fireball.damage = 2;
+    fireball.cooldown = 1.5f;
+    fireball.spriteSize = Vector2f(153.f, 153.f);
+    fireball.spriteSheet = "test.png";    
+    fireball.frameCount = 6;
     fireball.row = 0;
     _availableAttacks.push_back(fireball);
 }
@@ -99,6 +101,7 @@ void PlayerAttackComponent::changeAttack(AttackType at) {
         if(attack.type == at) {
             _currentAttack = attack;
             LOG(INFO) << "Changing player attack to " << attack.type;
+            //_cooldown = _currentAttack.cooldown;
         }
     }
 }

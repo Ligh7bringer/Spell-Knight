@@ -32,4 +32,5 @@ public:
     void setTextSize(const int size);
     void setGUI(bool value);
     sf::FloatRect getBoundingBox() const;
+    void setTextLocalised(const wchar_t* text);
 };

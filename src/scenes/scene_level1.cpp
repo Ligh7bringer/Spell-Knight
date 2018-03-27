@@ -5,9 +5,9 @@
 #include "system_renderer.h"
 #include <string>
 #include "../../engine/lib_texture_manager/TextureManager.h"
-#include "../entity_factory.h"
+#include "../misc/entity_factory.h"
 #include "../Log.h"
-#include "../parallax_background.h"
+#include "../misc/parallax_background.h"
 #include "ecm.h"
 
 using namespace std;
@@ -22,12 +22,12 @@ void Level1Scene::Load() {
   auto windowSize = Engine::getWindowSize();  
   _view.reset(FloatRect(0, 0, windowSize.x, windowSize.y));
 
-  ls::loadLevelFile("res/lvl1.txt", 32.0f);
+  ls::loadLevelFile("res/levels/lvl1.txt", 32.0f);
   //auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);
   //ls::setOffset(Vector2f(0, ho));
   
   //initialise background and add layers
-  _parBackground = ParallaxBackground(Vector2f(1280.f, 760.f));
+  _parBackground = ParallaxBackground(Vector2f(windowSize.x, windowSize.y));
   _parBackground.addLayer(0.5f, "forest.jpg");
   _parBackground.addLayer(0.8f, "trees.png");
   _parBackground.addLayer(1.2f, "ground.png");
@@ -48,7 +48,6 @@ void Level1Scene::Restart() {
 
   // Create player
   player = EntityFactory::makePlayer(this, Vector2f(100.f, 100.f));
-  //_view.setCenter(player->getPosition());
 
   // Create some enemies  
   auto slimePos = LevelSystem::findTiles(LevelSystem::enemyTiles::SLIME);
@@ -112,7 +111,7 @@ void Level1Scene::Update(const double& dt) {
     _view.setCenter(vx, vy);
     Renderer::setView(_view);
   }
-  //Teleport to start if we fall off map.
+
   //restart level if we fall off map
   if (!player->isAlive()) {
     Restart();

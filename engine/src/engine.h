@@ -6,7 +6,7 @@
 #include <maths.h>
 #include <mutex>
 #include <string>
-#include "../../src/parallax_background.h"
+#include "../../src/misc/parallax_background.h"
 
 class Scene {
 public:

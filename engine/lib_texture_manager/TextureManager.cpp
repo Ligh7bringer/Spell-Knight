@@ -6,9 +6,11 @@ std::vector<std::string> TextureManager::_resource_directories;
 
 //adds default resource directories
 void TextureManager::initialise() {
-    addResourceDirectory("res/img/tiles/");
-    addResourceDirectory("res/img/");
-    addResourceDirectory("res/img/knight/");
+    addResourceDirectory("res/sprites/backgrounds/");
+    addResourceDirectory("res/sprites/bullets/");
+    addResourceDirectory("res/sprites/enemies/");
+    addResourceDirectory("res/sprites/player/");
+    addResourceDirectory("res/sprites/tiles/");    
 }
 
 const sf::Texture& TextureManager::getTexture(const std::string& filename) {

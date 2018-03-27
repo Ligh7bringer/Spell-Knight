@@ -9,8 +9,8 @@
 #include <stdexcept>
 #include "../lib_texture_manager/TextureManager.h"
 #include "../../src/Log.h"
-#include "../../src/input_manager.h"
-#include "../../src/settings_parsers.h"
+#include "../lib_input_manager/input_manager.h"
+#include "../lib_settings_parser/settings_parser.h"
 
 using namespace sf;
 using namespace std;

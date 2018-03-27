@@ -6,6 +6,7 @@
 #include "../GUI/button.h"
 #include "../GUI/menu.h"
 #include "../../engine/src/engine.h"
+#include "../../engine/lib_settings_parser/settings_parser.h"
 
 using namespace std;
 using namespace sf;
@@ -14,10 +15,14 @@ Menu mainMenu;
 Panel title;
 
 void MenuScene::Load() {
+  SettingsParser settings;
+  settings.readFile("res/lang/en.txt");
+
   mainMenu = Menu();
   title = Panel(Vector2f(500, 200), Vector2f(100, 100), "DoctorSoos.ttf");
+  title.setGUI(false);
   title.setPanelColour(Color::Transparent);
-  title.setText("Spell Knight");
+  title.setText(settings.get("title"));
   title.setTextColour(Color::White);
 
   setLoaded(true);

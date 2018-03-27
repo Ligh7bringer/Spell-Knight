@@ -61,14 +61,6 @@ void FlyingState::execute(Entity* owner, double dt) noexcept {
             physics->dampen({0.9f, 0.3f});
     _direction = Vector2f(0, 0);
 
-      LOG(DEBUG) << "flying";
-      physics->setGravityScale(0.f);
+      physics->setGravityScale(0);
   }
-  //if(pos.y == (pos.y + 1.f)){
-    LOG(DEBUG)<< pos.y;
-  //}
-
-
-
-    //}
 }
