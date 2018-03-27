@@ -10,6 +10,8 @@ using namespace sf;
 * A panel which displays a rectangle with a string centered in it.
 */
 
+View currView;
+
 //initialise everything needed
 Panel::Panel(const Vector2f& pos, const Vector2f& size, const std::string& font) : _size(size), _position(pos) {
     _font = Resources::get<sf::Font>(font);
@@ -27,25 +29,32 @@ Panel::Panel(const Vector2f& pos, const Vector2f& size, const std::string& font)
 void Panel::update(double dt) {
     //if panel is a GUI panel
     if(_isGUI) {
-        //recalculate position of the panel so that it is always at the same position as the view moves
-        auto pos = Engine::GetWindow().mapPixelToCoords(static_cast<Vector2i>(_position));
-
         //set the position
-        _rect.setPosition(pos);
+        _rect.setPosition(_position);
     }
 }
 
 //render the panel and the text
 void Panel::render() {
-    Renderer::queue(&_rect);
-    Renderer::queue(&_text);
+    if(_isGUI) {
+        //using a view seems to work better for GUI stuff
+        currView = Engine::getCurrentView();
+        View v = View(FloatRect(0, 0, currView.getSize().x, currView.getSize().y));
+        Renderer::setView(v);
+        Engine::GetWindow().draw(_rect);
+        Engine::GetWindow().draw(_text);
+        Renderer::setView(currView);
+    } else {
+        Renderer::queue(&_rect);
+        Renderer::queue(&_text);
+    }
 }
 
 //repositions the text so it is in the centre of the panel
 void Panel::recentreText() {
     //get all needed dimensions and positions
-    sf::Vector2f txtSize(_text.getLocalBounds().width, _text.getLocalBounds().height);
-    sf::Vector2f containerSize(_rect.getLocalBounds().width, _rect.getLocalBounds().height);
+    sf::Vector2f txtSize(_text.getGlobalBounds().width, _text.getGlobalBounds().height);
+    sf::Vector2f containerSize(_rect.getGlobalBounds().width, _rect.getGlobalBounds().height);
     //global bounds contain transformations and translations which means the position will be correct
     //i.e. the text will always be in the view because the container is 
     sf::Vector2f containerPosition(_rect.getGlobalBounds().left, _rect.getGlobalBounds().top);
@@ -57,13 +66,18 @@ void Panel::recentreText() {
 }
 
 //------ SETTERS ------
-
 //sets the text displayed in the panel
 void Panel::setText(const std::string& text) {
     _renderString = text;
     _text.setString(_renderString);
     //make sure the text is centered
     recentreText();
+}
+
+//sets non english string as the text
+void Panel::setTextLocalised(const wchar_t* text) {
+    _text.setString(text);
+    //LOG(DEBUG) << text;
 }
 
 //sets the colour of the panel
@@ -92,12 +106,6 @@ void Panel::setTextSize(const int size) {
 //the enemy health bars are not GUI and they follow the enemies
 void Panel::setGUI(bool value) {
     _isGUI = value;
-
-    if(!_isGUI) {
-        _rect.setOrigin(Vector2f(_size.x / 2.f, _size.y / 2.f));
-    } else {
-        _rect.setOrigin(Vector2f(0, 0));
-    }
 }
 
 FloatRect Panel::getBoundingBox() const {

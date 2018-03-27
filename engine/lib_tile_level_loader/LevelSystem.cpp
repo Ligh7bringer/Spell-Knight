@@ -2,7 +2,7 @@
 #include <fstream>
 #include "../../src/Log.h"
 #include "../../engine/src/system_renderer.h"
-
+#include "../../engine/lib_texture_manager/TextureManager.h"
 using namespace std;
 using namespace sf;
 
@@ -107,9 +107,7 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
 void LevelSystem::buildSprites(bool optimise) {
   _sprites.clear();
 
-  if(!_spritesheet.loadFromFile("res/img/tiles5.png")) {
-    LOG(ERROR) << "Couldn't load level system spritesheet!";
-  }
+  _spritesheet = TextureManager::getTexture("tiles5.png");
 
   struct tp {
     sf::Vector2f p;

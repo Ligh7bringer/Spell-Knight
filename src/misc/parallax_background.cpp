@@ -7,8 +7,6 @@
 using namespace sf;
 using namespace std;
 
-Texture bg, trees, ground;
-
 /*
 * Allows the creation of parallax backgrounds. They consist of layers and every layer 
 * moves at different speed to create an effect of depth.
@@ -19,7 +17,7 @@ View mainView;
 
 ParallaxBackground::ParallaxBackground(const sf::Vector2f& size) : _target(Vector2f(0.f, 0.f)) {
     //this variable allows the sprites to be repeated. Each sprite's width is multiplied by this factor which creates a
-    //scrolling background. A big multiplie may reduce performance and fps.
+    //scrolling background. A big multiplier may reduce performance and fps.
     _widthMultiplier = 10;
     //set size
     _size = size;

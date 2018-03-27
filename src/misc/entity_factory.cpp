@@ -33,9 +33,9 @@ std::shared_ptr<Entity> EntityFactory::makePlayer(Scene* scene, const Vector2f& 
     player->addTag("player");
   
     auto anim = player->addComponent<AnimatedSpriteComponent>(Vector2f(64.f, 64.f));
-    anim->setSpritesheet(TextureManager::getTexture("WIZARD.png"));
+    anim->setSpritesheet(TextureManager::getTexture("wizard.png"));
     anim->setNumberOfFrames(4);
-    anim->setSpriteSheetPadding(2);
+    anim->setSpriteSheetPadding(0);
     anim->setFrameTime(0.2f);
     player->addComponent<PlayerPhysicsComponent>(Vector2f(27.f, 62.f));
     player->addComponent<PlayerAttackComponent>();

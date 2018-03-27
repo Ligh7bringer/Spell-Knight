@@ -62,7 +62,7 @@ void PlayerAttackComponent::fire() {
         p->setFriction(.005f);
         //set the appropirate direction
         p->setLinearVelocity(right ? Vector2f(_speed, 0) : Vector2f(-_speed, 0));
-        
+  
         _cooldown = _currentAttack.cooldown;
     }    
 }

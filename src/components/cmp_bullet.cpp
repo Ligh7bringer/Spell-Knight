@@ -11,6 +11,7 @@
 #include "cmp_enemy_health.h"
 #include "../../engine/src/system_renderer.h"
 #include "../Log.h"
+#include "cmp_particles.h"
 
 using namespace std;
 using namespace sf;
@@ -93,6 +94,8 @@ void BulletComponent::explode() {
   ac->setNumberOfFrames(8);
   ac->setCurrentRow(0);
   ac->setFrameTime(0.09f);
+  
+  _parent->addComponent<ParticleSystemComponent>();
 
   //set exploded to true so we know it has exploded
   _exploded = true;

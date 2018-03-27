@@ -1,0 +1,4 @@
+title=Spell Knight
+play=Play
+options=Options
+exit=Exit

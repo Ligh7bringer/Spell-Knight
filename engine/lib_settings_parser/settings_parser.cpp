@@ -1,4 +1,4 @@
-#include "settings_parsers.h"
+#include "settings_parser.h"
 #include "../../src/Log.h"
 #include <fstream>
 #include <vector>
