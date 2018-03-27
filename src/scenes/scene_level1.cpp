@@ -5,9 +5,9 @@
 #include "system_renderer.h"
 #include <string>
 #include "../../engine/lib_texture_manager/TextureManager.h"
-#include "../entity_factory.h"
+#include "../misc/entity_factory.h"
 #include "../Log.h"
-#include "../parallax_background.h"
+#include "../misc/parallax_background.h"
 #include "ecm.h"
 
 using namespace std;
@@ -107,7 +107,7 @@ void Level1Scene::Update(const double& dt) {
     _view.setCenter(vx, vy);
     Renderer::setView(_view);
   }
-  //Teleport to start if we fall off map.
+
   //restart level if we fall off map
   if (!player->isAlive()) {
     Restart();

@@ -1,5 +1,5 @@
 #include "input_manager.h"
-#include "Log.h"
+#include "../../src/Log.h"
 
 using namespace sf;
 using namespace std;

@@ -1,5 +1,5 @@
 #include "settings_parsers.h"
-#include "Log.h"
+#include "../../src/Log.h"
 #include <fstream>
 #include <vector>
 

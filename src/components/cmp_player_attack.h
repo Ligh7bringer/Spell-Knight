@@ -12,6 +12,7 @@ public:
     struct Attack {
         AttackType type;
         int damage;
+        float cooldown;
         sf::Vector2f spriteSize;
         std::string spriteSheet;
         int frameCount;

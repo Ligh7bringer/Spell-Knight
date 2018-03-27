@@ -5,7 +5,7 @@
 #include "../../engine/lib_ecm/ecm.h"
 #include "cmp_player_attack.h"
 #include <SFML/Window/Keyboard.hpp>
-#include "../input_manager.h"
+#include "../../engine/lib_input_manager/input_manager.h"
 #include "../scenes/scene_level1.h"
 
 using namespace std;
