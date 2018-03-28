@@ -39,7 +39,5 @@ public:
             return convertToType<T>(ret);
         }
             return 0;
-    }
-
-  
+    }  
 };

@@ -19,10 +19,10 @@ void MenuScene::Load() {
   settings.readFile("res/lang/en.txt");
 
   mainMenu = Menu();
-  title = Panel(Vector2f(500, 200), Vector2f(100, 100), "DoctorSoos.ttf");
+  title = Panel(Vector2f(500, 200), Vector2f(100, 100), "Anonymous.ttf");
   title.setGUI(false);
   title.setPanelColour(Color::Transparent);
-  title.setText(settings.get("title"));
+  title.setTextLocalised(settings.get("title"));
   title.setTextColour(Color::White);
 
   setLoaded(true);

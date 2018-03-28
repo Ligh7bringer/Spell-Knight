@@ -2,6 +2,9 @@
 #include "../../engine/src/system_renderer.h"
 #include "../../engine/src/system_resources.h"
 #include <engine.h>
+#include <locale>
+#include <codecvt>
+#include <string>
 #include "../Log.h"
 
 using namespace sf;
@@ -22,7 +25,7 @@ Panel::Panel(const Vector2f& pos, const Vector2f& size, const std::string& font)
     _text.setPosition(pos);
     _rect = RectangleShape(size);
     _rect.setPosition(pos);
-    _rect.setOrigin(_size/2.f);
+    //_rect.setOrigin(_size/2.f);
     _rect.setFillColor(sf::Color(255,255,255,128));
     _isGUI = true;
 }
@@ -72,12 +75,16 @@ void Panel::setText(const std::string& text) {
     _renderString = text;
     _text.setString(_renderString);
     //make sure the text is centered
-    recentreText();
+    //recentreText();
 }
 
 //sets non english string as the text
-void Panel::setTextLocalised(const wchar_t* text) {
-    _text.setString(text);
+void Panel::setTextLocalised(const std::string& text) {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    //std::string narrow = converter.to_bytes(text);
+    std::wstring wide = converter.from_bytes(text);
+
+    _text.setString(wide);
     //LOG(DEBUG) << text;
 }
 
