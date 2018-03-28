@@ -9,7 +9,7 @@ Button::Button(const Vector2f& pos, const Vector2f& size, const std::string& tex
     _panel = Panel(pos, size, "DoctorSoos.ttf");
     _panel.setText(text);
     _panel.setTextSize(30);
-    _panel.setGUI(true);
+    _panel.setGUI(false);
     _clicked = false;
 }
 

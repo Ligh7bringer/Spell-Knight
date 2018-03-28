@@ -27,7 +27,7 @@ EnemyHealthComponent::EnemyHealthComponent(Entity* p, int health) : Component(p)
     //x offset shouldn't be needed but this is a vector anyway just in case
     auto anim = _parent->get_components<AnimatedSpriteComponent>()[0];
     _offset = anim->getSize();
-    _offset.x = 0;
+    _offset.x = _offset.x/2;
     _panelAlpha = 180;
 }
 
