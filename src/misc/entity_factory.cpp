@@ -13,6 +13,7 @@
 #include "../components/cmp_enemy_health.h"
 #include "../components/cmp_state_machine.h"
 #include "../components/cmp_ai_steering.h"
+#include "../components/cmp_moving_platform.h"
 #include "../states/slime_states.h"
 #include "../states/eye_states.h"
 #include "../states/fish_states.h"
@@ -163,6 +164,34 @@ std::shared_ptr<Entity> EntityFactory::makePowerUp(Scene* scene, const sf::Vecto
     anim->setFrameTime(0.1f);
 
     return pu;
+}
+
+std::shared_ptr<Entity> EntityFactory::makeMovingPlatform(Scene* scene, const sf::Vector2f& pos, const sf::Vector2f& distance, float time) {
+    auto platform = scene->makeEntity();
+    platform->setPosition(pos);
+    auto anim = platform->addComponent<AnimatedSpriteComponent>(Vector2f(64.f, 32.f));
+    anim->setSpritesheet(TextureManager::getTexture("platform.png"));
+    //use a kinematic body
+    auto physics = platform->addComponent<PhysicsComponent>(anim->getSize());
+    physics->setRestitution(0);
+    physics->setGravityScale(0);
+    //physics->setFriction(10.f);
+    auto moving = platform->addComponent<MovingPlatformComponent>(distance, time);
+    
+    return platform;
+}
+
+std::shared_ptr<Entity> EntityFactory::makeFallingPlatform(Scene* scene, const sf::Vector2f& pos) {
+    auto platform = scene->makeEntity();
+    platform->setPosition(pos);
+    auto anim = platform->addComponent<AnimatedSpriteComponent>(Vector2f(64.f, 32.f));
+    anim->setSpritesheet(TextureManager::getTexture("platform.png"));
+    //use a kinematic body
+    auto physics = platform->addComponent<PhysicsComponent>(true, anim->getSize());
+    physics->setGravityScale(0);
+    physics->setRestitution(0);
+    
+    return platform;
 }
 
 //creates the physics colliders for the tiles in the currently loaded level in Scene scene

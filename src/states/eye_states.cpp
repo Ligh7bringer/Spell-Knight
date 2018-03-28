@@ -53,14 +53,14 @@ void FlyingState::execute(Entity* owner, double dt) noexcept {
 	
     //check if the creature is certain height above ground
     //if (physics->isGrounded()) {
-  if(physics->isGrounded()) {
-    physics->setVelocity(Vector2f(physics->getVelocity().x, 0.f));
-    physics->teleport(Vector2f(pos.x, pos.y - 1.0f));
-    physics->impulse(Vector2f(0, -1.f));
-            // Dampen X axis movement
-            physics->dampen({0.9f, 0.3f});
-    _direction = Vector2f(0, 0);
+    if(physics->isGrounded()) {
+        physics->setVelocity(Vector2f(physics->getVelocity().x, 0.f));
+        physics->teleport(Vector2f(pos.x, pos.y - 1.0f));
+        physics->impulse(Vector2f(0, -1.f));
+        // Dampen X axis movement
+        physics->dampen({0.9f, 0.3f});
+        _direction = Vector2f(0, 0);
 
-      physics->setGravityScale(0);
-  }
+        physics->setGravityScale(0);
+    }
 }

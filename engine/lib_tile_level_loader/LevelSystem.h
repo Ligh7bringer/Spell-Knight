@@ -36,6 +36,8 @@ public:
 		  PLATFORM1 = 'I',
 		  PLATFORM2 = 'O',
 		  PLATFORM3 = 'P',
+      PLATFORM_MOVING = 'M',
+      PLATFORM_FALLING = 'F'
 	  };
   };
   struct baseTiles{

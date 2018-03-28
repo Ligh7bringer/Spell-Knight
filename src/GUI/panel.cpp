@@ -81,7 +81,7 @@ void Panel::setText(const std::string& text) {
 //sets non english string as the text
 void Panel::setTextLocalised(const std::string& text) {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    //std::string narrow = converter.to_bytes(text);
+    //convert to a wide string
     std::wstring wide = converter.from_bytes(text);
 
     _text.setString(wide);
