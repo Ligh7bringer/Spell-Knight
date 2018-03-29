@@ -113,14 +113,20 @@ std::shared_ptr<Entity> EntityFactory::makePlant(Scene* scene, const sf::Vector2
     auto plant = scene->makeEntity();
     plant->addTag("enemy");
     plant->setPosition(pos);
+
     auto anim = plant->addComponent<AnimatedSpriteComponent>(Vector2f(64.f, 45.f));
     anim->setSpritesheet(TextureManager::getTexture("plant-attack.png"));
     anim->setNumberOfFrames(4);
     anim->setFacingRight(false);
+
     auto physics = plant->addComponent<EnemyPhysicsComponent>(Vector2f(50.f, 45.f), false);
     physics->setRestitution(0.f);
     physics->setFriction(20.f);
-    plant->addComponent<EnemyTurretComponent>();
+
+   auto bullet = plant->addComponent<EnemyTurretComponent>();
+    bullet->setDirection(Vector2f(7.f,8.f));
+  bullet->setOffset(Vector2f(-60.f, -55.f));
+
     plant->addComponent<EnemyHealthComponent>(1);
     plant->addComponent<HurtComponent>();
 
@@ -131,19 +137,26 @@ std::shared_ptr<Entity> EntityFactory::makeBird(Scene *scene, const sf::Vector2f
   auto bird = scene->makeEntity();
   bird->addTag("enemy");
   bird->setPosition(pos);
-  auto anim = bird->addComponent<AnimatedSpriteComponent>(Vector2f(50.f, 50.f));
-  anim->setSpritesheet(TextureManager::getTexture("eyesleep.png"));
-  anim->setNumberOfFrames(4);
+
+  auto anim = bird->addComponent<AnimatedSpriteComponent>(Vector2f(68.f,59.f));
+  anim->setSpritesheet(TextureManager::getTexture("lighning_1.png"));
+  anim->setNumberOfFrames(1);
+
   auto physics = bird->addComponent<EnemyPhysicsComponent>(Vector2f(50.f, 50.f), false);
   physics->setGravityScale(0);
   physics->setRestitution(0.f);
   physics->setFriction(20.f);
-  bird->addComponent<EnemyTurretComponent>();
+
+  auto bullet = bird->addComponent<EnemyTurretComponent>();
+  bullet->setDirection(Vector2f(0.f, 1.f));
+  bullet->setOffset(Vector2f(34.f, 51.f));
+
   bird->addComponent<HurtComponent>();
   bird->addComponent<EnemyHealthComponent>(1);
   bird->addComponent<SteeringComponent>(scene->ents.find("player")[0]);
+
   auto sm = bird->addComponent<StateMachineComponent>();
-  sm->addState("sleepingbird", std::make_shared<SleepingbirdState>());
+  //sm->addState("sleepingbird", std::make_shared<SleepingbirdState>());
   sm->addState("flyingbird", std::make_shared<FlyingbirdState>(scene->ents.find("player")[0]));
   sm->changeState("flyingbird");
 

@@ -2,6 +2,8 @@
 #include "cmp_physics.h"
 #include <ecm.h>
 
+using namespace sf;
+
 class EnemyTurretComponent : public Component {
 protected:
   void fire() const;
@@ -15,5 +17,7 @@ public:
   void update(double dt) override;
   void render() override {}
   explicit EnemyTurretComponent(Entity* p);
+    void setDirection(const sf::Vector2f& direction);
+    void setOffset(const Vector2f& offset);
   EnemyTurretComponent() = delete;
 };

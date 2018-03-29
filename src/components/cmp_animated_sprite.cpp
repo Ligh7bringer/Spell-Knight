@@ -23,7 +23,7 @@ AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, Vector2f size) : Com
         //set this to the padding between rows in the spritesheet!!
         //all online spritesheet packers seem to add padding for some reason
         _spriteSheetPadding = 0;
-		_currentRow = 0;
+		    _currentRow = 0;
         _hurt = false;
         _hurtTimer = 1.0f;
         _numOfFrames = 1;

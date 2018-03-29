@@ -24,6 +24,7 @@ void EnemyTurretComponent::fire() const {
   bullet->setPosition(_parent->getPosition() + _offset);
   bullet->addComponent<HurtComponent>();
   bullet->addComponent<TurretBulletComponent>();
+
   //add a sprite
   auto sprite = bullet->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
   sprite->setNumberOfFrames(5);
@@ -35,9 +36,23 @@ void EnemyTurretComponent::fire() const {
   auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(32.f, 32.f));
   p->setRestitution(.4f);
   p->setFriction(.005f);
-  p->impulse(Vector2f(7.f, 8.f) * _direction);
+  p->impulse(Vector2f(1.f, 1.f) * _direction);
 }
 
 EnemyTurretComponent::EnemyTurretComponent(Entity* p)
-    : Component(p), _firetime(2.f), _offset(Vector2f(-32.f, -16.f)),
-     _direction(Vector2f(-1.f, 1.f)), _player(_parent->scene->ents.find("player")[0]), _rotationCooldown(10.f) {}
+    : Component(p), _firetime(2.f),
+      _player(_parent->scene->ents.find("player")[0]), _rotationCooldown(10.f) {
+  _direction = Vector2f(0.f,0.f);
+  _offset = Vector2f(-45.f, -16.f);
+
+}
+
+void EnemyTurretComponent::setDirection(const Vector2f& direction){
+  _direction = direction;
+}
+
+void EnemyTurretComponent::setOffset(const Vector2f& offset){
+  _offset = offset;
+}
+
+
