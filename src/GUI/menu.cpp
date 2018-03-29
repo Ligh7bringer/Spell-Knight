@@ -11,17 +11,17 @@ Menu::Menu() {
 
     //Play menu item 
     MenuItem playButton;
-    playButton.button = Button(Vector2f(500, 350), Vector2f(100, 35), settings.get("play"));
+    playButton.button = Button(Vector2f(500, 350), Vector2f(200, 35), settings.get("play"));
     playButton.action = PLAY;
 
     //options menu item
     MenuItem optionsButton;
-    optionsButton.button = Button(Vector2f(500, 400), Vector2f(100, 35), settings.get("options"));
+    optionsButton.button = Button(Vector2f(500, 400), Vector2f(200, 35), settings.get("options"));
     optionsButton.action = OPTIONS;
 
     //exit menu item 
     MenuItem exitButton;
-    exitButton.button = Button(Vector2f(500, 450), Vector2f(100, 35), settings.get("exit"));
+    exitButton.button = Button(Vector2f(500, 450), Vector2f(200, 35), settings.get("exit"));
     exitButton.action = EXIT;
 
     _menuItems.push_back(playButton);

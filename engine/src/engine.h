@@ -10,6 +10,13 @@
 
 class Scene {
 public:
+  struct less_than_y {
+    inline bool operator() (const sf::Vector2f& left, const sf::Vector2f& right)
+    {
+        return (left.y < right.y);
+    }
+  };
+
   Scene() = default;
   virtual ~Scene();
   virtual void Load() = 0;

@@ -68,6 +68,31 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn,
   */
 }
 
+//creates a kinematic body! 
+PhysicsComponent::PhysicsComponent(Entity* p, const sf::Vector2f& size) : Component(p), _size(size), _dynamic(false) {
+  b2BodyDef BodyDef;
+  // kinematic bodies are not affected by forces so they are perfect for moving platforms (almost)
+  BodyDef.type = b2_kinematicBody;
+  BodyDef.position = sv2_to_bv2(invert_height(p->getPosition()));
+
+  // Create the body
+  _body = Physics::GetWorld()->CreateBody(&BodyDef);
+  _body->SetActive(true);
+  {
+    // Create the fixture shape
+    b2PolygonShape Shape;
+    // SetAsBox box takes HALF-Widths!
+    Shape.SetAsBox(sv2_to_bv2(size).x * 0.5f, sv2_to_bv2(size).y * 0.5f);
+    b2FixtureDef FixtureDef;
+    // Fixture properties
+    FixtureDef.friction = 0.1f;
+    FixtureDef.restitution = .2;
+    FixtureDef.shape = &Shape;
+    // Add to body
+    _fixture = _body->CreateFixture(&FixtureDef);
+  }
+}
+
 void PhysicsComponent::setFriction(float r) { _fixture->SetFriction(r); }
 
 void PhysicsComponent::setMass(float m) { _fixture->SetDensity(m); }
@@ -162,14 +187,6 @@ void PhysicsComponent::setGravityScale(int32 gs) {
 
 b2ContactEdge* PhysicsComponent::getContactList() const {
   return _body->GetContactList();
-}
-
-void PhysicsComponent::setParentForDelete() {
-  _parent->setForDelete();
-}
-
-const b2Vec2& PhysicsComponent::getLinearVelocity() {
-  return _body->GetLinearVelocity();
 }
 
 const Vector2f& PhysicsComponent::getSize() {

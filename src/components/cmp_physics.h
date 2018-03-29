@@ -13,8 +13,11 @@ protected:
   sf::Vector2f _size;
 
 public:
+  //constructor for creating static/dynamic bodies
   PhysicsComponent(Entity* p, bool dyn, const sf::Vector2f& size);
-
+  //for creating a kinematic body
+  PhysicsComponent(Entity* p, const sf::Vector2f& size);
+  
   b2Fixture* const getFixture() const;
   //bool isTouching(const PhysicsComponent& pc) const;
   bool isTouching(const PhysicsComponent& pc) const;
@@ -31,9 +34,7 @@ public:
   void teleport(const sf::Vector2f& v);
   void setLinearVelocity(const sf::Vector2f& move);
   void setGravityScale(int32 gs);
-  void setParentForDelete();
   b2ContactEdge* getContactList() const;
-  const b2Vec2& getLinearVelocity();
   const sf::Vector2f& getSize();
   const b2Vec2& getPosition();
   ~PhysicsComponent() override;
