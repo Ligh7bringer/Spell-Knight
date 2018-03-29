@@ -1,0 +1,42 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+
+configuration:
+- Release
+
+cache:
+- build/lib -> appveyor.yml
+
+before_build:
+- cmd: >-
+    git submodule update --init --recursive
+    
+    if not exist build\ mkdir build
+    
+    cd build
+    
+    cmake -G "Visual Studio 15 2017 Win64" ../
+    
+build:
+    project: "build/Games_Engineering.sln"
+    parallel: true
+    verbosity: minimal
+    
+after_build:
+- cmd: >-
+    7z a game.zip %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/Coursework.exe %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/*.dll %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/res 
+    
+artifacts:
+  - path: build/*.zip
+    name: Game_zip
+       
+deploy:
+    description: 'Game package'
+    provider: GitHub
+    on:
+        appveyor_repo_tag: true
+        CONFIGURATION: Release
+    auth_token:
+        secure: gaNPfzFDf02yceIPsb+6lUEf/YfexgCZr7tOGgLybABn/2LdEaMLymgfZLgdUivC
+    artifact: Game_zip            
+    prerelease: true

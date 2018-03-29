@@ -124,9 +124,9 @@ std::shared_ptr<Entity> EntityFactory::makePlant(Scene* scene, const sf::Vector2
     physics->setRestitution(0.f);
     physics->setFriction(20.f);
 
-   auto bullet = plant->addComponent<EnemyTurretComponent>();
+    auto bullet = plant->addComponent<EnemyTurretComponent>();
     bullet->setDirection(Vector2f(7.f,8.f));
-  bullet->setOffset(Vector2f(-60.f, -55.f));
+    bullet->setOffset(Vector2f(-60.f, -55.f));
 
     plant->addComponent<EnemyHealthComponent>(1);
     plant->addComponent<HurtComponent>();
