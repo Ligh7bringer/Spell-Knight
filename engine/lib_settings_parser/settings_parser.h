@@ -9,14 +9,14 @@ private:
     std::pair<std::string, std::string> parseLine(const std::string& line) const;
 
     //converts to number types only I think!!!
-    template<typename T>
+    /*template<typename T>
     T convertToType(const std::string &input) const {
         T value;
         std::stringstream ss(input);
         ss >> value;
         
         return value;
-    }
+    }*/
 
 public:
     SettingsParser() = default;
@@ -31,7 +31,7 @@ public:
 
     void print() const;
 
-    template<typename T>
+    /*template<typename T>
     T get(const std::string& key) const {
         auto it = _data.find(key);
         if(it != _data.end()) {
@@ -39,5 +39,5 @@ public:
             return convertToType<T>(ret);
         }
             return 0;
-    }  
+    }*/  
 };

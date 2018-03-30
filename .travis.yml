@@ -1,0 +1,77 @@
+language: generic
+dist: trusty
+sudo: false
+before_install:
+- "CMAKE_URL=\"https://cmake.org/files/v3.10/cmake-3.10.2-Linux-x86_64.tar.gz\"\necho
+  \"downloading cmake\" ${CMAKE_URL}  \nmkdir cmake && travis_retry wget --no-check-certificate
+  --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake\nexport PATH=${TRAVIS_BUILD_DIR}/cmake/bin:${PATH}\necho
+  ${TRAVIS_BUILD_DIR}/cmake/bin\nls ${TRAVIS_BUILD_DIR}/cmake/bin\nexport CMAKE=$TRAVIS_BUILD_DIR/cmake/bin/cmake\necho
+  done\n  \n"
+- cmake --version
+cache:
+  directories:
+  - "${TRAVIS_BUILD_DIR}/lib"
+  - "${TRAVIS_BUILD_DIR}/build/lib"
+matrix:
+  include:
+  - os: linux
+    env: COMPILER_NAME=gcc COMPILER=g++-6 CXX=g++-6 CC=gcc-6 CACHE_NAME=JOB1
+    addons:
+      apt:
+        sources: &1
+        - llvm-toolchain-precise-3.8
+        - ubuntu-toolchain-r-test
+        packages:
+        - g++-6
+        - gcc-6
+        - xorg-dev
+        - libglu1-mesa-dev
+        - freeglut3-dev
+        - libjpeg-dev
+        - libfreetype6-dev
+        - libxrandr-dev
+        - libglew-dev
+        - libsndfile1-dev
+        - libopenal-dev
+        - libudev-dev
+  - os: linux
+    env: COMPILER_NAME=clang CXX=clang++-3.8 CC=clang-3.8 LLVM_VERSION=3.8 CACHE_NAME=JOB2
+    addons:
+      apt:
+        packages:
+        - clang-3.8
+        - g++-6
+        - gcc-6
+        - xorg-dev
+        - libglu1-mesa-dev
+        - freeglut3-dev
+        - libjpeg-dev
+        - libfreetype6-dev
+        - libxrandr-dev
+        - libglew-dev
+        - libsndfile1-dev
+        - libopenal-dev
+        - libudev-dev
+        sources: *1
+script:
+- uname -a
+- "$CXX --version"
+- "$CMAKE --version"
+- git submodule update --init --recursive
+- mkdir -p build && cd build
+- "$CMAKE .."
+- "$CMAKE --build . --target Coursework --config Release -- -j4"
+- "mv *.a ./bin/"
+- "mv bin SpellKnight"
+- "zip -r game.zip SpellKnight"
+- "mv game.zip SpellKnight_${COMPILER_NAME}_${TRAVIS_OS_NAME}.zip"
+ 
+deploy:
+  provider: releases
+  file_glob: true
+  file: "${TRAVIS_BUILD_DIR}/build/*.zip"
+  skip_cleanup: true
+  on:
+    tags: true
+  api-key:
+    secure: oylDeKeGqhzu2dK2a94wT4ujJs0QLS5Cpm9U595uK7BaCgH7mcGXG4FxNvZNHvJcjv+CIyXLkhIWujvAfort6j0g+PlhVZvCpYxFQCNz6e8QGXlhViC0NCRc+VQBSa3Qa/EYjQxzuHGaC7JsWcAzNWe1knbtpf7ieqq0B+bBlNBNXQsshhxfABekZNbjSSrCuwRF0cUG3Ko/SpWmqqyq9EWHIg/LsIXc0UGe4Zs/5pYCoBR5FqH0Qy8jngYohKk81nQsT149L/W4ZJUE0L0TYDZBkHIw7oZkmacNYKxbn4SG5Cgo4LHkApejGIbjgfWdsHttEADrjPWY2S6+BfRkgkHrM3IgdVnEQjLRNK6IWHBkm8wngtaWNWMobwO9udq9DLH7zMyMzNeYtSEdbO2xP0u/uVfkzIRgE3axSR4/TQHK7v4nYQD8v04NzaZSex9vJgDnzkDgNMS6/CmMvvYKeUicIkZK8/qjlkCErDJaRQtXCT1EEc9+mbJ5G5PKJlGa3RdvI006qicRsaTM7gUE1D79iryGOOsPaG76gaF0Fil5Uj42idajlgIf0MPKybVAeD/NlpmM6U4qgfnOeCRMB24YO8XCY/46Vqx381gYHKKh78wARkfMU2SSG3nYJhnmUhem9yzh2YOzYb/Ds1FMMf3mn6By7ZEtFm6Gh9iQN/w=
