@@ -141,9 +141,9 @@ void Engine::Start(unsigned int width, unsigned int height,
       }
     }
     
-    if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-      window.close();
-   }
+  //   if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+  //     window.close();
+  //  }
 
 	window.clear();
 	Update();
@@ -186,7 +186,7 @@ void Engine::ChangeScene(Scene* s) {
   if (!s->isLoaded()) {
     cout << "Eng: Entering Loading Screen\n";
     loadingTime =0;
-    _activeScene->LoadAsync();
+    _activeScene->Load();
     loading = true;
   }
 }

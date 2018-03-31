@@ -14,4 +14,6 @@ public:
 
     void update(double dt) override;
     void render() override;
+
+    int getTime() const;
 };

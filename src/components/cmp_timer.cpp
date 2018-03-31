@@ -24,3 +24,7 @@ void TimerComponent::update(double dt) {
 void TimerComponent::render() {
     _panel.render();
 }
+
+int TimerComponent::getTime() const {
+    return (int)_clock.getElapsedTime().asSeconds();
+}

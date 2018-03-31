@@ -37,7 +37,7 @@ void MenuScene::Update(const double& dt) {
     Engine::ChangeScene(&level1);
   } 
   if(mainMenu.getMenuResponse() == Menu::OPTIONS) {
-    //go to options scene
+    Engine::ChangeScene(&gameOver);
   }
   if(mainMenu.getMenuResponse() == Menu::EXIT) {
     //exit

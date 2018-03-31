@@ -4,7 +4,7 @@ if (MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /EHsc" CACHE INTERNAL "" FORCE)
 elseif(UNIX)
   message("hello linux!")
-  set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9 CACHE STRING "")
+  #set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9 CACHE STRING "")\
 endif()
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -31,7 +31,6 @@ set(B2D_INCS "lib/b2d/Box2D/")
 link_directories("${CMAKE_BINARY_DIR}/lib/sfml/lib")
 
 #### Add Engine and our own library projects####
-
 file(GLOB_RECURSE RESOURCE_FILES "res/*.*")
 ####
 file(GLOB_RECURSE SOURCE_FILES engine/src/*.cpp engine/src/*.h)
@@ -72,10 +71,14 @@ target_link_libraries(lib_settings_parser lib_maths)
 file(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
 file(GLOB_RECURSE CMPNTS src/components/*.cpp src/components/*.h)
 file(GLOB_RECURSE SCENES src/scenes/*.cpp src/scenes/*.h)
+file(GLOB_RECURSE STATES src/states/*.cpp src/states/*.h)
+file(GLOB_RECURSE PATHFINDING src/pathfinding/*.cpp src/pathfinding/*.h)
+file(GLOB_RECURSE GUI src/GUI/*.cpp src/GUI/*.h)
+file(GLOB_RECURSE MISC src/misc/*.cpp src/misc/*.h)
 add_executable(Coursework ${SOURCES} ${RESOURCE_FILES})
 source_group("components" FILES ${CMPNTS})
 source_group("resources" FILES ${RESOURCE_FILES})
-#target_include_directories(PRACTICAL_6_PLATFORMER SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
+target_include_directories(Coursework SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
 target_link_libraries(Coursework lib_engine lib_texture_manager lib_input_manager lib_settings_parser) 
 set(EXECUTABLES ${EXECUTABLES} Coursework)
 

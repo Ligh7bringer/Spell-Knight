@@ -90,6 +90,13 @@ void Panel::setPosition(const Vector2f& pos) {
     recentreText();
 }
 
+//position the panel's centre without changing the origin as that may break every other panel
+void Panel::setPositionOfCentre(const Vector2f& pos) {
+    auto newPos = pos - _rect.getSize() / 2.f;
+    _rect.setPosition(newPos);
+    recentreText();
+}
+
 //sets the size of the text
 void Panel::setTextSize(const int size) {
     _text.setCharacterSize(size);

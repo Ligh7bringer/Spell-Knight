@@ -20,12 +20,12 @@ protected:
 public:
     Panel() = default;
     Panel(const sf::Vector2f& pos, const sf::Vector2f& size, const std::string& font);
+    ~Panel() = default;
 
     void update(double dt);
     void render();
 
     void setText(const std::string& text);
-
     void setPanelColour(const sf::Color& colour);
     void setTextColour(const sf::Color& colour);
     void setPosition(const sf::Vector2f& pos);
@@ -33,4 +33,5 @@ public:
     void setGUI(bool value);
     sf::FloatRect getBoundingBox() const;
     void setTextLocalised(const std::string& text);
+    void setPositionOfCentre(const sf::Vector2f& pos);
 };

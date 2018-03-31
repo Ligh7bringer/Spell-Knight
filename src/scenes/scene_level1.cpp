@@ -9,6 +9,9 @@
 #include "../Log.h"
 #include "../misc/parallax_background.h"
 #include "ecm.h"
+#include "../../engine/src/engine.h"
+#include "../components/cmp_score.h"
+#include "../components/cmp_timer.h"
 
 using namespace std;
 using namespace sf;
@@ -16,6 +19,8 @@ using namespace sf;
 //Sprite background;	
 
 static shared_ptr<Entity> player;
+int score;
+int playerTime;
 
 void Level1Scene::Load() {
   //setup view
@@ -119,8 +124,8 @@ void Level1Scene::Restart() {
 
 void Level1Scene::UnLoad() {
   cout << "Scene 1 Unload" << endl;
-  //_view.reset();
-  //Renderer::resetView();
+  //don't forget to reset to default view or when scene is changed nothing is visible :D
+  Renderer::resetView();
   player.reset();
   ls::unload();
   Scene::UnLoad();
@@ -128,6 +133,17 @@ void Level1Scene::UnLoad() {
 
 void Level1Scene::Update(const double& dt) {  
   _parBackground.update(dt);
+
+  //show game over scene if player dies
+  if (!player->isAlive()) {    
+    gameOver.setText("Game over!");
+    Engine::ChangeScene(&gameOver);
+  } else {
+    auto timeComp = player->get_components<TimerComponent>()[0];
+    playerTime = timeComp->getTime();
+    auto scoreComp = player->get_components<PlayerScoreComponent>()[0];
+    score = scoreComp->getPoints();
+  }
 
   //move the view with the player
   if(player != nullptr) {
@@ -137,11 +153,6 @@ void Level1Scene::Update(const double& dt) {
     vy = floor(vy);
     _view.setCenter(vx, vy);
     Renderer::setView(_view);
-  }
-
-  //restart level if we fall off map
-  if (!player->isAlive()) {
-    Restart();
   }
 
   Scene::Update(dt);
