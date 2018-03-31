@@ -106,7 +106,7 @@ void Level1Scene::Restart() {
     auto end = ls::getTilePosition(platformTile[i + 1]);
     //distance is end - start
     auto distance = end - start;
-    EntityFactory::makeMovingPlatform(this, start, distance, 1.f);
+    EntityFactory::makeMovingPlatform(this, start, distance, 2.f);
   }
 
   //make falling platform

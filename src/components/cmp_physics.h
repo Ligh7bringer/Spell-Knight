@@ -29,13 +29,15 @@ public:
   void update(double dt) override;
   void render() override;
   void impulse(const sf::Vector2f& i);
+  void applyForce(const sf::Vector2f& f);
   void dampen(const sf::Vector2f& s);
   void setVelocity(const sf::Vector2f& v);
   void teleport(const sf::Vector2f& v);
   void setLinearVelocity(const sf::Vector2f& move);
   void setGravityScale(int32 gs);
   b2ContactEdge* getContactList() const;
-  const sf::Vector2f& getSize();
-  const b2Vec2& getPosition();
+  const sf::Vector2f& getSize() const;
+  const b2Vec2& getPosition() const;
+  float32 getMass() const;
   ~PhysicsComponent() override;
 };

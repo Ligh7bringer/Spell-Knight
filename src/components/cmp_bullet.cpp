@@ -20,9 +20,10 @@ using namespace sf;
 * This component, when attached to a bullet entity, handles its lifetime and collisions.
 */
 
-BulletComponent::BulletComponent(Entity* p, float lifetime)
-	: Component(p), _lifetime(lifetime), _player(_parent->scene->ents.find("player")[0]), _exploded(false), 
-  _explosionTime(0.5f), _enemies(_parent->scene->ents.find("enemy")), _damage(1) {}
+BulletComponent::BulletComponent(Entity* p, float lifetime)	: Component(p), _lifetime(lifetime), 
+                                                              _player(_parent->scene->ents.find("player")[0]), _exploded(false), 
+                                                              _explosionTime(0.5f), 
+                                                              _enemies(_parent->scene->ents.find("enemy")), _damage(1) {}
 
 void BulletComponent::update(double dt) {
   //get the collisions from the physics component
@@ -89,18 +90,21 @@ void BulletComponent::checkCollisions(const std::vector<const b2Contact*>& conta
 void BulletComponent::explode() {
   //change the animation
   auto ac = _parent->get_components<AnimatedSpriteComponent>()[0];
-  ac->setSpritesheet(TextureManager::getTexture("explosion.png"));
-  ac->setSize(Vector2f(32.f, 32.f));
-  ac->setNumberOfFrames(8);
-  ac->setCurrentRow(0);
-  ac->setFrameTime(0.09f);
+  //ac->setSpritesheet(TextureManager::getTexture("explosion.png"));
+  //ac->setSize(Vector2f(32.f, 32.f));
+  //ac->setNumberOfFrames(8);
+
+  //set the row of the animation to a non existing one so we don't get any sprite
+  //and the bullet becomes invisible
+  ac->setCurrentRow(10);
   
+  //use particles for the explosion
   _parent->addComponent<ParticleSystemComponent>();
 
   //set exploded to true so we know it has exploded
   _exploded = true;
-  //reset explosion time!!
-  _explosionTime = (float)ac->getFrameCount() / 2 * ac->getFrameTime();
+  //reset explosion time!
+  _explosionTime = 0.4f;
   //and life time
   _lifetime = 0.8f;
 }

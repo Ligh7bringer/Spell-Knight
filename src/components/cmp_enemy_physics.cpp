@@ -54,11 +54,10 @@ void EnemyPhysicsComponent::update(double dt) {
 	PhysicsComponent::update(dt);
 }
 
-EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,
-	const Vector2f& size, bool isAir)
-	: PhysicsComponent(p, true, size) {
+EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,	bool dynamic, const Vector2f& size)
+	: PhysicsComponent(p, dynamic, size) {
+	_dynamic = dynamic;
 	_size = sv2_to_bv2(size, true);
-	_isAir = isAir;
 	_maxVelocity = Vector2f(200.f, 400.f);
 	_direction = Vector2f(1,0);
 	_groundspeed = 30.f;
@@ -71,15 +70,4 @@ EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,
 
 sf::Vector2f EnemyPhysicsComponent::getDirection() const {
 	return _direction;
-}
-
-bool EnemyPhysicsComponent::isJumping() const {
-	return !_grounded;
-}
-void EnemyPhysicsComponent::setAir(bool b) {
-	_isAir = b;
-}
-
-void EnemyPhysicsComponent::setGravity(int32 gs){
-  _body->SetGravityScale(gs);
 }

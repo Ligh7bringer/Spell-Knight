@@ -45,4 +45,13 @@ const b2Vec2 sv2_to_bv2(const Vector2f& in, bool scale) {
 const Vector2f invert_height(const Vector2f& in) {
   return Vector2f(in.x, 720 - in.y);
 }
+
+float getPhysicsScale() {
+  return physics_scale;
+}
+
+float getPhysicsScaleInverted() {
+  return physics_scale_inv;
+}
+
 } // namespace Physics

@@ -9,7 +9,7 @@ using namespace sf;
 
 //load font, set up text and panel behind the text
 PlayerScoreComponent::PlayerScoreComponent(Entity* p) : Component(p), _points(0) {
-    _panel = Panel(Vector2f(500.f, 0), Vector2f(150.f, 32.f), "DoctorSoos.ttf");
+    _panel = Panel(Vector2f(300.f, 0), Vector2f(150.f, 32.f), "DoctorSoos.ttf");
     _panel.setPanelColour(Color(192, 192, 192, 128));
 }
 

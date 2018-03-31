@@ -61,7 +61,6 @@ script:
 - mkdir -p build && cd build
 - "$CMAKE .."
 - "$CMAKE --build . --target Coursework --config Release -- -j4"
-- "mv *.a ./bin/"
 - "mv bin SpellKnight"
 - "zip -r game.zip SpellKnight"
 - "mv game.zip SpellKnight_${COMPILER_NAME}_${TRAVIS_OS_NAME}.zip"

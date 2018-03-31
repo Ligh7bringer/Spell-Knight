@@ -86,7 +86,7 @@ PhysicsComponent::PhysicsComponent(Entity* p, const sf::Vector2f& size) : Compon
     b2FixtureDef FixtureDef;
     // Fixture properties
     FixtureDef.friction = 0.1f;
-    FixtureDef.restitution = .2;
+    FixtureDef.restitution = 0;
     FixtureDef.shape = &Shape;
     // Add to body
     _fixture = _body->CreateFixture(&FixtureDef);
@@ -189,10 +189,19 @@ b2ContactEdge* PhysicsComponent::getContactList() const {
   return _body->GetContactList();
 }
 
-const Vector2f& PhysicsComponent::getSize() {
+const Vector2f& PhysicsComponent::getSize() const {
   return _size;
 }
 
-const b2Vec2& PhysicsComponent::getPosition() {
+const b2Vec2& PhysicsComponent::getPosition() const {
   return _body->GetPosition();
+}
+
+float32 PhysicsComponent::getMass() const {
+  return _body->GetMass();
+}
+
+void PhysicsComponent::applyForce(const Vector2f& f) {
+  auto a = b2Vec2(f.x, f.y * -1.0f);
+  _body->ApplyForceToCenter(a, true);
 }

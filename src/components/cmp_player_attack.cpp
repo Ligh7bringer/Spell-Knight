@@ -53,12 +53,13 @@ void PlayerAttackComponent::fire() {
         sprite->setSpritesheet(TextureManager::getTexture(_currentAttack.spriteSheet));
         sprite->setNumberOfFrames(_currentAttack.frameCount);
         sprite->setFrameTime(0.15f);
+        sprite->setFacingRight(right);
 
         //add a physics component
         auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(32.f, 32.f));
         //the bullet shouldn't be affected by gravity 
         p->setGravityScale(0.0f);
-        p->setRestitution(.1f);
+        p->setRestitution(0);
         p->setFriction(.005f);
         //set the appropirate direction
         p->setLinearVelocity(right ? Vector2f(_speed, 0) : Vector2f(-_speed, 0));
@@ -89,9 +90,9 @@ void PlayerAttackComponent::initAttacks() {
     fireball.type = FIREBALL;
     fireball.damage = 2;
     fireball.cooldown = 1.5f;
-    fireball.spriteSize = Vector2f(153.f, 153.f);
-    fireball.spriteSheet = "test.png";    
-    fireball.frameCount = 6;
+    fireball.spriteSize = Vector2f(64.f, 45.f);
+    fireball.spriteSheet = "icicle.png";    
+    fireball.frameCount = 8;
     fireball.row = 0;
     _availableAttacks.push_back(fireball);
 }

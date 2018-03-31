@@ -23,11 +23,11 @@ EnemyHealthComponent::EnemyHealthComponent(Entity* p, int health) : Component(p)
     _panel.setPanelColour(Col_100_PERCENT);
     _panel.setGUI(false);
 
-    //without an offset the "health bar" is being rendered on top of the enemy.
-    //x offset shouldn't be needed but this is a vector anyway just in case
+    //without an offset, the "health bar" is being rendered on top of the enemy.
     auto anim = _parent->get_components<AnimatedSpriteComponent>()[0];
-    _offset = anim->getSize();
+    _offset = Vector2f(_panel.getBoundingBox().width, _panel.getBoundingBox().height);
     _offset.x = _offset.x / 2.f;
+    _offset.y += anim->getSize().y / 2.f;
     _panelAlpha = 180;
 }
 

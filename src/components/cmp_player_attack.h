@@ -6,7 +6,8 @@ public:
     enum AttackType
     {
         NORMAL,
-        FIREBALL
+        FIREBALL,
+        ICICLE
     };
 
     struct Attack {
@@ -34,8 +35,7 @@ private:
     sf::Vector2f _posOffset;
     float _speed;
     Attack _currentAttack;
+    std::vector<Attack> _availableAttacks;
 
     void initAttacks();
-
-    std::vector<Attack> _availableAttacks;
 };

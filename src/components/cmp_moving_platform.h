@@ -1,6 +1,6 @@
 #pragma once
 #include "cmp_actor_movement.h"
-#include <ecm.h>
+#include "../../engine/src/engine.h"
 
 class MovingPlatformComponent : public ActorMovementComponent {
 private:
@@ -9,6 +9,8 @@ private:
     sf::Vector2f _distance;
     float _time;
     float _dirTimer;
+    std::weak_ptr<Entity> _player;
+    float _physics_scale;
 
 public:
     MovingPlatformComponent() = delete;

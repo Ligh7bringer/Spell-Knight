@@ -1,5 +1,4 @@
 #pragma once
-
 #include "cmp_physics.h"
 
 class EnemyPhysicsComponent : public PhysicsComponent {
@@ -9,22 +8,16 @@ protected:
 	bool _grounded;
 	float _groundspeed;
 	sf::Vector2f _direction;
-	bool _isAir; 
+	bool _dynamic; 
 
 public:
 	void update(double dt) override;
 
-	explicit EnemyPhysicsComponent(Entity* p, const sf::Vector2f& size, bool isAir);
+	explicit EnemyPhysicsComponent(Entity* p, bool dynamic, const sf::Vector2f& size);
+	//EnemyPhysicsComponent(Entity* p, const sf::Vector2f& size);
 
 	EnemyPhysicsComponent() = delete;
 
 	sf::Vector2f getDirection() const;
-
-	bool isJumping() const;
-
-	void setAir(bool b);
-
 	bool isGrounded() const;
-		void setGravity(int32 gs);
-
-		};
+};

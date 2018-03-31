@@ -30,13 +30,7 @@ Panel::Panel(const Vector2f& pos, const Vector2f& size, const std::string& font)
     _isGUI = true;
 }
 
-void Panel::update(double dt) {
-    //if panel is a GUI panel
-    if(_isGUI) {
-        //set the position
-        _rect.setPosition(_position);
-    }
-}
+void Panel::update(double dt) {}
 
 //render the panel and the text
 void Panel::render() {
@@ -56,17 +50,9 @@ void Panel::render() {
 
 //repositions the text so it is in the centre of the panel
 void Panel::recentreText() {
-    //get all needed dimensions and positions
-    sf::Vector2f txtSize(_text.getGlobalBounds().width, _text.getGlobalBounds().height);
-    sf::Vector2f containerSize(_rect.getGlobalBounds().width, _rect.getGlobalBounds().height);
-    //global bounds contain transformations and translations which means the position will be correct
-    //i.e. the text will always be in the view because the container is 
-    sf::Vector2f containerPosition(_rect.getGlobalBounds().left, _rect.getGlobalBounds().top);
-
-    //set position
-    Vector2f newPos = (containerSize / 2.f) - (txtSize / 2.f) + containerPosition;
-    newPos.y -= containerSize.y / 2.f;
-    _text.setPosition(newPos);
+    auto txtbounds = _text.getLocalBounds();
+    auto textSize = Vector2f(txtbounds.width, txtbounds.height);
+    _text.setPosition(_rect.getPosition() + (_size / 2.f) - textSize / 2.f - Vector2f(0, txtbounds.top));
 }
 
 //------ SETTERS ------
@@ -75,7 +61,7 @@ void Panel::setText(const std::string& text) {
     _renderString = text;
     _text.setString(_renderString);
     //make sure the text is centered
-    //recentreText();
+    recentreText();
 }
 
 //sets non english string as the text
@@ -85,7 +71,7 @@ void Panel::setTextLocalised(const std::string& text) {
     std::wstring wide = converter.from_bytes(text);
 
     _text.setString(wide);
-    //LOG(DEBUG) << text;
+    recentreText();
 }
 
 //sets the colour of the panel

@@ -24,14 +24,14 @@ build:
     
 after_build:
 - cmd: >-
-    7z a game.zip %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/Coursework.exe %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/*.dll %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/res 
+    7z a SpellKnight_windows.zip %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/Coursework.exe %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/*.dll %APPVEYOR_BUILD_FOLDER%/build/bin/%CONFIGURATION%/res 
     
 artifacts:
   - path: build/*.zip
     name: Game_zip
        
 deploy:
-    description: 'Game package'
+    description: 'Windows zip archive.'
     provider: GitHub
     on:
         appveyor_repo_tag: true
