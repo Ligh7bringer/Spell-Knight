@@ -1,8 +1,6 @@
 #include "system_resources.h"
 
 namespace Resources {
-
-
   template<>
   std::shared_ptr<sf::Font> load(const std::string &name) {
     auto f = std::make_shared<sf::Font>();

@@ -16,7 +16,7 @@ void SleepingState::execute(Entity* owner, double dt) noexcept {
     if(length(owner->getPosition() - _player->getPosition()) < 300.f) {  
         auto sm = owner->get_components<StateMachineComponent>()[0];
         //go to flying state
-        sm->changeState("flying");
+        sm->changeState(_nextState);
     }
 }
 

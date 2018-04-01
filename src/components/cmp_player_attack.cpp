@@ -5,8 +5,8 @@
 #include "engine.h"
 #include <SFML/Graphics/Texture.hpp>
 #include "../../engine/lib_texture_manager/TextureManager.h"
-#include "cmp_player_physics.h"
 #include "../Log.h"
+#include "../../engine/lib_audio_manager/audio_manager.h"
 
 using namespace sf;
 
@@ -61,10 +61,12 @@ void PlayerAttackComponent::fire() {
         p->setGravityScale(0.0f);
         p->setRestitution(0);
         p->setFriction(.005f);
-        //set the appropirate direction
+        //set the appropriate direction
         p->setLinearVelocity(right ? Vector2f(_speed, 0) : Vector2f(-_speed, 0));
   
         _cooldown = _currentAttack.cooldown;
+
+        AudioManager::playSound("shoot.wav");
     }    
 }
 

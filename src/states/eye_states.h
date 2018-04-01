@@ -5,10 +5,12 @@
 class SleepingState : public State {
 private:
     std::shared_ptr<Entity> _player;
+    std::string _nextState;
 
 public:
     SleepingState() = delete;
-    explicit SleepingState(std::shared_ptr<Entity>& player) : _player(player) {}
+    explicit SleepingState(std::shared_ptr<Entity>& player, const std::string& nextState) : _player(player),
+                                                                                            _nextState(nextState) {}
 
     void execute(Entity*, double) noexcept override;
 };

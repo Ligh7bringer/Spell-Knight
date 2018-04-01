@@ -1,10 +1,11 @@
 #pragma once
 
+#include <SFML/Audio/Music.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
 #include "engine.h"
 
 class Level1Scene : public Scene {
-private:
-  int _playerScore;
 public:
   void Load() override;
 

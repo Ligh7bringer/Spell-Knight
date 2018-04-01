@@ -34,7 +34,7 @@ std::shared_ptr<Entity> EntityFactory::makePlayer(Scene* scene, const Vector2f& 
     auto player = scene->makeEntity();
     player->setPosition(pos);
     player->addTag("player");
-  
+
     auto anim = player->addComponent<AnimatedSpriteComponent>(Vector2f(64.f, 64.f));
     anim->setSpritesheet(TextureManager::getTexture("wizard.png"));
     anim->setNumberOfFrames(4);
@@ -82,7 +82,7 @@ std::shared_ptr<Entity> EntityFactory::makeFish(Scene* scene, const Vector2f& po
     // Add HurtComponent
     fish->addComponent<HurtComponent>();
     fish->addComponent<EnemyHealthComponent>(1);
-	auto physics = fish->addComponent<EnemyPhysicsComponent>(true, Vector2f(32.f, 32.f));
+    auto physics = fish->addComponent<EnemyPhysicsComponent>(true, Vector2f(32.f, 32.f));
     physics->setGravityScale(0);
     auto sm = fish->addComponent<StateMachineComponent>();
     sm->addState("jumping", make_shared<JumpingState>());
@@ -104,7 +104,7 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
     eyeDemon->addComponent<EnemyHealthComponent>(4);
     eyeDemon->addComponent<EnemyPhysicsComponent>(true, sf::Vector2f(50.f, 50.f));
     auto sm = eyeDemon->addComponent<StateMachineComponent>();
-    sm->addState("sleeping", std::make_shared<SleepingState>(scene->ents.find("player")[0]));
+    sm->addState("sleeping", std::make_shared<SleepingState>(scene->ents.find("player")[0], "flying"));
     sm->addState("flying", std::make_shared<FlyingState>());
     sm->changeState("sleeping");
 
@@ -137,33 +137,33 @@ std::shared_ptr<Entity> EntityFactory::makePlant(Scene* scene, const sf::Vector2
 }
 
 std::shared_ptr<Entity> EntityFactory::makeBird(Scene *scene, const sf::Vector2f &pos) {
-  auto bird = scene->makeEntity();
-  bird->addTag("enemy");
-  bird->setPosition(pos);
+    auto bird = scene->makeEntity();
+    bird->addTag("enemy");
+    bird->setPosition(pos);
 
-  auto anim = bird->addComponent<AnimatedSpriteComponent>(Vector2f(68.f,59.f));
-  anim->setSpritesheet(TextureManager::getTexture("lighning_1.png"));
-  anim->setNumberOfFrames(1);
+    auto anim = bird->addComponent<AnimatedSpriteComponent>(Vector2f(68.f,59.f));
+    anim->setSpritesheet(TextureManager::getTexture("lighning_1.png"));
+    anim->setNumberOfFrames(1);
 
-  auto physics = bird->addComponent<EnemyPhysicsComponent>(true, Vector2f(50.f, 50.f));
-  physics->setGravityScale(0);
-  physics->setRestitution(0.f);
-  physics->setFriction(20.f);
+    auto physics = bird->addComponent<EnemyPhysicsComponent>(true, Vector2f(50.f, 50.f));
+    physics->setGravityScale(0);
+    physics->setRestitution(0.f);
+    physics->setFriction(20.f);
 
-  auto bullet = bird->addComponent<EnemyTurretComponent>();
-  bullet->setDirection(Vector2f(0.f, 1.f));
-  bullet->setOffset(Vector2f(34.f, 51.f));
+    auto bullet = bird->addComponent<EnemyTurretComponent>();
+    bullet->setDirection(Vector2f(0.f, 1.f));
+    bullet->setOffset(Vector2f(34.f, 51.f));
 
-  bird->addComponent<HurtComponent>();
-  bird->addComponent<EnemyHealthComponent>(1);
-  bird->addComponent<SteeringComponent>(scene->ents.find("player")[0]);
+    bird->addComponent<HurtComponent>();
+    bird->addComponent<EnemyHealthComponent>(1);
+    bird->addComponent<SteeringComponent>(scene->ents.find("player")[0]);
 
-  auto sm = bird->addComponent<StateMachineComponent>();
-  //sm->addState("sleepingbird", std::make_shared<SleepingbirdState>());
-  sm->addState("flyingbird", std::make_shared<FlyingbirdState>(scene->ents.find("player")[0]));
-  sm->changeState("flyingbird");
+    auto sm = bird->addComponent<StateMachineComponent>();
+    //sm->addState("sleepingbird", std::make_shared<SleepingbirdState>());
+    sm->addState("flyingbird", std::make_shared<FlyingbirdState>(scene->ents.find("player")[0]));
+    sm->changeState("flyingbird");
 
-  return bird;
+    return bird;
 }
 
 //makes a collectible in Scene scene at position pos
@@ -192,7 +192,7 @@ std::shared_ptr<Entity> EntityFactory::makeMovingPlatform(Scene* scene, const sf
     physics->setGravityScale(0);
     physics->setFriction(1.f);
     auto moving = platform->addComponent<MovingPlatformComponent>(distance, time);
-    
+
     return platform;
 }
 
@@ -205,7 +205,7 @@ std::shared_ptr<Entity> EntityFactory::makeFallingPlatform(Scene* scene, const s
     auto physics = platform->addComponent<PhysicsComponent>(true, anim->getSize());
     physics->setGravityScale(0);
     physics->setRestitution(0);
-    
+
     return platform;
 }
 
@@ -218,7 +218,7 @@ void EntityFactory::makeWalls(Scene* scene) {
         auto e = scene->makeEntity();
         e->setPosition(pos);
         e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
-}
+    }
 
 /*
     auto walls = (ls::getGroundTiles());
@@ -304,7 +304,7 @@ void EntityFactory::makeWalls(Scene* scene) {
     */
 }
 
-        //auto e = scene->makeEntity();
-       // e->setPosition(pos);
-        //e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
+//auto e = scene->makeEntity();
+// e->setPosition(pos);
+//e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
 

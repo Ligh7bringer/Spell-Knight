@@ -66,6 +66,11 @@ file(GLOB_RECURSE SOURCE_FILES engine/lib_settings_parser/*.cpp engine/lib_setti
 add_library(lib_settings_parser STATIC ${SOURCE_FILES})
 target_include_directories(lib_settings_parser INTERFACE "${CMAKE_SOURCE_DIR}/engine/lib_settings_parser" )
 target_link_libraries(lib_settings_parser lib_maths)
+## Audio manager
+file(GLOB_RECURSE SOURCE_FILES engine/lib_audio_manager/*.cpp engine/lib_audio_manager/*.h)
+add_library(lib_audio_manager STATIC ${SOURCE_FILES})
+target_include_directories(lib_audio_manager INTERFACE "${CMAKE_SOURCE_DIR}/engine/lib_audio_manager" )
+target_link_libraries(lib_audio_manager lib_maths)
 
 ## Coursework
 file(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
@@ -79,7 +84,7 @@ add_executable(Coursework ${SOURCES} ${RESOURCE_FILES})
 source_group("components" FILES ${CMPNTS})
 source_group("resources" FILES ${RESOURCE_FILES})
 target_include_directories(Coursework SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
-target_link_libraries(Coursework lib_engine lib_texture_manager lib_input_manager lib_settings_parser) 
+target_link_libraries(Coursework lib_engine lib_texture_manager lib_input_manager lib_settings_parser lib_audio_manager)
 set(EXECUTABLES ${EXECUTABLES} Coursework)
 
 #### Target for copying resources to build dir####
