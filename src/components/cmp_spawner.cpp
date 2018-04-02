@@ -18,7 +18,7 @@ void SpawnerComponent::update(double dt) {
         auto physics = saw->addComponent<PhysicsComponent>(true, sf::Vector2f(128.f, 128.f));
         physics->setRestitution(.4f);
         physics->setFriction(.0001f);
-        physics->impulse(sf::rotate(sf::Vector2f(-3.f, 0git), -_parent->getRotation()));
+        physics->impulse(sf::rotate(sf::Vector2f(-3.f, 0), -_parent->getRotation()));
         physics->setMass(10000000.f);
 
         auto anim = saw->addComponent<AnimatedSpriteComponent>(sf::Vector2f(128.f, 128.f));
