@@ -55,7 +55,8 @@ public:
             EYE = 'e',
             SLIME = 's',
             PLANT = 'p',
-            BIRD = 'b'
+            BIRD = 'b',
+            SAW = 'q'
         };
     };
 

@@ -5,7 +5,7 @@ class PlayerAttackComponent : public Component {
 public:
     enum AttackType
     {
-        NORMAL,
+        DEFAULT,
         FIREBALL,
         ICICLE
     };

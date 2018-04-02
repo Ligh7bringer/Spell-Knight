@@ -1,7 +1,7 @@
 #include "parallax_background.h"
 #include "../../engine/src/system_renderer.h"
 #include "../Log.h"
-#include "../../engine/lib_texture_manager/TextureManager.h"
+#include "texture_manager.h"
 #include <engine.h>
 
 using namespace sf;

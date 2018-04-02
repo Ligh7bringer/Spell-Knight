@@ -1,8 +1,7 @@
 #pragma once
-#include "cmp_actor_movement.h"
 #include "../../engine/src/engine.h"
 
-class MovingPlatformComponent : public ActorMovementComponent {
+class RoamingComponent : public Component {
 private:
     sf::Vector2f _velocity;
     sf::Vector2f _direction;
@@ -11,10 +10,11 @@ private:
     float _dirTimer;
     std::weak_ptr<Entity> _player;
     float _physics_scale;
+    bool _isPlatform;
 
 public:
-    MovingPlatformComponent() = delete;
-    explicit MovingPlatformComponent(Entity* p, const sf::Vector2f& dist, float time);
+    RoamingComponent() = delete;
+    explicit RoamingComponent(Entity* p, const sf::Vector2f& dist, float time, bool platform);
 
     void update(double dt) override;
     void render() override;

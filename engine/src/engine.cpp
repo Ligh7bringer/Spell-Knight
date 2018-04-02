@@ -7,7 +7,7 @@
 #include <future>
 #include <iostream>
 #include <stdexcept>
-#include "../lib_texture_manager/TextureManager.h"
+#include "../lib_texture_manager/texture_manager.h"
 #include "../../src/Log.h"
 #include "../lib_input_manager/input_manager.h"
 #include "../lib_settings_parser/settings_parser.h"

@@ -14,12 +14,13 @@
 #include "../components/cmp_state_machine.h"
 #include "../components/cmp_ai_steering.h"
 #include "../components/cmp_timer.h"
-#include "../components/cmp_moving_platform.h"
+#include "../components/cmp_roaming.h"
+#include "../components/cmp_spawner.h"
 #include "../states/slime_states.h"
 #include "../states/eye_states.h"
 #include "../states/fish_states.h"
 #include "../../engine/lib_tile_level_loader/LevelSystem.h"
-#include "../../engine/lib_texture_manager/TextureManager.h"
+#include "texture_manager.h"
 #include "../states/bird_states.h"
 
 using namespace sf;
@@ -36,9 +37,9 @@ std::shared_ptr<Entity> EntityFactory::makePlayer(Scene* scene, const Vector2f& 
     player->addTag("player");
 
     auto anim = player->addComponent<AnimatedSpriteComponent>(Vector2f(64.f, 64.f));
-    anim->setSpritesheet(TextureManager::getTexture("wizard.png"));
+    anim->setSpritesheet(TextureManager::getTexture("wizard-1.png"));
     anim->setNumberOfFrames(4);
-    anim->setSpriteSheetPadding(2);
+    //anim->setSpriteSheetPadding(2);
     anim->setFrameTime(0.2f);
     player->addComponent<PlayerPhysicsComponent>(Vector2f(27.f, 62.f));
     player->addComponent<PlayerAttackComponent>();
@@ -50,7 +51,7 @@ std::shared_ptr<Entity> EntityFactory::makePlayer(Scene* scene, const Vector2f& 
 }
 
 //creates a snake enemy at position pos in Scene scene
-std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& pos) {
+std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& pos, const Vector2f& distance, float time) {
     auto slime = scene->makeEntity();
     slime->addTag("enemy");
     // set position
@@ -63,10 +64,7 @@ std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& p
     slime->addComponent<EnemyHealthComponent>(1);
     slime->addComponent<EnemyPhysicsComponent>(true, Vector2f(32.f, 32.f));
     //slime->addComponent<SteeringComponent>(scene->ents.find("player")[0]);
-    auto sm = slime->addComponent<StateMachineComponent>();
-    sm->addState("roaming", make_shared<RoamingState>());
-    //sm->addState("steering", make_shared<SteeringState>());
-    sm->changeState("roaming");
+    slime->addComponent<RoamingComponent>(distance, time, false);
 
     return slime;
 }
@@ -101,7 +99,7 @@ std::shared_ptr<Entity> EntityFactory::makeEyeDemon(Scene* scene, const sf::Vect
     anim->setSpritesheet(TextureManager::getTexture("eyesleep.png"));
     anim->setNumberOfFrames(4);
     eyeDemon->addComponent<HurtComponent>();
-    eyeDemon->addComponent<EnemyHealthComponent>(4);
+    eyeDemon->addComponent<EnemyHealthComponent>(1);
     eyeDemon->addComponent<EnemyPhysicsComponent>(true, sf::Vector2f(50.f, 50.f));
     auto sm = eyeDemon->addComponent<StateMachineComponent>();
     sm->addState("sleeping", std::make_shared<SleepingState>(scene->ents.find("player")[0], "flying"));
@@ -122,7 +120,7 @@ std::shared_ptr<Entity> EntityFactory::makePlant(Scene* scene, const sf::Vector2
     anim->setNumberOfFrames(4);
     anim->setFacingRight(false);
 
-    auto physics = plant->addComponent<EnemyPhysicsComponent>(false, anim->getSize());
+    auto physics = plant->addComponent<EnemyPhysicsComponent>(true, anim->getSize());
     physics->setRestitution(0.f);
     physics->setFriction(20.f);
 
@@ -136,34 +134,35 @@ std::shared_ptr<Entity> EntityFactory::makePlant(Scene* scene, const sf::Vector2
     return plant;
 }
 
-std::shared_ptr<Entity> EntityFactory::makeBird(Scene *scene, const sf::Vector2f &pos) {
-    auto bird = scene->makeEntity();
-    bird->addTag("enemy");
-    bird->setPosition(pos);
+std::shared_ptr<Entity> EntityFactory::makeCloud(Scene *scene, const sf::Vector2f &pos) {
+    auto cloud = scene->makeEntity();
+    cloud->addTag("enemy");
+    cloud->setPosition(pos);
 
-    auto anim = bird->addComponent<AnimatedSpriteComponent>(Vector2f(68.f,59.f));
-    anim->setSpritesheet(TextureManager::getTexture("lighning_1.png"));
+    auto anim = cloud->addComponent<AnimatedSpriteComponent>(Vector2f(64.f,160.f));
+    anim->setSpritesheet(TextureManager::getTexture("lightning_1.png"));
     anim->setNumberOfFrames(1);
+    anim->setFrameTime(0.1f);
 
-    auto physics = bird->addComponent<EnemyPhysicsComponent>(true, Vector2f(50.f, 50.f));
+    auto physics = cloud->addComponent<EnemyPhysicsComponent>(true, Vector2f(50.f, 50.f));
     physics->setGravityScale(0);
     physics->setRestitution(0.f);
     physics->setFriction(20.f);
 
-    auto bullet = bird->addComponent<EnemyTurretComponent>();
+    auto bullet = cloud->addComponent<EnemyTurretComponent>();
     bullet->setDirection(Vector2f(0.f, 1.f));
     bullet->setOffset(Vector2f(34.f, 51.f));
 
-    bird->addComponent<HurtComponent>();
-    bird->addComponent<EnemyHealthComponent>(1);
-    bird->addComponent<SteeringComponent>(scene->ents.find("player")[0]);
+    cloud->addComponent<HurtComponent>();
+    cloud->addComponent<EnemyHealthComponent>(1);
+    cloud->addComponent<SteeringComponent>(scene->ents.find("player")[0]);
 
-    auto sm = bird->addComponent<StateMachineComponent>();
-    //sm->addState("sleepingbird", std::make_shared<SleepingbirdState>());
-    sm->addState("flyingbird", std::make_shared<FlyingbirdState>(scene->ents.find("player")[0]));
-    sm->changeState("flyingbird");
+    auto sm = cloud->addComponent<StateMachineComponent>();
+    sm->addState("sleeping", std::make_shared<SleepingState>(scene->ents.find("player")[0], "flying"));
+    sm->addState("flying", std::make_shared<FlyingbirdState>(scene->ents.find("player")[0]));
+    sm->changeState("sleeping");
 
-    return bird;
+    return cloud;
 }
 
 //makes a collectible in Scene scene at position pos
@@ -191,7 +190,7 @@ std::shared_ptr<Entity> EntityFactory::makeMovingPlatform(Scene* scene, const sf
     physics->setRestitution(0);
     physics->setGravityScale(0);
     physics->setFriction(1.f);
-    auto moving = platform->addComponent<MovingPlatformComponent>(distance, time);
+    auto moving = platform->addComponent<RoamingComponent>(distance, time, true);
 
     return platform;
 }
@@ -302,6 +301,17 @@ void EntityFactory::makeWalls(Scene* scene) {
         s->addComponent<PhysicsComponent>(false, t.s);
     }
     */
+}
+
+std::shared_ptr<Entity> EntityFactory::makeSpawner(Scene *scene, const sf::Vector2f &pos) {
+    auto spawner = scene->makeEntity();
+    spawner->setPosition(pos);
+    spawner->addComponent<SpawnerComponent>();
+
+    auto anim = spawner->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
+    anim->setSpritesheet(TextureManager::getTexture("slime.png"));
+
+    return spawner;
 }
 
 //auto e = scene->makeEntity();

@@ -3,7 +3,7 @@
 #include "cmp_physics.h"
 #include "cmp_animated_sprite.h"
 #include "cmp_enemy_physics.h"
-#include "../../engine/lib_texture_manager/TextureManager.h"
+#include "texture_manager.h"
 #include "system_physics.h"
 #include "../../engine/src/engine.h"
 #include "../../engine/lib_ecm/ecm.h"

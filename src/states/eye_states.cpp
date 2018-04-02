@@ -2,7 +2,7 @@
 #include "../components/cmp_animated_sprite.h"
 #include "../components/cmp_enemy_physics.h"
 #include "../Log.h"
-#include "../../engine/lib_texture_manager/TextureManager.h"
+#include "texture_manager.h"
 
 /*
 * Behaviour of the flying eye creature.

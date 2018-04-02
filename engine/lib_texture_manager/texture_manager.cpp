@@ -1,4 +1,4 @@
-#include "TextureManager.h"
+#include "texture_manager.h"
 #include "../../src/Log.h"
 
 std::map<std::string, sf::Texture> TextureManager::_textures;

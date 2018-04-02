@@ -1,10 +1,8 @@
 #include "cmp_player_attack.h"
 #include "cmp_bullet.h"
-#include "cmp_physics.h"
 #include "cmp_animated_sprite.h"
 #include "engine.h"
-#include <SFML/Graphics/Texture.hpp>
-#include "../../engine/lib_texture_manager/TextureManager.h"
+#include "texture_manager.h"
 #include "../Log.h"
 #include "../../engine/lib_audio_manager/audio_manager.h"
 
@@ -23,7 +21,7 @@ PlayerAttackComponent::PlayerAttackComponent(Entity* p) : Component(p), _cooldow
     _cooldown = 0;
 
     initAttacks();
-    changeAttack(NORMAL);
+    changeAttack(DEFAULT);
 }
 
 //don't need to render anything (at the moment)
@@ -31,7 +29,7 @@ void PlayerAttackComponent::render() {}
 
 //creates a bullet
 void PlayerAttackComponent::fire() {
-    //make sure the player hasn't shot in the last 1 second
+    //make sure the current attack is not on cooldown
     if(_cooldown <= 0.0f) {
         //find out which way the player is facing
         auto right = _parent->get_components<AnimatedSpriteComponent>()[0]->isFacingRight();
@@ -78,7 +76,7 @@ void PlayerAttackComponent::update(double dt) {
 void PlayerAttackComponent::initAttacks() {
     //default attack
     Attack normal;
-    normal.type = NORMAL;
+    normal.type = DEFAULT;
     normal.damage = 1;
     normal.cooldown = 1.0f;
     normal.spriteSize = Vector2f(32.f, 32.f);
@@ -104,7 +102,6 @@ void PlayerAttackComponent::changeAttack(AttackType at) {
         if(attack.type == at) {
             _currentAttack = attack;
             LOG(INFO) << "Changing player attack to " << attack.type;
-            //_cooldown = _currentAttack.cooldown;
         }
     }
 }

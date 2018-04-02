@@ -2,7 +2,7 @@
 #include <fstream>
 #include "../../src/Log.h"
 #include "../../engine/src/system_renderer.h"
-#include "../../engine/lib_texture_manager/TextureManager.h"
+#include "../lib_texture_manager/texture_manager.h"
 using namespace std;
 using namespace sf;
 

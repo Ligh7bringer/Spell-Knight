@@ -55,8 +55,11 @@ void Level1Scene::Restart() {
 
     // Create some enemies
     auto slimePos = LevelSystem::getPosition(LevelSystem::enemyTiles::SLIME);
-    for(auto sp : slimePos) {
-        EntityFactory::makeSlime(this, sp);
+    for(int i = 0; i < slimePos.size(); i+=2) {
+        auto start = slimePos[i];
+        auto end = slimePos[i+1];
+        auto distance = end - start;
+        EntityFactory::makeSlime(this, start, distance, 1.5f);
     }
 
     auto eyePos = LevelSystem::getPosition(LevelSystem::enemyTiles::EYE);
@@ -69,10 +72,10 @@ void Level1Scene::Restart() {
         EntityFactory::makePlant(this, pp);
     }
 
-//    auto birdPos = LevelSystem::getPosition(LevelSystem::enemyTiles::BIRD);
-//    for(auto bp : birdPos) {
-//        EntityFactory::makeBird(this, bp);
-//    }
+    auto birdPos = LevelSystem::getPosition(LevelSystem::enemyTiles::BIRD);
+    for(auto bp : birdPos) {
+        EntityFactory::makeCloud(this, bp);
+    }
 
     // Add physics coliders to level tiles.
     EntityFactory::makeWalls(this);
@@ -90,11 +93,6 @@ void Level1Scene::Restart() {
 
     //get positions of moving tiles
     auto platformTile = LevelSystem::getPosition(ls::platformTiles::PLATFORM_MOVING);
-    vector<Vector2f> positions;
-    for (auto tile : platformTile) {
-        positions.push_back(tile);
-    }
-
     //create platforms
     for(int i = 0; i < platformTile.size(); i+= 2) {
         //for every two positions
@@ -111,6 +109,8 @@ void Level1Scene::Restart() {
     platformTile = LevelSystem::getPosition(ls::platformTiles::PLATFORM_FALLING);
     auto platformPos = platformTile[0];
     EntityFactory::makeFallingPlatform(this, platformPos);
+
+    EntityFactory::makeSpawner(this, LevelSystem::getPosition(LevelSystem::enemyTiles::SAW)[0]);
 
     LOG(INFO) << "Scene 1 Restarted!";
 }
