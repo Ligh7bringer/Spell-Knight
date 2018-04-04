@@ -8,7 +8,7 @@ using namespace std;
 int prevRow;
 
 //constructor, initialises default sprite size and default animation speed
-AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, Vector2f size) : Component(p), _size(size) {
+AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, Vector2f size) : Component(p), _size(size), _rotation(0) {
         //total accumulated time, used to tell when to switch to the next frame
         _totalTime = 0.0f;
         //the texture rect's width and height
@@ -98,6 +98,10 @@ void AnimatedSpriteComponent::update(double dt) {
     //update sprite: set texture rect, update position and origin
     _sprite.setTextureRect(_currentFrame);
     _sprite.setPosition(_parent->getPosition());
+
+    if(_rotation != 0) {
+        _sprite.rotate(_rotation);
+    }
 }
 
 //render current sprite
@@ -198,4 +202,12 @@ bool AnimatedSpriteComponent::isDone() const {
 
 const Sprite& AnimatedSpriteComponent::getSprite() const {
     return _sprite;
+}
+
+void AnimatedSpriteComponent::rotate(float deg) {
+    _sprite.rotate(deg);
+}
+
+void AnimatedSpriteComponent::setRotation(float angle) {
+    _rotation = angle;
 }

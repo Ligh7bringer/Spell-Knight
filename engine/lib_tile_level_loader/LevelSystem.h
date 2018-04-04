@@ -56,7 +56,8 @@ public:
             SLIME = 's',
             PLANT = 'p',
             BIRD = 'b',
-            SAW = 'q'
+            BOULDER = 'q',
+            SPIKE = 'f'
         };
     };
 

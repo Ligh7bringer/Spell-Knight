@@ -110,7 +110,13 @@ void Level1Scene::Restart() {
     auto platformPos = platformTile[0];
     EntityFactory::makeFallingPlatform(this, platformPos);
 
-    EntityFactory::makeSpawner(this, LevelSystem::getPosition(LevelSystem::enemyTiles::SAW)[0]);
+    //create boulder spawner
+    EntityFactory::makeSpawner(this, LevelSystem::getPosition(LevelSystem::enemyTiles::BOULDER)[0]);
+
+    //create spikes
+    auto spikePos = LevelSystem::getPosition(LevelSystem::enemyTiles::SPIKE);
+    for(auto sp : spikePos)
+        EntityFactory::makeSpike(this, sp);
 
     LOG(INFO) << "Scene 1 Restarted!";
 }
@@ -118,7 +124,7 @@ void Level1Scene::Restart() {
 void Level1Scene::UnLoad() {
     cout << "Scene 1 Unload" << endl;
     AudioManager::stopMusic("background.wav");
-    //don't forget to reset to default view or when scene is changed or nothing is visible :D
+    //don't forget to reset to default view or when the scene is changed or nothing is visible :D
     Renderer::resetView();
     player.reset();
     ls::unload();

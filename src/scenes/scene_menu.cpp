@@ -1,11 +1,6 @@
 #include "scene_menu.h"
-#include "../components/cmp_text.h"
 #include "../game.h"
-#include <SFML/Window/Keyboard.hpp>
-#include "../Log.h"
-#include "../GUI/button.h"
 #include "../GUI/menu.h"
-#include "../../engine/src/engine.h"
 #include "../../engine/lib_settings_parser/settings_parser.h"
 
 using namespace std;
@@ -29,15 +24,14 @@ void MenuScene::Load() {
 }
 
 void MenuScene::Update(const double& dt) {
-  // cout << "Menu Update "<<dt<<"\n";
   mainMenu.update(dt);
   title.update(dt);
 
   if(mainMenu.getMenuResponse() == Menu::PLAY) {
-    Engine::ChangeScene(&level1);
+    Engine::ChangeScene((Scene*)&level1);
   } 
   if(mainMenu.getMenuResponse() == Menu::OPTIONS) {
-    Engine::ChangeScene(&gameOver);
+    //to do
   }
   if(mainMenu.getMenuResponse() == Menu::EXIT) {
     //exit

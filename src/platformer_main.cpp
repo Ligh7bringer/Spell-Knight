@@ -11,5 +11,5 @@ Level1Scene level1;
 GameOverScene gameOver;
 
 int main() {
-  Engine::Start(1280, 720, "Platformer", &menu);
+  Engine::Start(1280, 720, "Platformer", (Scene*)&menu);
 }

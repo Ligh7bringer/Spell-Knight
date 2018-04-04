@@ -1,12 +1,10 @@
 #include "entity_factory.h"
 #include "../components/cmp_player_physics.h"
 #include "../components/cmp_animated_sprite.h"
-#include "../components/cmp_enemy_ai.h"
 #include "../components/cmp_hurt_player.h"
 #include "../components/cmp_player_lives.h"
 #include "../components/cmp_player_attack.h"
 #include "../components/cmp_enemy_physics.h"
-#include "../components/cmp_physics.h"
 #include "../components/cmp_enemy_turret.h"
 #include "../components/cmp_pickup.h"
 #include "../components/cmp_score.h"
@@ -16,7 +14,6 @@
 #include "../components/cmp_timer.h"
 #include "../components/cmp_roaming.h"
 #include "../components/cmp_spawner.h"
-#include "../states/slime_states.h"
 #include "../states/eye_states.h"
 #include "../states/fish_states.h"
 #include "../../engine/lib_tile_level_loader/LevelSystem.h"
@@ -139,7 +136,7 @@ std::shared_ptr<Entity> EntityFactory::makeCloud(Scene *scene, const sf::Vector2
     cloud->addTag("enemy");
     cloud->setPosition(pos);
 
-    auto anim = cloud->addComponent<AnimatedSpriteComponent>(Vector2f(64.f,160.f));
+    auto anim = cloud->addComponent<AnimatedSpriteComponent>(Vector2f(68.f,160.f));
     anim->setSpritesheet(TextureManager::getTexture("lightning_1.png"));
     anim->setNumberOfFrames(1);
     anim->setFrameTime(0.1f);
@@ -208,6 +205,27 @@ std::shared_ptr<Entity> EntityFactory::makeFallingPlatform(Scene* scene, const s
     return platform;
 }
 
+std::shared_ptr<Entity> EntityFactory::makeSpawner(Scene *scene, const sf::Vector2f &pos) {
+    auto spawner = scene->makeEntity();
+    spawner->setPosition(pos);
+    spawner->addComponent<SpawnerComponent>();
+
+    return spawner;
+}
+
+std::shared_ptr<Entity> EntityFactory::makeSpike(Scene *scene, const sf::Vector2f &pos) {
+    auto spike = scene->makeEntity();
+    spike->setPosition(pos);
+
+    auto physics = spike->addComponent<EnemyPhysicsComponent>(false, Vector2f(64.f, 64.f));
+
+    spike->addComponent<HurtComponent>();
+    auto anim = spike->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 64.f));
+    anim->setSpritesheet(TextureManager::getTexture("spike.png"));
+
+    return spike;
+}
+
 //creates the physics colliders for the tiles in the currently loaded level in Scene scene
 void EntityFactory::makeWalls(Scene* scene) {
     auto walls = (ls::getGroundTiles());
@@ -218,6 +236,7 @@ void EntityFactory::makeWalls(Scene* scene) {
         e->setPosition(pos);
         e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
     }
+
 
 /*
     auto walls = (ls::getGroundTiles());
@@ -303,16 +322,7 @@ void EntityFactory::makeWalls(Scene* scene) {
     */
 }
 
-std::shared_ptr<Entity> EntityFactory::makeSpawner(Scene *scene, const sf::Vector2f &pos) {
-    auto spawner = scene->makeEntity();
-    spawner->setPosition(pos);
-    spawner->addComponent<SpawnerComponent>();
 
-    auto anim = spawner->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
-    anim->setSpritesheet(TextureManager::getTexture("slime.png"));
-
-    return spawner;
-}
 
 //auto e = scene->makeEntity();
 // e->setPosition(pos);
