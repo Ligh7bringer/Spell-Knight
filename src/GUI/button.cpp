@@ -1,3 +1,4 @@
+#include <settings_parser.h>
 #include "button.h"
 #include "../../engine/src/system_renderer.h"
 #include "../../engine/src/engine.h"

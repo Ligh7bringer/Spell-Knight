@@ -51,7 +51,7 @@ void Level1Scene::Restart() {
     ents.list.clear();
 
     // Create player
-    player = EntityFactory::makePlayer(this, Vector2f(5500.f, 100.f));
+    player = EntityFactory::makePlayer(this, LevelSystem::getPosition(LevelSystem::baseTiles::START)[0]);
 
     // Create some enemies
     auto slimePos = LevelSystem::getPosition(LevelSystem::enemyTiles::SLIME);
@@ -77,7 +77,7 @@ void Level1Scene::Restart() {
         EntityFactory::makeCloud(this, bp);
     }
 
-    // Add physics coliders to level tiles.
+    // Add physics colliders to level tiles.
     EntityFactory::makeWalls(this);
 
     //create a power up

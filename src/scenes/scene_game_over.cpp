@@ -1,5 +1,4 @@
 #include "scene_game_over.h"
-#include <SFML/Window/Keyboard.hpp>
 #include "../game.h"
 #include "../Log.h"
 
@@ -21,11 +20,11 @@ void GameOverScene::Update(const double& dt) {
 
     //allow the user to go back to the menu or restart the level
     if(Keyboard::isKeyPressed(Keyboard::Return)) {
-        Engine::ChangeScene(&level1);
+        Engine::ChangeScene((Scene*)&level1);
     }
 
     if(Keyboard::isKeyPressed(Keyboard::Escape)) {
-        Engine::ChangeScene(&menu);
+        Engine::ChangeScene((Scene*)&menu);
     }
 
     //update everything else

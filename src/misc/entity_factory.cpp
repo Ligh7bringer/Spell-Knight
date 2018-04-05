@@ -136,7 +136,7 @@ std::shared_ptr<Entity> EntityFactory::makeCloud(Scene *scene, const sf::Vector2
     cloud->addTag("enemy");
     cloud->setPosition(pos);
 
-    auto anim = cloud->addComponent<AnimatedSpriteComponent>(Vector2f(68.f,160.f));
+    auto anim = cloud->addComponent<AnimatedSpriteComponent>(Vector2f(64.f,160.f));
     anim->setSpritesheet(TextureManager::getTexture("lightning_1.png"));
     anim->setNumberOfFrames(1);
     anim->setFrameTime(0.1f);
@@ -167,10 +167,10 @@ std::shared_ptr<Entity> EntityFactory::makePowerUp(Scene* scene, const sf::Vecto
     auto pu = scene->makeEntity();
     pu->addTag("flame");
     pu->setPosition(pos);
-    pu->addComponent<PickUpComponent>();
+    pu->addComponent<PickUpComponent>(10);
 
     auto anim = pu->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
-    anim->setSpritesheet(TextureManager::getTexture("flame.png"));
+    anim->setSpritesheet(TextureManager::getTexture("coin.png"));
     anim->setNumberOfFrames(4);
     anim->setFrameTime(0.1f);
 

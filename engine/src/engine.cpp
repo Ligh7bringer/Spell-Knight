@@ -24,7 +24,6 @@ static RenderWindow* _window;
 
 structlog LOGCFG = {};
 
-
 void Loading_update(float dt, const Scene* const scn) {
   //  cout << "Eng: Loading Screen\n";
   if (scn->isLoaded()) {

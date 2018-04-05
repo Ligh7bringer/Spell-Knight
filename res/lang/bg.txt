@@ -2,3 +2,7 @@ title=ЗАГЛАВИЕ
 play=Нова игра
 options=Опции
 exit=Изход
+hp=Живот
+time=Време
+score=Точки
+game_over=Край на играта!

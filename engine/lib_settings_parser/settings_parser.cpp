@@ -33,7 +33,7 @@ void SettingsParser::readFile(const string& file) {
             if(!keyValue.first.empty()) {
                 //store it in the _data map
                 _data[keyValue.first] = keyValue.second;
-                LOG(DEBUG) << "Setting read: " << keyValue.first << " = " << keyValue.second;
+                //LOG(DEBUG) << "Setting read: " << keyValue.first << " = " << keyValue.second;
             }
         }
 
@@ -154,7 +154,7 @@ void SettingsParser::saveToFile() {
 
         //close stream
         out.close();
-        LOG(INFO) << "Successfully wrote to settings file " << _fileName;
+        //LOG(INFO) << "Successfully wrote to settings file " << _fileName;
     }
 
 }
