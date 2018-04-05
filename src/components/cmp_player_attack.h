@@ -7,7 +7,8 @@ public:
     {
         DEFAULT,
         FIREBALL,
-        ICICLE
+        ICICLE,
+		SHOCK
     };
 
     struct Attack {

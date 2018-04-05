@@ -85,16 +85,38 @@ void PlayerAttackComponent::initAttacks() {
     normal.row = 4;
     _availableAttacks.push_back(normal);
 
-    //fireball attack
-    Attack fireball;
-    fireball.type = FIREBALL;
-    fireball.damage = 2;
-    fireball.cooldown = 1.5f;
-    fireball.spriteSize = Vector2f(64.f, 45.f);
-    fireball.spriteSheet = "icicle.png";    
-    fireball.frameCount = 8;
-    fireball.row = 0;
-    _availableAttacks.push_back(fireball);
+    //icicle attack
+	Attack icicle;
+    icicle.type = ICICLE;
+	icicle.damage = 2;
+	icicle.cooldown = 1.5f;
+	icicle.spriteSize = Vector2f(64.f, 45.f);
+	icicle.spriteSheet = "icicle.png";
+	icicle.frameCount = 8;
+	icicle.row = 0;
+    _availableAttacks.push_back(icicle);
+	//shock attack
+	Attack shock;
+	shock.type = SHOCK;
+	shock.damage = 3;
+	shock.cooldown = 1.75f;
+	shock.spriteSize = Vector2f(64.f, 45.f);
+	shock.spriteSheet = "shock.png";
+	shock.frameCount = 4;
+	shock.row = 0;
+	_availableAttacks.push_back(shock);
+	//fireball attack
+	Attack fireball;
+	fireball.type = FIREBALL;
+	fireball.damage = 4;
+	fireball.cooldown = 2.5f;
+	fireball.spriteSize = Vector2f(64.f, 45.f);
+	fireball.spriteSheet = "fireball.png";
+	fireball.frameCount = 8;
+	fireball.row = 0;
+	_availableAttacks.push_back(fireball);
+	
+
 }
 
 void PlayerAttackComponent::changeAttack(AttackType at) {
