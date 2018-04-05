@@ -2,3 +2,7 @@ title=Spell Knight
 play=Play
 options=Options
 exit=Exit
+hp=HP
+time=Time
+score=Score
+game_over=Game оver!

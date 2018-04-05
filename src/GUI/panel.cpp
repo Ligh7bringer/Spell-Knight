@@ -2,9 +2,7 @@
 #include "../../engine/src/system_renderer.h"
 #include "../../engine/src/system_resources.h"
 #include <engine.h>
-#include <locale>
 #include <codecvt>
-#include <string>
 #include "../Log.h"
 
 using namespace sf;

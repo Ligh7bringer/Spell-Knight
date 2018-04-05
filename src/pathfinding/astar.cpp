@@ -1,16 +1,15 @@
 //
 // Created by 40203 on 22/03/2018.
 //
-/*
+
 #include "astar.h"
 #include <LevelSystem.h>
-#include <array>
 #include <queue>
 
 using namespace std;
 using namespace sf;
 
-class Node{
+class Node {
 private:
     Vector2i _pos;
     int _level;
@@ -128,9 +127,10 @@ vector<Vector2i> pathFind(Vector2i start, Vector2i finish) {
           open_nodes_map[next.x][next.y] = m0.getPriority();
           queue[queue_index].push(m0);
           //put the opposite direction into the direction map
-          //we work backwords
-          direction_map[next.x][next.y] = dir * -1;0
+          //we work backwards
+          direction_map[next.x][next.y] = dir * -1;
         }
+
         //if it has a priority, check if the property is better on the new
         //route
         else if(open_nodes_map[next.x][next.y] > m0.getPriority()){
@@ -148,7 +148,7 @@ vector<Vector2i> pathFind(Vector2i start, Vector2i finish) {
           if(queue[queue_index].size() > queue[1-queue_index].size())
             queue_index = 1 -queue_index;
           while(!queue[queue_index].empty()){
-            queue[1- queue_index].push(queue[queue_index].top();
+            queue[1- queue_index].push(queue[queue_index].top());
             queue[queue_index].pop();
           }
         }
@@ -156,4 +156,4 @@ vector<Vector2i> pathFind(Vector2i start, Vector2i finish) {
     }
   }
   return vector<Vector2i>();
-}*/
+}

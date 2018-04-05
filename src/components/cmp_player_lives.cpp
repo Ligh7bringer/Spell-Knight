@@ -1,5 +1,6 @@
 #include "cmp_player_lives.h"
 #include <engine.h>
+#include <settings_parser.h>
 
 using namespace sf;
 
@@ -7,14 +8,17 @@ using namespace sf;
 * Component which handles the lives of the player and draws them on the screen.
 */
 
+SettingsParser settingsP;
+
 PlayerLivesComponent::PlayerLivesComponent(Entity* p, int maxLives) : Component(p), _maxLives(maxLives), _lives(_maxLives),
-                                                    _panel(Panel(Vector2f(0, 0), Vector2f(100.f, 32.f), "DoctorSoos.ttf")) {    
+                                                    _panel(Panel(Vector2f(0, 0), Vector2f(100.f, 32.f), "Anonymous.ttf")) {
     _panel.setPanelColour(Color(192, 192, 192, 128));
+    settingsP.readFile("res/lang/en.txt");
 }
 
 //update positions of GUI stuff
 void PlayerLivesComponent::update(double dt) {
-    _panel.setText("HP " + std::to_string(_lives));
+    _panel.setTextLocalised(settingsP.get("hp") + " " + std::to_string(_lives));
     _panel.update(dt);
 }
 
