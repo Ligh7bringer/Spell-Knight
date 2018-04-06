@@ -64,7 +64,7 @@ void PlayerAttackComponent::fire() {
   
         _cooldown = _currentAttack.cooldown;
 
-        AudioManager::playSound("shoot.wav");
+        AudioManager::playSound(_currentAttack.sound);
     }    
 }
 
@@ -83,6 +83,7 @@ void PlayerAttackComponent::initAttacks() {
     normal.spriteSheet = "projectiles2.png";
     normal.frameCount = 6;
     normal.row = 4;
+	normal.sound = "shoot.wav";
     _availableAttacks.push_back(normal);
 
     //icicle attack
@@ -94,7 +95,9 @@ void PlayerAttackComponent::initAttacks() {
 	icicle.spriteSheet = "icicle.png";
 	icicle.frameCount = 8;
 	icicle.row = 0;
+	icicle.sound = "shoot.wav";
     _availableAttacks.push_back(icicle);
+
 	//shock attack
 	Attack shock;
 	shock.type = SHOCK;
@@ -104,7 +107,9 @@ void PlayerAttackComponent::initAttacks() {
 	shock.spriteSheet = "shock.png";
 	shock.frameCount = 4;
 	shock.row = 0;
+	shock.sound = "shock.wav";
 	_availableAttacks.push_back(shock);
+
 	//fireball attack
 	Attack fireball;
 	fireball.type = FIREBALL;
@@ -114,6 +119,7 @@ void PlayerAttackComponent::initAttacks() {
 	fireball.spriteSheet = "fireball.png";
 	fireball.frameCount = 8;
 	fireball.row = 0;
+	shock.sound = "fireball2.wav";
 	_availableAttacks.push_back(fireball);
 	
 

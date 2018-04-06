@@ -17,6 +17,7 @@ void PickUpComponent::update(double dt) {
             auto score = player->get_components<PlayerScoreComponent>()[0];
             score->increasePoints(_points);
             auto attack = player->get_components<PlayerAttackComponent>()[0];
+			attack->changeAttack(PlayerAttackComponent::FIREBALL);
             AudioManager::playSound("collect.wav");
             //delete
             _parent->setForDelete();

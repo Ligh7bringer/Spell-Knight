@@ -14,6 +14,7 @@ public:
     static std::shared_ptr<Entity> makePlant(Scene* scene, const sf::Vector2f& pos);
     static std::shared_ptr<Entity> makeCloud(Scene *scene, const sf::Vector2f &pos);
     static std::shared_ptr<Entity> makeSpawner(Scene *scene, const sf::Vector2f &pos);
+    static std::shared_ptr<Entity> makePortal(Scene *scene, const sf::Vector2f &pos);
     static std::shared_ptr<Entity> makeMovingPlatform(Scene* scene, const sf::Vector2f& pos, const sf::Vector2f& distance, float time);
     static std::shared_ptr<Entity> makeFallingPlatform(Scene* scene, const sf::Vector2f& pos);
     static std::shared_ptr<Entity> makeSpike(Scene* scene, const sf::Vector2f& pos);

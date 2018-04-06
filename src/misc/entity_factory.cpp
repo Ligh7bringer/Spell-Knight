@@ -19,6 +19,7 @@
 #include "../../engine/lib_tile_level_loader/LevelSystem.h"
 #include "texture_manager.h"
 #include "../states/bird_states.h"
+#include "../components/cmp_teleport.h"
 
 using namespace sf;
 using namespace std;
@@ -177,6 +178,21 @@ std::shared_ptr<Entity> EntityFactory::makePowerUp(Scene* scene, const sf::Vecto
     return pu;
 }
 
+//makes a portal to the end of the level scene
+std::shared_ptr<Entity> EntityFactory::makePortal(Scene* scene, const sf::Vector2f &pos) {
+    auto p = scene->makeEntity();
+  p->addTag("portal");
+  p->setPosition(pos);
+  p->addComponent<TeleportComponent>();
+
+  auto anim = p->addComponent<AnimatedSpriteComponent>(Vector2f(32.f,72.f));
+  anim->setSpritesheet(TextureManager::getTexture("portal.png"));
+  anim->setNumberOfFrames(3);
+  anim->setFrameTime(0.2f);
+
+  return p;
+}
+
 std::shared_ptr<Entity> EntityFactory::makeMovingPlatform(Scene* scene, const sf::Vector2f& pos, const sf::Vector2f& distance, float time) {
     auto platform = scene->makeEntity();
     platform->setPosition(pos);
@@ -228,103 +244,14 @@ std::shared_ptr<Entity> EntityFactory::makeSpike(Scene *scene, const sf::Vector2
 
 //creates the physics colliders for the tiles in the currently loaded level in Scene scene
 void EntityFactory::makeWalls(Scene* scene) {
-    auto walls = (ls::getGroundTiles());
-    for(auto w: walls){
-        auto pos = ls::getTilePosition(w);
-        pos += Vector2f(16.f,16.f);
-        auto e = scene->makeEntity();
-        e->setPosition(pos);
-        e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
-    }
+  auto walls = (ls::getGroundTiles());
+  for (auto w: walls) {
+    auto pos = ls::getTilePosition(w);
+    pos += Vector2f(16.f, 16.f);
+    auto e = scene->makeEntity();
+    e->setPosition(pos);
+    e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
+  }
 
 
-/*
-    auto walls = (ls::getGroundTiles());
-    struct tp {
-        sf::Vector2f p;
-        sf::Vector2f s;
-    };
-    std::vector<tp> tps;
-    const auto tls = Vector2f(ls::getTileSize(), ls::getTileSize());
-    //loop through all the ground tiles
-    for (auto w : walls) {
-        auto pos = ls::getTilePosition(w);
-        pos += Vector2f(16.f, 16.f);
-        //ls::Tile t = ls::getTile({pos.x, pos.y});
-        tp temp;
-        temp.p = pos;
-        temp.s = tls;
-        tps.push_back(temp);
-    }
-
-    const auto nonempty = tps.size();
-
-    //if tile 1 is touching tile 2
-    //we can use one large body instead of 2
-    if (nonempty) {
-        std::vector<tp> tpo;
-        tp last = tps[0];
-        size_t samecount = 0;
-
-        for (size_t i = 1; i < nonempty; ++i) {
-            //is this tile compressible with the last?
-            bool same = ((tps[i].p.y == last.p.y) &&
-                         tps[i].p.x == last.p.x + (tls.x * (1 + samecount)));
-            if (same) {
-                ++samecount;
-            } else {
-                if (samecount) {
-                    last.s.x = (1 + samecount) * tls.x; //expand tile
-                }
-                //write tile to list
-                tpo.push_back(last);
-                samecount = 0;
-                last = tps[i];
-            }
-        }
-        //catch the last tile
-        if (samecount) {
-            last.s.x = (1 + samecount) * tls.x;
-            tpo.push_back(last);
-        }
-
-        const auto xsave = tpo.size();
-        samecount = 0;
-        std::vector<tp> tpox;
-        for (size_t i = 0; i < tpo.size(); ++i) {
-            last = tpo[i];
-            for (size_t j = i + 1; j < tpo.size(); ++j) {
-                bool same = ((tpo[j].p.x == last.p.x) && (tpo[j].s == last.s) &&
-                             (tpo[j].p.y == last.p.y + (tls.y * (1 + samecount))));
-                if (same) {
-                    ++samecount;
-                    tpo.erase(tpo.begin() + j);
-                    --j;
-                }
-            }
-            if (samecount) {
-                last.s.y = (1 + samecount) * tls.y; // Expand tile
-            }
-            // write tile to list
-            tpox.push_back(last);
-            samecount = 0;
-        }
-
-        tps.swap(tpox);
-    }
-    for (auto &t : tps) {
-        LOG(DEBUG) << "HERE" << t.p;
-
-        auto s = scene->makeEntity();
-        s->setPosition(t.p);
-        s->addComponent<PhysicsComponent>(false, t.s);
-    }
-    */
 }
-
-
-
-//auto e = scene->makeEntity();
-// e->setPosition(pos);
-//e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
-

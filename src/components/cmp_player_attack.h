@@ -1,5 +1,6 @@
 #include "../../engine/lib_ecm/ecm.h"
 #include <SFML/Graphics/Texture.hpp>
+#include <audio_manager.h>
 
 class PlayerAttackComponent : public Component {
 public:
@@ -19,6 +20,7 @@ public:
         std::string spriteSheet;
         int frameCount;
         int row;
+		std::string sound;
     };
 
     void update(double dt) override;
