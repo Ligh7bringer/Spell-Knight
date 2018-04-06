@@ -156,10 +156,4 @@ vector<Vector2i> pathFind(Vector2i start, Vector2i finish) {
     }
   }
   return vector<Vector2i>();
-<<<<<<< HEAD
 }*/
-=======
-}
-
- */
->>>>>>> 3cd22644aa5c3fd379602a19841c6ab484c3569d

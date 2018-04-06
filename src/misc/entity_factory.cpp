@@ -275,7 +275,6 @@ std::shared_ptr<Entity> EntityFactory::makeSpike(Scene *scene, const sf::Vector2
 
 //creates the physics colliders for the tiles in the currently loaded level in Scene scene
 void EntityFactory::makeWalls(Scene* scene) {
-<<<<<<< HEAD
   auto walls = (ls::getGroundTiles());
   for (auto w: walls) {
     auto pos = ls::getTilePosition(w);
@@ -287,15 +286,3 @@ void EntityFactory::makeWalls(Scene* scene) {
 
 
 }
-=======
-    auto walls = (ls::getGroundTiles());
-    for(auto w: walls){
-        auto pos = ls::getTilePosition(w);
-        pos += Vector2f(16.f,16.f);
-        auto e = scene->makeEntity();
-        e->setPosition(pos);
-        e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
-    }
-}
-
->>>>>>> 3cd22644aa5c3fd379602a19841c6ab484c3569d
