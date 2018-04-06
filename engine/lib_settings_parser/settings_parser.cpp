@@ -139,7 +139,7 @@ void SettingsParser::saveToFile() {
     if(!out.is_open()) {
         LOG(ERROR) << "Couldn't open file " << _fileName << " for writing!";
     } else {
-        LOG(INFO) << "Saving to settings file " << _fileName << "...";
+        //LOG(INFO) << "Saving to settings file " << _fileName << "...";
         //write everything from the fileContents vector to the file
         for (auto it = fileContents.begin() ; it != fileContents.end(); ++it) {
             out << it->first;

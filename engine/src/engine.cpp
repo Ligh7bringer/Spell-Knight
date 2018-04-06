@@ -11,6 +11,7 @@
 #include "../../src/Log.h"
 #include "../lib_input_manager/input_manager.h"
 #include "../lib_settings_parser/settings_parser.h"
+#include "../lib_audio_manager/audio_manager.h"
 
 using namespace sf;
 using namespace std;
@@ -114,6 +115,8 @@ void Engine::Start(unsigned int width, unsigned int height,
   
   //initialise texture manager
   TextureManager::initialise();
+
+  AudioManager::initialise();
 
   RenderWindow window(VideoMode(width, height), gameName, sf::Style::Close | sf::Style::Resize);
   _gameName = gameName;

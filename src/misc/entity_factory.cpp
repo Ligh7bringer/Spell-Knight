@@ -164,18 +164,47 @@ std::shared_ptr<Entity> EntityFactory::makeCloud(Scene *scene, const sf::Vector2
 }
 
 //makes a collectible in Scene scene at position pos
-std::shared_ptr<Entity> EntityFactory::makePowerUp(Scene* scene, const sf::Vector2f& pos) {
-    auto pu = scene->makeEntity();
-    pu->addTag("flame");
-    pu->setPosition(pos);
-    pu->addComponent<PickUpComponent>(10);
+std::shared_ptr<Entity> EntityFactory::makePotion(Scene *scene, const sf::Vector2f &pos) {
+    auto potion = scene->makeEntity();
+    potion->setPosition(pos);
+    potion->addComponent<PickUpComponent>(10);
 
-    auto anim = pu->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
-    anim->setSpritesheet(TextureManager::getTexture("coin.png"));
-    anim->setNumberOfFrames(4);
+    auto anim = potion->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
+    anim->setSpritesheet(TextureManager::getTexture("potions.png"));
+    //use a random sprite
+    anim->setCurrentRow(rand() % 5);
+
+    return potion;
+}
+
+
+std::shared_ptr<Entity> EntityFactory::makeGem(Scene *scene, const sf::Vector2f &pos) {
+    auto gem = scene->makeEntity();
+    gem->setPosition(pos);
+
+    gem->addComponent<PickUpComponent>(30);
+
+    auto anim = gem->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
+    anim->setSpritesheet(TextureManager::getTexture("gems.png"));
+    anim->setNumberOfFrames(6);
+    anim->setCurrentRow(rand() % 2);
     anim->setFrameTime(0.1f);
 
-    return pu;
+    return gem;
+}
+
+std::shared_ptr<Entity> EntityFactory::makeCoin(Scene *scene, const sf::Vector2f &pos) {
+    auto coin = scene->makeEntity();
+    coin->setPosition(pos);
+
+    coin->addComponent<PickUpComponent>(20);
+
+    auto anim = coin->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
+    anim->setSpritesheet(TextureManager::getTexture("coin.png"));
+    anim->setNumberOfFrames(9);
+    anim->setFrameTime(0.1f);
+
+    return coin;
 }
 
 //makes a portal to the end of the level scene
@@ -233,17 +262,20 @@ std::shared_ptr<Entity> EntityFactory::makeSpike(Scene *scene, const sf::Vector2
     auto spike = scene->makeEntity();
     spike->setPosition(pos);
 
-    auto physics = spike->addComponent<EnemyPhysicsComponent>(false, Vector2f(64.f, 64.f));
-
-    spike->addComponent<HurtComponent>();
     auto anim = spike->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 64.f));
     anim->setSpritesheet(TextureManager::getTexture("spike.png"));
+
+    auto size = anim->getSize();
+    auto physics = spike->addComponent<PhysicsComponent>(false, Vector2f(size.x / 2.f, size.y));
+
+    spike->addComponent<HurtComponent>();
 
     return spike;
 }
 
 //creates the physics colliders for the tiles in the currently loaded level in Scene scene
 void EntityFactory::makeWalls(Scene* scene) {
+<<<<<<< HEAD
   auto walls = (ls::getGroundTiles());
   for (auto w: walls) {
     auto pos = ls::getTilePosition(w);
@@ -255,3 +287,15 @@ void EntityFactory::makeWalls(Scene* scene) {
 
 
 }
+=======
+    auto walls = (ls::getGroundTiles());
+    for(auto w: walls){
+        auto pos = ls::getTilePosition(w);
+        pos += Vector2f(16.f,16.f);
+        auto e = scene->makeEntity();
+        e->setPosition(pos);
+        e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
+    }
+}
+
+>>>>>>> 3cd22644aa5c3fd379602a19841c6ab484c3569d

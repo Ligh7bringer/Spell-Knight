@@ -17,9 +17,4 @@ public:
   explicit PlayerPhysicsComponent(Entity* p, const sf::Vector2f& size);
 
   PlayerPhysicsComponent() = delete;
-
-  int getDirection() const;
-  bool facingRight() const;
-  bool isJumping() const;
-  bool isShooting() const;
 };

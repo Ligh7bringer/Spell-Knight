@@ -21,8 +21,6 @@ std::map<LevelSystem::Tile, sf::IntRect> LevelSystem::_rects{
         { platformTiles::PLATFORM2, IntRect(96, 0, 32, 32) },
         { platformTiles::PLATFORM3, IntRect(0, 32, 32, 32) },
         {groundTiles::INVISIBLE, IntRect(0, 64, 32,32)},
-        {groundTiles::COIN, IntRect(0, 0, 0, 0)},
-        {groundTiles::ITEM, IntRect(0, 0, 0, 0)},
         {baseTiles::DEADFALL, IntRect(64,32,32,32)}
 };
 

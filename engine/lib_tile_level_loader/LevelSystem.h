@@ -28,7 +28,8 @@ public:
             GROUND9 = '9',
             INVISIBLE = '0',
             COIN = 'C',
-            ITEM = 'G'
+            GEM = 'G',
+            POTION = 'Q'
         };
     };
     struct platformTiles {
