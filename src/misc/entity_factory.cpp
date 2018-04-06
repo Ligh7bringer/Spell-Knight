@@ -3,7 +3,6 @@
 #include "../components/cmp_animated_sprite.h"
 #include "../components/cmp_hurt_player.h"
 #include "../components/cmp_player_lives.h"
-#include "../components/cmp_player_attack.h"
 #include "../components/cmp_enemy_physics.h"
 #include "../components/cmp_enemy_turret.h"
 #include "../components/cmp_pickup.h"
@@ -20,6 +19,7 @@
 #include "texture_manager.h"
 #include "../states/bird_states.h"
 #include "../components/cmp_teleport.h"
+#include "../components/cmp_power_up.h"
 
 using namespace sf;
 using namespace std;
@@ -167,12 +167,15 @@ std::shared_ptr<Entity> EntityFactory::makeCloud(Scene *scene, const sf::Vector2
 std::shared_ptr<Entity> EntityFactory::makePotion(Scene *scene, const sf::Vector2f &pos) {
     auto potion = scene->makeEntity();
     potion->setPosition(pos);
-    potion->addComponent<PickUpComponent>(10);
+    auto pl = scene->ents.find("player")[0];
+    auto attack = pl->get_components<PlayerAttackComponent>()[0];
+    //use a random potion to change the players attack
+    auto row = rand() % 5;
+    potion->addComponent<PowerUpComponent>(10, attack->getAttack(row).type);
 
     auto anim = potion->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
     anim->setSpritesheet(TextureManager::getTexture("potions.png"));
-    //use a random sprite
-    anim->setCurrentRow(rand() % 5);
+    anim->setCurrentRow(row);
 
     return potion;
 }
