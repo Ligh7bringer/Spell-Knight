@@ -6,7 +6,6 @@
 #include "texture_manager.h"
 #include "system_physics.h"
 #include "../../engine/src/engine.h"
-#include "../../engine/lib_ecm/ecm.h"
 #include "cmp_score.h"
 #include "cmp_enemy_health.h"
 #include "../../engine/src/system_renderer.h"
@@ -99,7 +98,7 @@ void BulletComponent::explode() {
     ac->setCurrentRow(10);
 
     //use particles for the explosion
-    _parent->addComponent<ParticleSystemComponent>();
+    _parent->addComponent<ParticleSystemComponent>(ParticleSystem::EXPLOSION);
 
     //set exploded to true so we know it has exploded
     _exploded = true;
