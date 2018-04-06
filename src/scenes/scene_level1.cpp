@@ -19,8 +19,7 @@ int score;
 int playerTime;
 
 void Level1Scene::Load() {
-    AudioManager::initialise();
-    AudioManager::playMusic("background.wav", true);
+    //AudioManager::playMusic("background.wav", true);
 
     //setup view
     auto windowSize = Engine::getWindowSize();
@@ -80,10 +79,18 @@ void Level1Scene::Restart() {
     // Add physics colliders to level tiles.
     EntityFactory::makeWalls(this);
 
-    //create a power up
-    auto flamePos = ls::getPosition(ls::groundTiles::COIN);
-    for (auto fp : flamePos) {
-        EntityFactory::makePowerUp(this, fp);
+    //create collectibles
+    auto coinPos = ls::getPosition(ls::groundTiles::COIN);
+    for (auto cp : coinPos) {
+        EntityFactory::makeCoin(this, cp);
+    }
+    auto potionPos = ls::getPosition(ls::groundTiles::POTION);
+    for(auto pp : potionPos) {
+        EntityFactory::makePotion(this, pp);
+    }
+    auto gemPos = ls::getPosition(ls::groundTiles::GEM);
+    for(auto gp : gemPos) {
+        EntityFactory::makeGem(this, gp);
     }
 
     //make fish

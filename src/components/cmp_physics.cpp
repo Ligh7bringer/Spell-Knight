@@ -1,4 +1,5 @@
 #include "cmp_physics.h"
+#include "cmp_animated_sprite.h"
 
 using namespace std;
 using namespace sf;
@@ -93,6 +94,37 @@ PhysicsComponent::PhysicsComponent(Entity* p, const sf::Vector2f& size) : Compon
   }
 }
 
+//creates a triangular body
+PhysicsComponent::PhysicsComponent(Entity *p) : Component(p), _dynamic(false) {
+    //create body def
+    b2BodyDef bodyDef;
+    //set dynamic/static
+    bodyDef.type = b2_staticBody;
+    bodyDef.position = sv2_to_bv2(invert_height(p->getPosition()));
+    //create body
+    _body = Physics::GetWorld()->CreateBody(&bodyDef);
+    _body->SetActive(true);
+
+    //create a triangular shape
+    //with some nice hardcoded values
+    b2Vec2 vertices[3];
+    vertices[0].Set(-0.2f, 0.0f);
+    vertices[1].Set(0.5f, 0.0f);
+    vertices[2].Set(0.4f, 1.0f);
+    int32 count = 3;
+    b2PolygonShape polygon;
+    polygon.Set(vertices, count);
+
+    //create fixture def
+    b2FixtureDef fixtureDef;
+    fixtureDef.friction = 0.1f;
+    fixtureDef.restitution = 0;
+    fixtureDef.shape = &polygon;
+
+    //create fixture
+    _fixture = _body->CreateFixture(&fixtureDef);
+}
+
 void PhysicsComponent::setFriction(float r) { _fixture->SetFriction(r); }
 
 void PhysicsComponent::setMass(float m) { _fixture->SetDensity(m); }
@@ -145,8 +177,8 @@ bool PhysicsComponent::isTouching(const PhysicsComponent& pc) const {
   for (int32 i = 0; i < contactList.size(); i++) {
     const auto& contact = (contactList[i]);
     //the bodies need to be compared here, not the fixtures!
-    if (contact->IsTouching() && 
-      ((contact->GetFixtureA()->GetBody() == _fixture->GetBody() &&
+    if (contact->IsTouching() &&
+       ((contact->GetFixtureA()->GetBody() == _fixture->GetBody() &&
         contact->GetFixtureB()->GetBody() == _otherFixture->GetBody()) ||
        (contact->GetFixtureA()->GetBody() == _otherFixture->GetBody() &&
         contact->GetFixtureB()->GetBody() == _fixture->GetBody()))) {
@@ -205,3 +237,5 @@ void PhysicsComponent::applyForce(const Vector2f& f) {
   auto a = b2Vec2(f.x, f.y * -1.0f);
   _body->ApplyForceToCenter(a, true);
 }
+
+

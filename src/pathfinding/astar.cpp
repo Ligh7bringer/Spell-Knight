@@ -2,6 +2,7 @@
 // Created by 40203 on 22/03/2018.
 //
 
+/*
 #include "astar.h"
 #include <LevelSystem.h>
 #include <queue>
@@ -157,3 +158,5 @@ vector<Vector2i> pathFind(Vector2i start, Vector2i finish) {
   }
   return vector<Vector2i>();
 }
+
+ */

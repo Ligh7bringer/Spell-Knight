@@ -163,19 +163,49 @@ std::shared_ptr<Entity> EntityFactory::makeCloud(Scene *scene, const sf::Vector2
 }
 
 //makes a collectible in Scene scene at position pos
-std::shared_ptr<Entity> EntityFactory::makePowerUp(Scene* scene, const sf::Vector2f& pos) {
-    auto pu = scene->makeEntity();
-    pu->addTag("flame");
-    pu->setPosition(pos);
-    pu->addComponent<PickUpComponent>(10);
+std::shared_ptr<Entity> EntityFactory::makePotion(Scene *scene, const sf::Vector2f &pos) {
+    auto potion = scene->makeEntity();
+    potion->setPosition(pos);
+    potion->addComponent<PickUpComponent>(10);
 
-    auto anim = pu->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
-    anim->setSpritesheet(TextureManager::getTexture("coin.png"));
-    anim->setNumberOfFrames(4);
+    auto anim = potion->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
+    anim->setSpritesheet(TextureManager::getTexture("potions.png"));
+    //use a random sprite
+    anim->setCurrentRow(rand() % 5);
+
+    return potion;
+}
+
+
+std::shared_ptr<Entity> EntityFactory::makeGem(Scene *scene, const sf::Vector2f &pos) {
+    auto gem = scene->makeEntity();
+    gem->setPosition(pos);
+
+    gem->addComponent<PickUpComponent>(30);
+
+    auto anim = gem->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
+    anim->setSpritesheet(TextureManager::getTexture("gems.png"));
+    anim->setNumberOfFrames(6);
+    anim->setCurrentRow(rand() % 2);
     anim->setFrameTime(0.1f);
 
-    return pu;
+    return gem;
 }
+
+std::shared_ptr<Entity> EntityFactory::makeCoin(Scene *scene, const sf::Vector2f &pos) {
+    auto coin = scene->makeEntity();
+    coin->setPosition(pos);
+
+    coin->addComponent<PickUpComponent>(20);
+
+    auto anim = coin->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
+    anim->setSpritesheet(TextureManager::getTexture("coin.png"));
+    anim->setNumberOfFrames(9);
+    anim->setFrameTime(0.1f);
+
+    return coin;
+}
+
 
 std::shared_ptr<Entity> EntityFactory::makeMovingPlatform(Scene* scene, const sf::Vector2f& pos, const sf::Vector2f& distance, float time) {
     auto platform = scene->makeEntity();
@@ -217,11 +247,13 @@ std::shared_ptr<Entity> EntityFactory::makeSpike(Scene *scene, const sf::Vector2
     auto spike = scene->makeEntity();
     spike->setPosition(pos);
 
-    auto physics = spike->addComponent<EnemyPhysicsComponent>(false, Vector2f(64.f, 64.f));
-
-    spike->addComponent<HurtComponent>();
     auto anim = spike->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 64.f));
     anim->setSpritesheet(TextureManager::getTexture("spike.png"));
+
+    auto size = anim->getSize();
+    auto physics = spike->addComponent<PhysicsComponent>(false, Vector2f(size.x / 2.f, size.y));
+
+    spike->addComponent<HurtComponent>();
 
     return spike;
 }
@@ -236,95 +268,5 @@ void EntityFactory::makeWalls(Scene* scene) {
         e->setPosition(pos);
         e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
     }
-
-
-/*
-    auto walls = (ls::getGroundTiles());
-    struct tp {
-        sf::Vector2f p;
-        sf::Vector2f s;
-    };
-    std::vector<tp> tps;
-    const auto tls = Vector2f(ls::getTileSize(), ls::getTileSize());
-    //loop through all the ground tiles
-    for (auto w : walls) {
-        auto pos = ls::getTilePosition(w);
-        pos += Vector2f(16.f, 16.f);
-        //ls::Tile t = ls::getTile({pos.x, pos.y});
-        tp temp;
-        temp.p = pos;
-        temp.s = tls;
-        tps.push_back(temp);
-    }
-
-    const auto nonempty = tps.size();
-
-    //if tile 1 is touching tile 2
-    //we can use one large body instead of 2
-    if (nonempty) {
-        std::vector<tp> tpo;
-        tp last = tps[0];
-        size_t samecount = 0;
-
-        for (size_t i = 1; i < nonempty; ++i) {
-            //is this tile compressible with the last?
-            bool same = ((tps[i].p.y == last.p.y) &&
-                         tps[i].p.x == last.p.x + (tls.x * (1 + samecount)));
-            if (same) {
-                ++samecount;
-            } else {
-                if (samecount) {
-                    last.s.x = (1 + samecount) * tls.x; //expand tile
-                }
-                //write tile to list
-                tpo.push_back(last);
-                samecount = 0;
-                last = tps[i];
-            }
-        }
-        //catch the last tile
-        if (samecount) {
-            last.s.x = (1 + samecount) * tls.x;
-            tpo.push_back(last);
-        }
-
-        const auto xsave = tpo.size();
-        samecount = 0;
-        std::vector<tp> tpox;
-        for (size_t i = 0; i < tpo.size(); ++i) {
-            last = tpo[i];
-            for (size_t j = i + 1; j < tpo.size(); ++j) {
-                bool same = ((tpo[j].p.x == last.p.x) && (tpo[j].s == last.s) &&
-                             (tpo[j].p.y == last.p.y + (tls.y * (1 + samecount))));
-                if (same) {
-                    ++samecount;
-                    tpo.erase(tpo.begin() + j);
-                    --j;
-                }
-            }
-            if (samecount) {
-                last.s.y = (1 + samecount) * tls.y; // Expand tile
-            }
-            // write tile to list
-            tpox.push_back(last);
-            samecount = 0;
-        }
-
-        tps.swap(tpox);
-    }
-    for (auto &t : tps) {
-        LOG(DEBUG) << "HERE" << t.p;
-
-        auto s = scene->makeEntity();
-        s->setPosition(t.p);
-        s->addComponent<PhysicsComponent>(false, t.s);
-    }
-    */
 }
-
-
-
-//auto e = scene->makeEntity();
-// e->setPosition(pos);
-//e->addComponent<PhysicsComponent>(false, Vector2f(32.f, 32.f));
 

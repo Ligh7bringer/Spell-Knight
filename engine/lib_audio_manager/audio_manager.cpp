@@ -17,11 +17,12 @@ std::map<std::string, std::shared_ptr<sf::Sound>> AudioManager::_sounds;
 
 //loads all necessary sounds and music so they are ready to be used
 void AudioManager::initialise() {
-    AudioManager::loadMusic("background.wav");
-    AudioManager::loadSound("death.wav");
-    AudioManager::loadSound("shoot.wav");
-    AudioManager::loadSound("explosion.wav");
-    AudioManager::loadSound("collect.wav");
+    loadMusic("background.wav");
+    loadSound("death.wav");
+    loadSound("shoot.wav");
+    loadSound("explosion.wav");
+    loadSound("collect.wav");
+    loadSound("fireball.wav");
     LOG(INFO) << "Audio manager initialised!";
 }
 

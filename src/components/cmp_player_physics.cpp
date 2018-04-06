@@ -1,12 +1,8 @@
 #include "cmp_player_physics.h"
-#include "system_physics.h"
 #include <LevelSystem.h>
 #include "cmp_animated_sprite.h"
-#include "../../engine/lib_ecm/ecm.h"
 #include "cmp_player_attack.h"
-#include <SFML/Window/Keyboard.hpp>
 #include "../../engine/lib_input_manager/input_manager.h"
-#include "../scenes/scene_level1.h"
 
 using namespace std;
 using namespace sf;
@@ -124,8 +120,4 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
   _body->SetFixedRotation(true);
   //Bullet items have higher-res collision detection
   _body->SetBullet(true);
-}
-
-bool PlayerPhysicsComponent::isJumping() const {
-  return !_grounded;
 }
