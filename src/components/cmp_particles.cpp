@@ -1,3 +1,4 @@
+#include <texture_manager.h>
 #include "cmp_particles.h"
 #include "../../engine/src/engine.h"
 
@@ -6,14 +7,14 @@
 */
 
 //create particle system
-ParticleSystemComponent::ParticleSystemComponent(Entity* p) : Component(p), _particles(ParticleSystem(1000)) {
-    //set colour of particles
-    _particles.setParticleColor(sf::Color(0, 204, 204));                                            
-}
+ParticleSystemComponent::ParticleSystemComponent(Entity* p, ParticleSystem::Type type) : Component(p),
+                                                                                    _particles(type ,TextureManager::getTexture("particle.png"), 1.5f),
+                                                                                    _type(type) {}
 
 //update particle system and its position 
 void ParticleSystemComponent::update(double dt) {
     _particles.setEmitter(_parent->getPosition());
+    _particles.emitParticles(dt);
     _particles.update(dt);
 }
 
@@ -24,5 +25,5 @@ void ParticleSystemComponent::render() {
 
 //setter for colour of particles
 void ParticleSystemComponent::setColour(sf::Color c) {
-    _particles.setParticleColor(c);
+    //_particles.setParticleColor(c);
 }

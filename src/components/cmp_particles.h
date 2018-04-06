@@ -5,9 +5,10 @@
 class ParticleSystemComponent : public Component {
 private:
     ParticleSystem _particles;
+    ParticleSystem::Type _type;
 public:
     ParticleSystemComponent() = delete;
-    explicit ParticleSystemComponent(Entity* p);
+    explicit ParticleSystemComponent(Entity* p, ParticleSystem::Type type);
 
     void update(double dt) override;
     void render();

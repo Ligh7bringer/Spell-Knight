@@ -20,6 +20,7 @@
 #include "texture_manager.h"
 #include "../states/bird_states.h"
 #include "../components/cmp_teleport.h"
+#include "../components/cmp_particles.h"
 
 using namespace sf;
 using namespace std;
@@ -44,6 +45,7 @@ std::shared_ptr<Entity> EntityFactory::makePlayer(Scene* scene, const Vector2f& 
     player->addComponent<PlayerLivesComponent>(3);
     player->addComponent<PlayerScoreComponent>();
     player->addComponent<TimerComponent>();
+    player->addComponent<ParticleSystemComponent>(ParticleSystem::FLOATING);
 
     return player;
 }
