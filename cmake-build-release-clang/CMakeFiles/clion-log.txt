@@ -1,9 +1,0 @@
-/opt/clion/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=/usr/bin/clang-6.0 -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -G "CodeBlocks - Unix Makefiles" /home/svet/Repositories/SFML-Game
-hello linux!
--- libudev stable: 1
--- Found UDev: /usr/lib/libudev.so
---    include: /usr/include
-Detected Linux! Copying resources to bin/build/...
--- Configuring done
--- Generating done
--- Build files have been written to: /home/svet/Repositories/SFML-Game/cmake-build-release-clang

@@ -1,2 +1,0 @@
-/usr/bin/ar qc liblib_texture_manager.a  CMakeFiles/lib_texture_manager.dir/engine/lib_texture_manager/texture_manager.cpp.o
-/usr/bin/ranlib liblib_texture_manager.a

@@ -1,2 +1,0 @@
-/usr/bin/ar qc liblib_engine.a  CMakeFiles/lib_engine.dir/engine/src/engine.cpp.o CMakeFiles/lib_engine.dir/engine/src/system_physics.cpp.o CMakeFiles/lib_engine.dir/engine/src/system_renderer.cpp.o CMakeFiles/lib_engine.dir/engine/src/system_resources.cpp.o
-/usr/bin/ranlib liblib_engine.a

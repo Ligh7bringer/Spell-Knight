@@ -1,2 +1,0 @@
-/usr/bin/ar qc liblib_settings_parser.a  CMakeFiles/lib_settings_parser.dir/engine/lib_settings_parser/settings_parser.cpp.o
-/usr/bin/ranlib liblib_settings_parser.a

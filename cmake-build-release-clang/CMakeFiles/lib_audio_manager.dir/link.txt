@@ -1,2 +1,0 @@
-/usr/bin/ar qc liblib_audio_manager.a  CMakeFiles/lib_audio_manager.dir/engine/lib_audio_manager/audio_manager.cpp.o
-/usr/bin/ranlib liblib_audio_manager.a

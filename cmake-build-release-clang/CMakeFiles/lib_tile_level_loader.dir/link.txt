@@ -1,2 +1,0 @@
-/usr/bin/ar qc liblib_tile_level_loader.a  CMakeFiles/lib_tile_level_loader.dir/engine/lib_tile_level_loader/LevelSystem.cpp.o
-/usr/bin/ranlib liblib_tile_level_loader.a
