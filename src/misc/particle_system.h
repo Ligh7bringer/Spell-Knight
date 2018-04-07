@@ -12,23 +12,21 @@ public:
         TRAIL
     };
 
-    ParticleSystem() = default;
+    ParticleSystem() = delete;
     ParticleSystem(Type type, const sf::Texture& texture, float lifetime);
 
-    void addParticle(const sf::Vector2f& pos);
-
     void update(double dt);
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-
+    void addParticle(const sf::Vector2f& pos);
     void setEmitter(const sf::Vector2f& pos);
-
     void emitParticles(double dt);
-
+    void setColour(sf::Color c);
+    void setEmissionRate(float rate);
+    void setEmitterSize(const sf::Vector2f& size);
+    void setEmitOffset(const sf::Vector2f& offset);
 private:
     struct Particle {
-
-
         sf::Vector2f position;
         sf::Vector2f velocity;
         sf::Color colour;
@@ -40,10 +38,14 @@ private:
 
     Type _type;
     std::deque<Particle> _particles;
-    const sf::Texture& _texture;
+    const sf::Texture &_texture;
     float _lifetime;
     sf::Vector2f _emitter;
     float _accumulatedTime;
+    sf::Color _colour;
+    float _emissionRate;
+    sf::Vector2f _emitterSize;
+    sf::Vector2f _offset;
 
     mutable sf::VertexArray _vertexArray;
     mutable bool _needsUpdate;

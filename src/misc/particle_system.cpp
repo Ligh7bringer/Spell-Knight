@@ -8,17 +8,18 @@
 
 ParticleSystem::ParticleSystem(Type type, const sf::Texture &texture, float lifetime) : _texture(texture), _lifetime(lifetime),
                                                                                _accumulatedTime(0), _vertexArray(sf::Quads, 1000),
-                                                                               _type(type) {}
+                                                                               _type(type), _colour(sf::Color::Cyan), _emissionRate(30.f),
+                                                                               _emitterSize(sf::Vector2f(64.f, 64.f)), _offset(sf::Vector2f(0, 0)) {}
 //adds a particle
 void ParticleSystem::addParticle(const sf::Vector2f &pos) {
     //create a particle
     Particle particle;
     particle.position = _emitter;
-    particle.colour = sf::Color::Cyan;
+    particle.colour = _colour;
 
     //set velocity and lifetime depending on effect type
     if(_type == Type::FLOATING) {
-        particle.position = sf::Vector2f(rand() % 64 + pos.x - 32.f, pos.y + 32.f);
+        particle.position = sf::Vector2f(rand() % (int)_emitterSize.x + pos.x - _emitterSize.x / 2.f + _offset.x, pos.y + _emitterSize.y / 2.f + _offset.y);
         particle.lifetime = 1.0f;
         particle.velocity = sf::Vector2f(0, -50.0f);
     }
@@ -110,10 +111,8 @@ void ParticleSystem::setEmitter(const sf::Vector2f &pos) {
 
 //creates particles
 void ParticleSystem::emitParticles(double dt) {
-    //speed of emission
-    const static float emissionRate = 30.f;
     //interval of emission
-    const static float interval = 1.f / emissionRate;
+    const static float interval = 1.f / _emissionRate;
     //accumulate time
     _accumulatedTime += dt;
     //if enough time has passed
@@ -124,6 +123,20 @@ void ParticleSystem::emitParticles(double dt) {
         //create a particle
         addParticle(_emitter);
     }
-
 }
 
+void ParticleSystem::setColour(sf::Color c) {
+    _colour = c;
+}
+
+void ParticleSystem::setEmissionRate(float rate) {
+    _emissionRate = rate;
+}
+
+void ParticleSystem::setEmitterSize(const sf::Vector2f &size) {
+    _emitterSize = size;
+}
+
+void ParticleSystem::setEmitOffset(const sf::Vector2f &offset) {
+    _offset = offset;
+}

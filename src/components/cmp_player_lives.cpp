@@ -10,7 +10,7 @@ using namespace sf;
 
 SettingsParser settingsP;
 
-PlayerLivesComponent::PlayerLivesComponent(Entity* p, int maxLives) : Component(p), _maxLives(maxLives), _lives(_maxLives),
+PlayerLivesComponent::PlayerLivesComponent(Entity* p, unsigned int lives) : Component(p), _maxLives(8), _lives(lives),
                                                     _panel(Panel(Vector2f(0, 0), Vector2f(100.f, 32.f), "Anonymous.ttf")) {
     _panel.setPanelColour(Color(192, 192, 192, 128));
     settingsP.readFile("res/lang/en.txt");
@@ -27,7 +27,7 @@ void PlayerLivesComponent::render() {
 }
 
 //increases the number of lives by adding num to current lives
-void PlayerLivesComponent::increaseLives(int num) {
+void PlayerLivesComponent::increaseLives(unsigned int num) {
     _lives += num;
     //make sure lives are not more than the set maximum
     if(_lives > _maxLives) {
@@ -36,7 +36,7 @@ void PlayerLivesComponent::increaseLives(int num) {
 }
 
 //decreases lives by num
-void PlayerLivesComponent::decreaseLives(int num) {
+void PlayerLivesComponent::decreaseLives(unsigned int num) {
     _lives -= num;
     //make sure lives are not less than zero
     if(_lives <= 0) { 

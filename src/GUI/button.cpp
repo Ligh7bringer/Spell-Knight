@@ -16,7 +16,7 @@ Button::Button(const Vector2f& pos, const Vector2f& size, const std::string& tex
 
 //sets position of the button
 void Button::setPosition(const Vector2f& pos) {
-    _panel.setPosition(pos);
+    _panel.setPositionOfCentre(pos);
 }
 
 //checks for clicks or if the mouse is over the button
