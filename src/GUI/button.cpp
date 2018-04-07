@@ -6,7 +6,7 @@
 using namespace sf;
 
 //constructor, sets size and text
-Button::Button(const Vector2f& pos, const Vector2f& size, const std::string& text) {
+Button::Button(const Vector2f& pos, const Vector2f& size, const std::string& text) : _check(true), _timer(0.2f) {
     _panel = Panel(pos, size, "Anonymous.ttf");
     _panel.setTextLocalised(text);
     _panel.setTextSize(30);
@@ -21,6 +21,8 @@ void Button::setPosition(const Vector2f& pos) {
 
 //checks for clicks or if the mouse is over the button
 void Button::update(double dt) {
+    _clicked = false;
+
     auto mouseBox = getMouseRect(16, 16);
     auto btnRect = _panel.getBoundingBox();
 
@@ -30,11 +32,18 @@ void Button::update(double dt) {
         reset();
     }
 
-    if(mouseBox.intersects(btnRect) && Mouse::isButtonPressed(Mouse::Left)) {
+    if(mouseBox.intersects(btnRect) && Mouse::isButtonPressed(Mouse::Left) && _check) {
         onClick();
-
         _clicked = true;
-    } 
+        _check = false;
+    }
+    if(!_check) {
+        _timer -=dt;
+    }
+    if(_timer <= 0.0f) {
+        _timer = 0.2f;
+        _check = true;
+    }
 }
 
 //renders the button and the text

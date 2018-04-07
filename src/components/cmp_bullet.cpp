@@ -116,7 +116,7 @@ void BulletComponent::explode() {
             c = Color::Cyan;
         }
         if(type == PlayerAttackComponent::ICICLE) {
-            sprite = "ice-particle.png";
+            sprite = "ice-particle2.png";
             c = Color::Cyan;
         }
     }

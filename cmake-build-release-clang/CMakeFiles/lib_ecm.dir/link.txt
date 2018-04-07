@@ -1,0 +1,2 @@
+/usr/bin/ar qc liblib_ecm.a  CMakeFiles/lib_ecm.dir/engine/lib_ecm/ecm.cpp.o
+/usr/bin/ranlib liblib_ecm.a

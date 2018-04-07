@@ -5,19 +5,15 @@
 
 class Button {
 protected:
-    sf::RectangleShape _shape;
-    sf::Vector2f _position;
-    sf::Vector2f _size;
-    sf::Text _text;
-    std::shared_ptr<sf::Font> _font;
     bool _clicked;
-
     Panel _panel;
+    bool _check;
+    float _timer;
 
     sf::FloatRect getMouseRect(int width, int height);
-    void onClick();
-    void onHover();
-    void reset();
+    virtual void onClick();
+    virtual void onHover();
+    virtual void reset();
 
 public:
     explicit Button(const sf::Vector2f& pos, const sf::Vector2f& size, const std::string& text);
