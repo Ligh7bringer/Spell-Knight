@@ -7,15 +7,25 @@
 */
 
 //create particle system
-ParticleSystemComponent::ParticleSystemComponent(Entity* p, ParticleSystem::Type type) : Component(p),
-                                                                                    _particles(type ,TextureManager::getTexture("particle.png"), 1.5f),
-                                                                                    _type(type) {}
+ParticleSystemComponent::ParticleSystemComponent(Entity* p, ParticleSystem::Type type, const std::string& tex) : Component(p),
+                                                                                         _particles(type , TextureManager::getTexture(tex), 1.5f),
+                                                                                         _type(type), _repeat(true), _timer(2.0f) {}
 
-//update particle system and its position 
+//update particle system and its position
 void ParticleSystemComponent::update(double dt) {
-    _particles.setEmitter(_parent->getPosition());
-    _particles.emitParticles(dt);
-    _particles.update(dt);
+    if(_repeat) {
+        _particles.setEmitter(_parent->getPosition());
+        _particles.emitParticles(dt);
+        _particles.update(dt);
+    } else {
+        _timer -= dt;
+
+        if(_timer > 0.0f) {
+            _particles.setEmitter(_parent->getPosition());
+            _particles.emitParticles(dt);
+        }
+        _particles.update(dt);
+    }
 }
 
 //render particles
@@ -25,5 +35,21 @@ void ParticleSystemComponent::render() {
 
 //setter for colour of particles
 void ParticleSystemComponent::setColour(sf::Color c) {
-    //_particles.setParticleColor(c);
+    _particles.setColour(c);
+}
+
+void ParticleSystemComponent::setRepeat(bool r) {
+    _repeat = r;
+}
+
+void ParticleSystemComponent::setEmissionRate(float rate) {
+    _particles.setEmissionRate(rate);
+}
+
+void ParticleSystemComponent::setEmitterSize(const sf::Vector2f &size) {
+    _particles.setEmitterSize(size);
+}
+
+void ParticleSystemComponent::setOffset(const sf::Vector2f &offset) {
+    _particles.setEmitOffset(offset);
 }

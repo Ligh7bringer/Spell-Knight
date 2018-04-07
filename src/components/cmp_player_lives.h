@@ -11,12 +11,12 @@ private:
 
 public:
     PlayerLivesComponent() = delete;
-    explicit PlayerLivesComponent(Entity* p, int maxLives);
+    explicit PlayerLivesComponent(Entity* p, unsigned int lives);
 
     void update(double dt) override;
     void render() override;
 
-    void increaseLives(int num);
-    void decreaseLives(int num);
+    void increaseLives(unsigned int num);
+    void decreaseLives(unsigned int num);
     int getLives() const;
 };

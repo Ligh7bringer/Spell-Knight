@@ -45,7 +45,6 @@ std::shared_ptr<Entity> EntityFactory::makePlayer(Scene* scene, const Vector2f& 
     player->addComponent<PlayerLivesComponent>(3);
     player->addComponent<PlayerScoreComponent>();
     player->addComponent<TimerComponent>();
-    player->addComponent<ParticleSystemComponent>(ParticleSystem::FLOATING);
 
     return player;
 }
@@ -173,7 +172,9 @@ std::shared_ptr<Entity> EntityFactory::makePotion(Scene *scene, const sf::Vector
     auto attack = pl->get_components<PlayerAttackComponent>()[0];
     //use a random potion to change the players attack
     auto row = rand() % 5;
-    potion->addComponent<PowerUpComponent>(10, attack->getAttack(row).type);
+
+    auto pu = potion->addComponent<PowerUpComponent>(10, attack->getAttack(row).type);
+    pu->giveHealth(10);
 
     auto anim = potion->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
     anim->setSpritesheet(TextureManager::getTexture("potions.png"));

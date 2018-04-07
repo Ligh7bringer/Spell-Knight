@@ -8,11 +8,10 @@ protected:
 public:
     enum AttackType
     {
-        HEALTH = '1',
-        FIREBALL = '2',
-        DEFAULT = '3',
-        ICICLE = '4',
-		    SHOCK = '5'
+        DEFAULT,
+        FIREBALL,
+        ICICLE,
+        SHOCK
     };
 
     struct Attack {
@@ -27,6 +26,8 @@ public:
     };
 
     Attack &getAttack(int);
+
+    AttackType getAttackType() const;
 
     void update(double dt) override;
     void render() override;

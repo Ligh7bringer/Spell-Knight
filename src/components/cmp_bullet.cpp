@@ -97,9 +97,33 @@ void BulletComponent::explode() {
     //and the bullet becomes invisible
     ac->setCurrentRow(10);
 
+    string sprite = string();
+    Color c;
     //use particles for the explosion
-    _parent->addComponent<ParticleSystemComponent>(ParticleSystem::EXPLOSION);
+    if(auto player = _player.lock()) {
+        const auto attack = player->get_components<PlayerAttackComponent>()[0];
+        const auto type = attack->getAttackType();
+        if(type == PlayerAttackComponent::FIREBALL) {
+            sprite = "explosion-particle2.png";
+            c = Color::Yellow;
+        }
+        if(type == PlayerAttackComponent::DEFAULT) {
+            sprite = "magic-explosion.png";
+            c = Color::Cyan;
+        }
+        if(type == PlayerAttackComponent::SHOCK) {
+            sprite = "thunder-particle.png";
+            c = Color::Cyan;
+        }
+        if(type == PlayerAttackComponent::ICICLE) {
+            sprite = "ice-particle2.png";
+            c = Color::Cyan;
+        }
+    }
 
+    auto ps =_parent->addComponent<ParticleSystemComponent>(ParticleSystem::EXPLOSION, sprite);
+    ps->setEmissionRate(100.f);
+    ps->setColour(c);
     //set exploded to true so we know it has exploded
     _exploded = true;
     //reset explosion time!

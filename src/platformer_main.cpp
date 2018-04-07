@@ -12,5 +12,5 @@ OptionsScene options;
 
 
 int main() {
-  Engine::Start(1280, 720, "Platformer", (Scene*)&menu);
+  Engine::Start(1280, 720, "Spell Knight", (Scene*)&menu);
 }
