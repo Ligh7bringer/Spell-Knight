@@ -50,7 +50,7 @@ void Level1Scene::Restart() {
     ents.list.clear();
 
     // Create player
-    player = EntityFactory::makePlayer(this, ls::getPosition(ls::baseTiles::START)[0]);
+    player = EntityFactory::makePlayer(this, Vector2f(5500,100));
 
     // Create some enemies
     auto slimePos = LevelSystem::getPosition(LevelSystem::enemyTiles::SLIME);

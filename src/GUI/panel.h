@@ -29,6 +29,7 @@ public:
     void setPanelColour(const sf::Color& colour);
     void setTextColour(const sf::Color& colour);
     void setPosition(const sf::Vector2f& pos);
+    void setBorder(const float& thickness, const sf::Color& colour);
     void setTextSize(const int size);
     void setGUI(bool value);
     sf::FloatRect getBoundingBox() const;

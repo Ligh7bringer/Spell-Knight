@@ -6,3 +6,7 @@ hp=Живот
 time=Време
 score=Точки
 game_over=Край на играта!
+next_level=следващо ниво
+main_menu=меню
+restart=рестартиране
+language=Bulgarian

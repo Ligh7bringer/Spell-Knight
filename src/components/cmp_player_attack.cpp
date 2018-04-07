@@ -47,7 +47,7 @@ void PlayerAttackComponent::fire() {
           //give player health
           lives->increaseLives(1);
           //set back to last attack
-          _currentAttack = _lastAttack;
+          _lastAttack = _currentAttack;
         }
       }
       else{

@@ -6,3 +6,7 @@ hp=HP
 time=Time
 score=Score
 game_over=Game оver!
+next_level=next level
+main_menu=main menu
+restart=restart
+language=English

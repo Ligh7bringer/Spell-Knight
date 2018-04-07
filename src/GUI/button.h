@@ -27,5 +27,6 @@ public:
     void render();
 
     void setPosition(const sf::Vector2f& pos);
+    const sf::Vector2f& getPosition();
     bool isClicked() const;
 };

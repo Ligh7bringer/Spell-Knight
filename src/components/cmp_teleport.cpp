@@ -15,6 +15,9 @@ void TeleportComponent::update(double dt){
 
       //set the text of the gameover scene
       gameOver.setText("whooohooo!!");
+
+      //put the next level btn onto the gameover scene
+      gameOver.nextLevel();
       //change the scene to the gameover scene
       Engine::ChangeScene(&gameOver);
       //set the current scene of the gameover scene to the next level

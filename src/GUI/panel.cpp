@@ -110,3 +110,8 @@ void Panel::setGUI(bool value) {
 FloatRect Panel::getBoundingBox() const {
     return _rect.getGlobalBounds();
 }
+
+void Panel::setBorder(const float &thickness, const sf::Color &colour) {
+    _rect.setOutlineThickness(thickness);
+    _rect.setOutlineColor(colour);
+}

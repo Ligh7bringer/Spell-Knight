@@ -1,16 +1,25 @@
 #include "scene_game_over.h"
 #include "../game.h"
 #include "../Log.h"
-
+#include "../../engine/lib_settings_parser/settings_parser.h"
 using namespace sf;
+
+SettingsParser languages;
+SettingsParser settings2;
 
 //initialise panel
 void GameOverScene::Load() {
-    auto pos = static_cast<Vector2f>(Engine::getWindowSize()) / 2.f;
-    _panel = Panel(pos, Vector2f(600.f, 200.f), "DoctorSoos.ttf");
+    settings2.readFile("res/settings.cfg");
+    languages.readFile(settings2.get("language"));
+    Vector2f pos(Engine::getWindowSize());
+    pos /= 2.f;
+    _panel = Panel(pos, Vector2f(600.f, 200.f), "Anonymous.ttf");
     _panel.setPositionOfCentre(pos);
     _panel.setTextSize(40);
     _panel.setGUI(false);
+
+    restartLevelbtn = Button(Vector2f(pos.x-100, pos.y+100), Vector2f(200.f, 35.f), languages.get("restart"));
+    mainMenubtn = Button(Vector2f(pos.x-300, pos.y+100), Vector2f(200.f, 35.f), languages.get("main_menu"));
     setLoaded(true);
 }
 
@@ -18,14 +27,23 @@ void GameOverScene::Update(const double& dt) {
     //for some reason if the text is set in load the score and time are always 0
     _panel.setTextLocalised(_message + "\nScore: " + std::to_string(score) + "\nTime: " + std::to_string(playerTime) + "s");
 
+    nextLevelbtn.update(dt);
+    restartLevelbtn.update(dt);
+    mainMenubtn.update(dt);
     //allow the user to go back to the menu or restart the level
-    if(Keyboard::isKeyPressed(Keyboard::Return)) {
+    if(Keyboard::isKeyPressed(Keyboard::Return) || restartLevelbtn.isClicked()) {
         Engine::ChangeScene((Scene*)&level1);
+        //Engine::ChangeScene((Scene*)&currentLevel)
     }
 
-    if(Keyboard::isKeyPressed(Keyboard::Escape)) {
+    if(Keyboard::isKeyPressed(Keyboard::Escape) || mainMenubtn.isClicked()) {
         Engine::ChangeScene((Scene*)&menu);
     }
+  if(nextLevelbtn.isClicked()){
+    //Engine::ChangeScene((Scene*)&level1);
+    //Engine::ChangeScene((Scene*)&level(levelInt++))
+  }
+
 
     //update everything else
     _panel.update(dt);
@@ -35,7 +53,9 @@ void GameOverScene::Update(const double& dt) {
 //render
 void GameOverScene::Render() {
     _panel.render();
-
+    nextLevelbtn.render();
+    restartLevelbtn.render();
+    mainMenubtn.render();
     Scene::Render();
 }
 
@@ -50,4 +70,14 @@ void GameOverScene::UnLoad() {
 //the only difference between them would be the displayed text
 void GameOverScene::setText(const std::string& text) {
     _message = text;
+}
+
+void GameOverScene::nextLevel(){
+  // maybe check if there is a next level and if there isnt
+  // another level then dont render next level btn
+  settings2.readFile("res/settings.cfg");
+  languages.readFile(settings2.get("language"));
+  Vector2f pos(Engine::getWindowSize());
+  pos /= 2.f;
+  nextLevelbtn = Button(Vector2f(pos.x+100, pos.y+100), Vector2f(200.f, 35.f), languages.get("next_level"));
 }

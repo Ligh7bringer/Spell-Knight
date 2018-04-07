@@ -1,11 +1,15 @@
 #pragma once
 #include "engine.h"
 #include "../GUI/panel.h"
+#include "../GUI/button.h"
 
 class GameOverScene : public Scene {
 private:
     Panel _panel;
     std::string _message;
+    Button nextLevelbtn;
+    Button restartLevelbtn;
+    Button mainMenubtn;
     int _score;
     int _time;
 
@@ -19,6 +23,8 @@ public:
     void UnLoad() override;
 
     void setText(const std::string& text);
+
+    void nextLevel();
 
     //void Render() override;
 

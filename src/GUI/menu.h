@@ -6,18 +6,21 @@ class Menu {
 public:
     Menu();
 
-    enum MenuResult { NOTHING, PLAY, OPTIONS, EXIT };
-
     struct MenuItem {
         Button button;
-        MenuResult action;
+        unsigned int id;
     };
 
     void update(double dt);
     void render();
 
-    MenuResult getMenuResponse();
-
+    int getMenuResponse() const;
+    void addTitle(const sf::Vector2f &pos, const sf::Vector2f &size, const std::string &title);
+    void addButton(const sf::Vector2f &pos, const sf::Vector2f& size, const std::string& text);
+    void addLabel(unsigned int itemId, const std::string &text);
 private:
+    unsigned int _id;
+    Panel _title;
+    Panel _label;
     std::list<MenuItem> _menuItems;
 };

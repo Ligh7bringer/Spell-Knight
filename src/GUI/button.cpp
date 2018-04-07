@@ -11,12 +11,15 @@ Button::Button(const Vector2f& pos, const Vector2f& size, const std::string& tex
     _panel.setTextLocalised(text);
     _panel.setTextSize(30);
     _panel.setGUI(false);
+    _panel.setBorder(2, Color::Magenta);
+    _position = pos;
     _clicked = false;
 }
 
 //sets position of the button
 void Button::setPosition(const Vector2f& pos) {
-    _panel.setPosition(pos);
+    _panel.setPositionOfCentre(pos);
+    _position = pos;
 }
 
 //checks for clicks or if the mouse is over the button
@@ -71,4 +74,8 @@ FloatRect Button::getMouseRect(int width, int height) {
 //returns whether the button has been clicked
 bool Button::isClicked() const {
     return _clicked;
+}
+
+const sf::Vector2f &Button::getPosition() {
+    return _position;
 }
