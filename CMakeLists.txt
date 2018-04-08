@@ -124,3 +124,51 @@ foreach (exe ${EXECUTABLES})
 
   add_dependencies(${exe} sfml-graphics sfml-audio copy_resources)
 endforeach ()
+
+#-----------------------------------------------------------------------------------#
+#Install directory within build folder, so it doesn't go into /lib or program-files
+set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install/")
+#Installer.exe/zip built into /installer
+SET(CPACK_PACKAGE_DIRECTORY "${CMAKE_BINARY_DIR}/installer/")
+#Install component for runtime dlls and stuff
+set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE) #stop this happening on non-release builds
+INCLUDE(InstallRequiredSystemLibraries)
+install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION "bin/" CONFIGURATIONS Release COMPONENT SYSTEM_CMPT)
+#Install component for resources
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/res" DESTINATION "bin/" CONFIGURATIONS Release COMPONENT RESOURCES_CMPT)
+#We disabled SFML's INSTALL component as it brings along junk, so we gotta make one ourselves
+install(DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release/" DESTINATION "bin" CONFIGURATIONS Release COMPONENT SFML_CMPT FILES_MATCHING PATTERN "*.dll" )
+#Main Install target
+install(TARGETS Coursework DESTINATION "bin" CONFIGURATIONS Release COMPONENT SPELL_KNIGHT_CMPT)
+
+#Tell CPack about the libs and resources install components
+set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} RESOURCES_CMPT SFML_CMPT SYSTEM_CMPT SPELL_KNIGHT_CMPT)
+set(CPACK_COMPONENT_SPELL_KNIGHT_CMPT_DEPENDS RESOURCES_CMPT SFML_CMPT SYSTEM_CMPT)
+set(CPACK_COMPONENT_RESOURCES_CMPT_REQUIRED TRUE)
+set(CPACK_COMPONENT_SFML_CMPT_REQUIRED TRUE)
+set(CPACK_COMPONENT_SYSTEM_CMPT_REQUIRED TRUE)
+set(CPACK_COMPONENT_SPELL_KNIGHT_CMPT_DISPLAY_NAME "Spell Knight")
+
+IF(WIN32)
+  set(CPACK_GENERATOR NSIS)
+  set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
+  set(CPACK_NSIS_COMPONENT_INSTALL ON)
+  set(CPACK_NSIS_HELP_LINK "https://github.com/Ligh7bringer/SFML-Game")
+  set(CPACK_NSIS_URL_INFO_ABOUT "https://github.com/Ligh7bringer/SFML-Game")
+  set(CPACK_NSIS_CONTACT "https://github.com/Ligh7bringer/")
+  set(CPACK_NSIS_MUI_ICON "${PROJECT_SOURCE_DIR}/res/sprites/icon.ico")
+ELSE()
+  set(CPACK_GENERATOR ZIP)
+ENDIF(WIN32)
+
+
+set(CPACK_PACKAGE_FILE_NAME ${CMAKE_PROJECT_NAME})
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Spell_Knight")
+set(CPACK_PACKAGE_VENDOR "Ligh7bringer & thedylz")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
+
+set(CPACK_PACKAGE_VERSION_MAJOR "0")
+set(CPACK_PACKAGE_VERSION_MINOR "1")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+
+INCLUDE(CPack)
