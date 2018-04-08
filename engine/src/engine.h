@@ -55,12 +55,17 @@ public:
   static void setView(const sf::View& view);
   static bool _pause;
   static void Exit();
+  static sf::Event getEvent();
+  static std::vector<char>& getKeys();
+  static bool isPaused();
 
 private:
   static Scene* _activeScene;
   static std::string _gameName;
   static void Update();
   static void Render(sf::RenderWindow& window);
+  static sf::Event _event;
+  static std::vector<char> _keys;
 };
 
 namespace timing {

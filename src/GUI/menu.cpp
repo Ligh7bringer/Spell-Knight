@@ -73,3 +73,15 @@ void Menu::addLabel(unsigned int itemId, const std::string &text){
     }
 }
 
+//returns the selected option for button with the given id
+const std::string &Menu::getSelectedOption(unsigned int id) const {
+    for (auto _button : _buttons) {
+        if(_button.first == id) {
+            return _button.second->getSelection();
+        }
+    }
+
+    static const std::string ret = std::string();
+    return ret;
+}
+

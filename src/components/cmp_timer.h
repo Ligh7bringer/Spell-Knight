@@ -6,7 +6,7 @@
 class TimerComponent : public Component {
 private:
     Panel _panel;
-    sf::Clock _clock;
+    float _timer;
 
 public:
     TimerComponent() = delete;

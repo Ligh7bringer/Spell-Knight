@@ -1,11 +1,8 @@
 #include "cmp_animated_sprite.h"
 #include "system_renderer.h"
-#include <SFML/Graphics.hpp>
 
 using namespace sf;
 using namespace std;
-
-int prevRow;
 
 //constructor, initialises default sprite size and default animation speed
 AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, Vector2f size) : Component(p), _size(size), _rotation(0) {
@@ -59,9 +56,7 @@ void AnimatedSpriteComponent::update(double dt) {
             //restart from the first frame
             _currentImage.x = 0;
         }
-            
-        //keep track of previous row
-        prevRow = _currentImage.y;      
+
     }
 
     //if the sprite is supposed to be facing right
@@ -100,7 +95,7 @@ void AnimatedSpriteComponent::update(double dt) {
     _sprite.setPosition(_parent->getPosition());
 
     if(_rotation != 0) {
-        _sprite.rotate(_rotation);
+        _sprite.rotate(_rotation * (float)dt);
     }
 }
 
@@ -110,7 +105,7 @@ void AnimatedSpriteComponent::render() {
 }
 
 //makes sure the animation is played fully before playing any other animation
-void AnimatedSpriteComponent::lockInAnimation(int row) {
+void AnimatedSpriteComponent::lockInAnimation(unsigned int row) {
     _currentImage.y = row;
     _currentImage.x = 0;
     _locked = true;

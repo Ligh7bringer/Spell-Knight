@@ -17,6 +17,8 @@ using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
 std::string Engine::_gameName;
+sf::Event Engine::_event;
+std::vector<char> Engine::_keys;
 
 static bool loading = false;
 static float loadingspinner = 0.f;
@@ -128,6 +130,8 @@ void Engine::Start(unsigned int width, unsigned int height,
   while (window.isOpen()) {
     Event event;
     while (window.pollEvent(event)) {
+      _event = event;
+      _keys.clear();
       if (event.type == Event::Closed) {
         window.close();
       }
@@ -136,10 +140,21 @@ void Engine::Start(unsigned int width, unsigned int height,
       {
         _pause = !_pause;
       }
-
+      //pause if the window loses focus
+      if(event.type == sf::Event::LostFocus) {
+        _pause = true;
+      }
+      //unpause if it regains focus
+      if(event.type == sf::Event::GainedFocus) {
+        _pause = false;
+      }
       if(event.type == Event::Resized) {
         //resize view when window is resized so textures are not stretched
         _activeScene->getView().setSize(event.size.width, event.size.height);
+      }
+      if(event.type == Event::TextEntered) {
+        if(event.text.unicode < 128)
+          _keys.push_back(static_cast<char>(event.text.unicode));
       }
     }
     
@@ -187,10 +202,22 @@ void Engine::ChangeScene(Scene* s) {
 
   if (!s->isLoaded()) {
     LOG(INFO) << "Eng: Entering Loading Screen";
-    loadingTime =0;
+    loadingTime = 0;
     _activeScene->Load();
     loading = true;
   }
+}
+
+sf::Event Engine::getEvent() {
+  return _event;
+}
+
+std::vector<char> &Engine::getKeys() {
+  return _keys;
+}
+
+bool Engine::isPaused() {
+    return _pause;
 }
 
 void Scene::Update(const double& dt) { 
@@ -198,9 +225,7 @@ void Scene::Update(const double& dt) {
 }
 
 void Scene::Render() { 
-  //Engine::GetWindow().draw(_background);
-  ents.render(); 
-  //Renderer::queue(&_background);
+  ents.render();
 }
 
 bool Scene::isLoaded() const {

@@ -1,6 +1,7 @@
 #include "scene_menu.h"
 #include "../game.h"
 #include "../../engine/lib_settings_parser/settings_parser.h"
+#include "../Log.h"
 
 using namespace std;
 using namespace sf;

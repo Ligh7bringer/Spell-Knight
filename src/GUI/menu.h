@@ -15,6 +15,7 @@ public:
     void addButton(const sf::Vector2f &pos, const sf::Vector2f& size, const std::string& text);
     void addOptionButton(const sf::Vector2f &pos, const sf::Vector2f& size, const std::vector<std::string>& options);
     void addLabel(unsigned int itemId, const std::string &text);
+    const std::string& getSelectedOption(unsigned int id) const;
 private:
     unsigned int _id;
     Panel _title;

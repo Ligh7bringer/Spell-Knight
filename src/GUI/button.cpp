@@ -75,7 +75,7 @@ void Button::reset() {
 }
 
 //returns the "hitbox" of the mouse
-FloatRect Button::getMouseRect(int width, int height) {
+FloatRect Button::getMouseRect(unsigned int width, unsigned int height) {
     FloatRect mouseBox;
     mouseBox.width = width;
     mouseBox.height = height;
@@ -102,4 +102,9 @@ void Button::addLabel(const std::string &text) {
     _label.setPanelColour(Color::Transparent);
     _label.setTextColour(Color::White);
     _label.setGUI(false);
+}
+
+const std::string &Button::getSelection() const {
+    static const std::string ret = std::string();
+    return ret;
 }
