@@ -360,6 +360,7 @@ __pycache__/
 # CMake
 cmake-build-debug/
 cmake-build-debug-clang/
+cmake-build-release-clang/
 
 # Mongo Explorer plugin:
 .idea/**/mongoSettings.xml

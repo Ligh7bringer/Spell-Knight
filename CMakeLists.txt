@@ -127,7 +127,9 @@ endforeach ()
 
 #-----------------------------------------------------------------------------------#
 #Install directory within build folder, so it doesn't go into /lib or program-files
-set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install/")
+if(WIN32) 
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install/")
+endif()
 #Installer.exe/zip built into /installer
 SET(CPACK_PACKAGE_DIRECTORY "${CMAKE_BINARY_DIR}/installer/")
 #Install component for runtime dlls and stuff
@@ -140,6 +142,9 @@ install(DIRECTORY "${PROJECT_SOURCE_DIR}/res" DESTINATION "bin/" CONFIGURATIONS 
 install(DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release/" DESTINATION "bin" CONFIGURATIONS Release COMPONENT SFML_CMPT FILES_MATCHING PATTERN "*.dll" )
 #Main Install target
 install(TARGETS Coursework DESTINATION "bin" CONFIGURATIONS Release COMPONENT SPELL_KNIGHT_CMPT)
+if(UNIX)
+    set_target_properties(Coursework PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE)
+endif()
 
 #Tell CPack about the libs and resources install components
 set(CPACK_COMPONENTS_ALL ${CPACK_COMPONENTS_ALL} RESOURCES_CMPT SFML_CMPT SYSTEM_CMPT SPELL_KNIGHT_CMPT)

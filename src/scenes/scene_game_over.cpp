@@ -5,12 +5,10 @@
 using namespace sf;
 
 SettingsParser languages;
-SettingsParser settings2;
 
 //initialise panel
 void GameOverScene::Load() {
-    settings2.readFile("res/settings.cfg");
-    languages.readFile(settings2.get("language"));
+    languages.readFile("res/lang/en.txt");
     Vector2f pos(Engine::getWindowSize());
     pos /= 2.f;
     _panel = Panel(pos, Vector2f(600.f, 200.f), "Anonymous.ttf");
@@ -75,8 +73,6 @@ void GameOverScene::setText(const std::string& text) {
 void GameOverScene::nextLevel(){
   // maybe check if there is a next level and if there isnt
   // another level then dont render next level btn
-  settings2.readFile("res/settings.cfg");
-  languages.readFile(settings2.get("language"));
   Vector2f pos(Engine::getWindowSize());
   pos /= 2.f;
   nextLevelbtn = Button(Vector2f(pos.x+100, pos.y+100), Vector2f(200.f, 35.f), languages.get("next_level"));

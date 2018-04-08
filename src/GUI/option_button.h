@@ -14,6 +14,7 @@ public:
 
     void onClick() override;
     void addOption(const std::string& option);
+    void addOptions(const std::vector<std::string>& options);
     unsigned int getSelection();
 };
 

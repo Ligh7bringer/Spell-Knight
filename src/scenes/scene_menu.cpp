@@ -1,45 +1,39 @@
 #include "scene_menu.h"
 #include "../game.h"
-#include "../GUI/menu.h"
 #include "../../engine/lib_settings_parser/settings_parser.h"
 
 using namespace std;
 using namespace sf;
 
-Menu mainMenu;
-Panel title;
-SettingsParser settingsFile;
 SettingsParser languageFile;
 
 void MenuScene::Load() {
-    settingsFile.readFile("res/settings.cfg");
-    languageFile.readFile(settingsFile.get("language"));
+    Vector2f windowSize(Engine::getWindowSize());
+    auto center = windowSize / 2.f;
+    _view = View(center, windowSize);
+    Engine::setView(_view);
 
-    mainMenu = Menu();
-    mainMenu.addButton(Vector2f(500, 350), Vector2f(200, 35), languageFile.get("play"));
-    mainMenu.addButton(Vector2f(500, 400), Vector2f(200, 35), languageFile.get("options"));
-    mainMenu.addButton(Vector2f(500, 450), Vector2f(200, 35), languageFile.get("exit"));
+    languageFile.readFile("res/lang/en.txt");
 
-    title = Panel(Vector2f(500, 200), Vector2f(100, 100), "Anonymous.ttf");
-    title.setGUI(false);
-    title.setPanelColour(Color::Transparent);
-    title.setTextLocalised(languageFile.get("title"));
-    title.setTextColour(Color::White);
+    _mainMenu = Menu();
+    _mainMenu.addTitle(Vector2f(500, 200), Vector2f(100, 100), "Spell Knight");
+    _mainMenu.addButton(Vector2f(500, 350), Vector2f(200, 35), languageFile.get("play")); //id = 0
+    _mainMenu.addButton(Vector2f(500, 400), Vector2f(200, 35), languageFile.get("options")); //id = 1
+    _mainMenu.addButton(Vector2f(500, 450), Vector2f(200, 35), languageFile.get("exit")); //id = 2
 
     setLoaded(true);
 }
 
 void MenuScene::Update(const double& dt) {
-    mainMenu.update(dt);
-    title.update(dt);
+    _mainMenu.update(dt);
 
-    if(mainMenu.getMenuResponse() == 0) {
+    if(_mainMenu.getMenuResponse() == 0) {
         Engine::ChangeScene((Scene*)&level1);
     }
-    if(mainMenu.getMenuResponse() == 1) {
+    if(_mainMenu.getMenuResponse() == 1) {
         Engine::ChangeScene((Scene*)&options);
     }
-    if(mainMenu.getMenuResponse() == 2) {
+    if(_mainMenu.getMenuResponse() == 2) {
         //exit
         Engine::Exit();
     }
@@ -48,8 +42,6 @@ void MenuScene::Update(const double& dt) {
 }
 
 void MenuScene::Render() {
-    mainMenu.render();
-    title.render();
-
+    _mainMenu.render();
     Scene::Render();
 }

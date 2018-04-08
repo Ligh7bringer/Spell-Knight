@@ -6,8 +6,10 @@
 using namespace sf;
 
 //constructor, sets size and text
-Button::Button(const Vector2f& pos, const Vector2f& size, const std::string& text) : _check(true), _timer(0.2f) {
-    _panel = Panel(pos, size, "Anonymous.ttf");
+Button::Button(const Vector2f& pos, const Vector2f& size, const std::string& text) : _check(true), _timer(0.2f),
+                                                                                       _panel(Panel(pos, size, "Anonymous.ttf"))
+
+{
     _panel.setTextLocalised(text);
     _panel.setTextSize(30);
     _panel.setGUI(false);
@@ -24,9 +26,11 @@ void Button::setPosition(const Vector2f& pos) {
 
 //checks for clicks or if the mouse is over the button
 void Button::update(double dt) {
+    _label.update(dt);
+
     _clicked = false;
 
-    auto mouseBox = getMouseRect(16, 16);
+    auto mouseBox = getMouseRect(12, 12);
     auto btnRect = _panel.getBoundingBox();
 
     if(mouseBox.intersects(btnRect)) {
@@ -52,6 +56,7 @@ void Button::update(double dt) {
 //renders the button and the text
 void Button::render() {
     _panel.render();
+    _label.render();
 }
 
 //called when the button is clicked
@@ -87,4 +92,14 @@ bool Button::isClicked() const {
 
 const sf::Vector2f &Button::getPosition() {
     return _position;
+}
+
+void Button::addLabel(const std::string &text) {
+    const auto pos = _panel.getPosition();
+    const auto labelPos = Vector2f(pos.x - 150.f, pos.y);
+    _label = Panel(labelPos, Vector2f(100.f, 50.f), "Anonymous.ttf");
+    _label.setTextLocalised(text);
+    _label.setPanelColour(Color::Transparent);
+    _label.setTextColour(Color::White);
+    _label.setGUI(false);
 }

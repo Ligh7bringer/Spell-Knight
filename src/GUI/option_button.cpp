@@ -1,13 +1,9 @@
-//
-// Created by svet on 07/04/18.
-//
-
 #include "option_button.h"
 
 OptionButton::OptionButton(const sf::Vector2f &pos, const sf::Vector2f &size, const std::string &text) :
                                                                                 Button(pos, size, text),
                                                                                 _currentOption(0) {
-    _options.push_back(text);
+    //_options.push_back(text);
 }
 
 void OptionButton::onClick() {
@@ -22,6 +18,12 @@ void OptionButton::onClick() {
 
 void OptionButton::addOption(const std::string &option) {
     _options.push_back(option);
+}
+
+void OptionButton::addOptions(const std::vector<std::string> &options) {
+    for(auto option : options) {
+        addOption(option);
+    }
 }
 
 unsigned int OptionButton::getSelection() {

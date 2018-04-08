@@ -1,6 +1,7 @@
 #pragma once
 
 #include "engine.h"
+#include "../GUI/menu.h"
 
 class MenuScene : public Scene {
 public:
@@ -11,4 +12,7 @@ public:
     void Render() override;
 
     void Update(const double& dt) override;
+
+private:
+    Menu _mainMenu;
 };

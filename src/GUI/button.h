@@ -10,6 +10,7 @@ protected:
     bool _check;
     float _timer;
     sf::Vector2f _position;
+    Panel _label;
 
     sf::FloatRect getMouseRect(int width, int height);
     virtual void onClick();
@@ -26,4 +27,6 @@ public:
     void setPosition(const sf::Vector2f& pos);
     const sf::Vector2f& getPosition();
     bool isClicked() const;
+
+    void addLabel(const std::string& text);
 };

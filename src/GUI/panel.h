@@ -3,6 +3,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <memory>
+#include <SFML/Graphics/View.hpp>
 
 class Panel {
 protected:
@@ -13,9 +14,9 @@ protected:
     sf::Text _text;
     std::shared_ptr<sf::Font> _font;
     bool _isGUI;
+    sf::View _currView;
 
     void recentreText();
-    void resizePanel();
 
 public:
     Panel() = default;
@@ -35,4 +36,6 @@ public:
     sf::FloatRect getBoundingBox() const;
     void setTextLocalised(const std::string& text);
     void setPositionOfCentre(const sf::Vector2f& pos);
+
+    const sf::Vector2f& getPosition() const;
 };

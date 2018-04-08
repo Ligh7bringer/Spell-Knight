@@ -1,21 +1,21 @@
 #include "menu.h"
 #include "../../engine/lib_settings_parser/settings_parser.h"
 #include "../game.h"
+#include "../Log.h"
+#include "option_button.h"
 
 using namespace sf;
 
-SettingsParser settings;
-SettingsParser language;
 //set up the menu items
 //TO DO: make this take total size of menu as parameter and calculate button positions rather than using magic numbers
-Menu::Menu() : _id(0) {}
+Menu::Menu() : _id(0), _title(Panel(Vector2f(0, 0), Vector2f(0, 0), "Anonymous.ttf")) {}
 
-//returns which button is clicked 
-//returns NOTHING if no button has been clicked
+//returns the id of the button which has been clicked
+//returns -1 if no button has been clicked
 int Menu::getMenuResponse() const {
-    for (auto it = _menuItems.begin(); it != _menuItems.end(); ++it) {
-        if(it->button.isClicked()) {
-            return it->id;
+    for (const auto &_button : _buttons) {
+        if(_button.second->isClicked()) {
+            return _button.first;
         }
     }
 
@@ -24,53 +24,52 @@ int Menu::getMenuResponse() const {
 
 //update buttons
 void Menu::update(double dt) {
-    std::list<MenuItem>::iterator it;
     _title.update(dt);
-    _label.update(dt);
-    for ( it = _menuItems.begin(); it != _menuItems.end(); ++it) {
-        it->button.update(dt);
+
+    for (auto &_button : _buttons) {
+        _button.second->update(dt);
     }
 }
 
 //render buttons
 void Menu::render() {
-    std::list<MenuItem>::iterator it;
-
     _title.render();
-    _label.render();
-    for ( it = _menuItems.begin(); it != _menuItems.end(); ++it) {
-        it->button.render();
+
+    for (auto &_button : _buttons) {
+        _button.second->render();
     }
 }
 
 //adds a button to the menu
 void Menu::addButton(const sf::Vector2f &pos, const sf::Vector2f &size, const std::string &text) {
-    MenuItem item;
-    item.button = Button(pos, size, text);
-    item.id = _id;
+    auto btn = std::make_shared<Button>(pos, size, text);
+    _buttons[_id] = btn;
     _id++;
-
-    _menuItems.push_back(item);
 }
 
+//adds an option button to the menu
+void Menu::addOptionButton(const sf::Vector2f &pos, const sf::Vector2f &size, const std::vector<std::string> &options) {
+    auto btn = std::make_shared<OptionButton>(pos, size, "");
+    btn->addOptions(options);
+    _buttons[_id] = btn;
+    _id++;
+}
+
+//adds a title for the menu
 void Menu::addTitle(const sf::Vector2f &pos, const sf::Vector2f &size, const std::string &title) {
-    _title= Panel(pos, size, "Anonymous.ttf");
+    _title = Panel(pos, size, "Anonymous.ttf");
     _title.setGUI(false);
     _title.setPanelColour(Color::Transparent);
     _title.setTextLocalised(title);
     _title.setTextColour(Color::White);
 }
 
+//adds a label for button with id itemId
 void Menu::addLabel(unsigned int itemId, const std::string &text){
-    for(auto it = _menuItems.begin(); it != _menuItems.end(); ++it) {
-      if(it->id == itemId) {
-        _label = Panel(Vector2f(it->button.getPosition().x -150, it->button.getPosition().y), Vector2f(100,35), "Anonymous.ttf");
-        _label.setGUI(false);
-        _label.setPanelColour(Color::Transparent);
-        _label.setTextLocalised(text);
-        _label.setTextColour(Color::White);
-      }
+    for (auto &_button : _buttons) {
+        if(_button.first == itemId) {
+            _button.second->addLabel(text);
+        }
     }
 }
-
 

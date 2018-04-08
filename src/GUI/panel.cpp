@@ -11,8 +11,6 @@ using namespace sf;
 * A panel which displays a rectangle with a string centered in it.
 */
 
-View currView;
-
 //initialise everything needed
 Panel::Panel(const Vector2f& pos, const Vector2f& size, const std::string& font) : _size(size), _position(pos) {
     _font = Resources::get<sf::Font>(font);
@@ -34,15 +32,15 @@ void Panel::update(double dt) {}
 void Panel::render() {
     if(_isGUI) {
         //using a view seems to work better for GUI stuff
-        currView = Engine::getCurrentView();
-        View v = View(FloatRect(currView.getViewport().left , currView.getViewport().top, currView.getSize().x, currView.getSize().y));
+        _currView = Engine::getCurrentView();
+        View v = View(FloatRect(_currView.getViewport().left , _currView.getViewport().top, _currView.getSize().x, _currView.getSize().y));
         Renderer::setView(v);
         Engine::GetWindow().draw(_rect);
         Engine::GetWindow().draw(_text);
-        Renderer::setView(currView);
+        Renderer::setView(_currView);
     } else {
-        Renderer::queue(&_rect);
-        Renderer::queue(&_text);
+        Engine::GetWindow().draw(_rect);
+        Engine::GetWindow().draw(_text);
     }
 }
 
@@ -100,7 +98,7 @@ void Panel::setTextSize(const int size) {
     _text.setCharacterSize(size);
 }
 
-//sets wheter the panel is a GUI panel or not
+//sets whether the panel is a GUI panel or not
 //if a panel is a GUI panel, then it "moves" with the view, i.e. it is always at a constant position within the view (e.g. the player HP)
 //the enemy health bars are not GUI and they follow the enemies
 void Panel::setGUI(bool value) {
@@ -114,4 +112,8 @@ FloatRect Panel::getBoundingBox() const {
 void Panel::setBorder(const float &thickness, const sf::Color &colour) {
     _rect.setOutlineThickness(thickness);
     _rect.setOutlineColor(colour);
+}
+
+const sf::Vector2f &Panel::getPosition() const {
+    return _position;
 }
