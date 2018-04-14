@@ -28,6 +28,7 @@ AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, Vector2f size) : Com
         _hurtTimer = 1.0f;
         _numOfFrames = 1;
         _done = false;
+        _frameDecline = _numOfFrames;
         //set origin
         auto origin = _size / 2.f;
         origin.x = floor(origin.x);
@@ -56,8 +57,18 @@ void AnimatedSpriteComponent::update(double dt) {
             //unlock
             _locked = false;
             _done = true;
+          if(!_stalled){
             //restart from the first frame
             _currentImage.x = 0;
+          }
+//          else{
+//            if(_frameDecline ==_numOfFrames-1){
+//              _currentImage.x= _numOfFrames-_frameDecline--;
+//              _currentImage.x=_numOfFrames-_frameDecline--;
+//            }
+
+//          }
+
         }
             
         //keep track of previous row
@@ -114,6 +125,15 @@ void AnimatedSpriteComponent::lockInAnimation(int row) {
     _currentImage.y = row;
     _currentImage.x = 0;
     _locked = true;
+}
+
+void AnimatedSpriteComponent::stallAnimation(int row){
+  _stalled = true;
+    if(isDone()){
+        _currentImage.y = row;
+        _currentImage.x = _numOfFrames-1;
+    }
+
 }
 
 //sets the spritesheet, using the passed reference to a spritesheet

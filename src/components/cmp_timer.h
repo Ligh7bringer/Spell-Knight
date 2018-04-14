@@ -7,6 +7,8 @@ class TimerComponent : public Component {
 private:
     Panel _panel;
     sf::Clock _clock;
+    float _runTime;
+    bool _paused;
 
 public:
     TimerComponent() = delete;
@@ -14,6 +16,7 @@ public:
 
     void update(double dt) override;
     void render() override;
+    void Pause();
 
     int getTime() const;
 };

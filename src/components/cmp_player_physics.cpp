@@ -45,7 +45,7 @@ void PlayerPhysicsComponent::update(double dt) {
     // Moving Either Left or Right
     if (Keyboard::isKeyPressed(InputManager::getKey("walkRight"))) {
       if (getVelocity().x < _maxVelocity.x) {
-        impulse({(float)(dt * _groundspeed), 0});
+        impulse({(float)(dt * _groundspeed*2), 0.01});
 
         //play walking right animation
         anim->setFacingRight(true);
@@ -53,7 +53,7 @@ void PlayerPhysicsComponent::update(double dt) {
       }
     } else {
       if (getVelocity().x > -_maxVelocity.x) {
-        impulse({-(float)(dt * _groundspeed), 0});
+        impulse({-(float)(dt * _groundspeed*2), 0.01});
 
         //play walking left animation
         anim->setFacingRight(false);
@@ -73,9 +73,10 @@ void PlayerPhysicsComponent::update(double dt) {
     _grounded = isGrounded();
     //play jumping animation
     anim->setCurrentRow(2);
+    //anim->stallAnimation(2);
+
     if (_grounded) {
       setVelocity(Vector2f(getVelocity().x, 0.f));
-
       //play idle animation
       anim->setCurrentRow(0);
       teleport(Vector2f(pos.x, pos.y - 1.0f));
@@ -90,7 +91,7 @@ void PlayerPhysicsComponent::update(double dt) {
     // disable friction while jumping
     setFriction(0.f);
   } else {
-    setFriction(0.1f);
+    setFriction(0.01f);
   }
 
   // Clamp velocity.

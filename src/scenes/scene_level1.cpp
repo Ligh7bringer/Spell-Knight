@@ -8,7 +8,7 @@
 #include "../components/cmp_score.h"
 #include "../components/cmp_timer.h"
 #include "../../engine/lib_audio_manager/audio_manager.h"
-
+#include <engine.h>
 using namespace std;
 using namespace sf;
 
@@ -150,6 +150,8 @@ void Level1Scene::Update(const double& dt) {
         gameOver.setText("Game over!");
         Engine::ChangeScene(&gameOver);
     } else {
+        //this should keep updating and then retrieve the time from which it had last if the scene was paused
+        //playerTime = timing::last();
         auto timeComp = player->get_components<TimerComponent>()[0];
         playerTime = timeComp->getTime();
         auto scoreComp = player->get_components<PlayerScoreComponent>()[0];

@@ -12,6 +12,8 @@
 #include "../lib_input_manager/input_manager.h"
 #include "../lib_settings_parser/settings_parser.h"
 #include "../lib_audio_manager/audio_manager.h"
+#include "../../src/components/cmp_timer.h"
+//#include "../../src/game.h"
 
 using namespace sf;
 using namespace std;

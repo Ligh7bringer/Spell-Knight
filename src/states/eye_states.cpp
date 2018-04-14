@@ -3,6 +3,7 @@
 #include "../components/cmp_enemy_physics.h"
 #include "../Log.h"
 #include "texture_manager.h"
+#include "LevelSystem.h"
 
 /*
 * Behaviour of the flying eye creature.
@@ -47,15 +48,20 @@ void FlyingState::execute(Entity* owner, double dt) noexcept {
 
     auto physics = owner->get_components<EnemyPhysicsComponent>()[0];
 
-    const auto pos = owner->getPosition() ;
+     const auto pos = owner->getPosition();
      auto mov = _direction * (float)(dt * 100);
      mov.x += _direction.x * 16.f;
+  //not working
+//    if(ls::getPosition(ls::enemyTiles::BIRD)[0].x +200.f < pos.x){
+//      LOG(DEBUG)<<"going home";
+//      physics->impulse(Vector2f(-_direction.x*1.f, 0.f));
+//    }
 	
     //check if the creature is certain height above ground
   if(physics->isGrounded()) {
     physics->setVelocity(Vector2f(physics->getVelocity().x, 0.f));
     physics->teleport(Vector2f(pos.x, pos.y - 1.0f));
-    physics->impulse(Vector2f(0, -8.f));
+    physics->impulse(Vector2f(0, -12.f));
 
     // Dampen X axis movement
     physics->dampen({0.9f, 1.0f});

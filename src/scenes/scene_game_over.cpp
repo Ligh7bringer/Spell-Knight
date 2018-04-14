@@ -8,6 +8,11 @@ SettingsParser languages;
 
 //initialise panel
 void GameOverScene::Load() {
+    Vector2f windowSize(Engine::getWindowSize());
+    auto center = windowSize / 2.f;
+    _view = View(center, windowSize);
+    Engine::setView(_view);
+
     languages.readFile("res/lang/en.txt");
     Vector2f pos(Engine::getWindowSize());
     pos /= 2.f;
