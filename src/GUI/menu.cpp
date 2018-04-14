@@ -8,7 +8,9 @@ using namespace sf;
 
 //set up the menu items
 //TO DO: make this take total size of menu as parameter and calculate button positions rather than using magic numbers
-Menu::Menu() : _id(0), _title(Panel(Vector2f(0, 0), Vector2f(0, 0), "Anonymous.ttf")) {}
+Menu::Menu() : _id(0), _title(Panel(Vector2f(0, 0), Vector2f(0, 0), "Anonymous.ttf")), _btnOffset(Vector2f(0, 50.f)),
+                                                                                       _btnSize(Vector2f(200.f, 35.f)),
+                                                                                       _position(Vector2f(0, 0)) {}
 
 //returns the id of the button which has been clicked
 //returns -1 if no button has been clicked
@@ -41,23 +43,23 @@ void Menu::render() {
 }
 
 //adds a button to the menu
-void Menu::addButton(const sf::Vector2f &pos, const sf::Vector2f &size, const std::string &text) {
-    auto btn = std::make_shared<Button>(pos, size, text);
+void Menu::addButton(const std::string &text) {
+    auto btn = std::make_shared<Button>(_position + _btnOffset * static_cast<float>(_id), _btnSize, text);
     _buttons[_id] = btn;
     _id++;
 }
 
 //adds an option button to the menu
-void Menu::addOptionButton(const sf::Vector2f &pos, const sf::Vector2f &size, const std::vector<std::string> &options) {
-    auto btn = std::make_shared<OptionButton>(pos, size, "");
+void Menu::addOptionButton(const std::vector<std::string> &options) {
+    auto btn = std::make_shared<OptionButton>(_position + _btnOffset * static_cast<float>(_id), _btnSize, "");
     btn->addOptions(options);
     _buttons[_id] = btn;
     _id++;
 }
 
 //adds a title for the menu
-void Menu::addTitle(const sf::Vector2f &pos, const sf::Vector2f &size, const std::string &title) {
-    _title = Panel(pos, size, "Anonymous.ttf");
+void Menu::addTitle(const std::string &title) {
+    _title = Panel(_position - Vector2f(0, _btnSize.y * 2), _btnSize, "Anonymous.ttf");
     _title.setGUI(false);
     _title.setPanelColour(Color::Transparent);
     _title.setTextLocalised(title);
@@ -72,4 +74,26 @@ void Menu::addLabel(unsigned int itemId, const std::string &text){
         }
     }
 }
+
+//returns the selected option for button with the given id
+const std::string &Menu::getSelectedOption(unsigned int id) const {
+    for (auto _button : _buttons) {
+        if(_button.first == id) {
+            return _button.second->getSelection();
+        }
+    }
+
+    static const std::string ret = std::string();
+    return ret;
+}
+
+void Menu::setPosition(const sf::Vector2f &pos) {
+    _position = pos;
+}
+
+void Menu::setOffset(const sf::Vector2f &offset) {
+    _btnOffset = offset;
+}
+
+
 

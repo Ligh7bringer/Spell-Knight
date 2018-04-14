@@ -49,7 +49,7 @@ public:
     bool isHurt() const;
     int getFrameCount() const;
     float getFrameTime() const;
-    void lockInAnimation(int row);
+    void lockInAnimation(unsigned int row);
     bool isDone() const;
     const sf::Sprite& getSprite() const;
     void rotate(float deg);

@@ -18,9 +18,9 @@ before_build:
     cmake -G "Visual Studio 15 2017 Win64" ../
     
 build:
-    project: "build/Games_Engineering.sln"
-    parallel: true
-    verbosity: minimal
+  project: build/PACKAGE.vcxproj
+  parallel: true
+  verbosity: minimal
     
 after_build:
 - cmd: >-
@@ -29,14 +29,16 @@ after_build:
 artifacts:
   - path: build/*.zip
     name: Game_zip
+  - path: build/installer/*.exe
+    name: Spell_Knight_installer
        
 deploy:
-    description: 'Windows zip archive.'
+    description: 'Windows releases of Spell Knight.'
     provider: GitHub
     on:
         appveyor_repo_tag: true
         CONFIGURATION: Release
     auth_token:
         secure: gaNPfzFDf02yceIPsb+6lUEf/YfexgCZr7tOGgLybABn/2LdEaMLymgfZLgdUivC
-    artifact: Game_zip            
+    artifact: Game_zip, Spell_Knight_installer           
     prerelease: true

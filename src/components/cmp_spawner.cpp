@@ -35,7 +35,7 @@ void SpawnerComponent::update(double dt) {
         anim->setSpritesheet(TextureManager::getTexture("boulder.png"));
         anim->setNumberOfFrames(1);
         //make it rotate
-        anim->setRotation(-2.f);
+        anim->setRotation(-35.f);
 
         //make sure the boulder is deleted after a while
         boulder->addComponent<CleanUpComponent>(20.f);

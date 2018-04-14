@@ -32,10 +32,10 @@ void InputManager::addKey(const string& action, sf::Event::EventType eventType, 
     bool overwrite = false;
 
     //if key exists, overwrite it
-    for(map<string, Key>::iterator it = _bindings.begin(); it != _bindings.end(); ++it) {
-        if(action == it->first) {
+    for (auto &_binding : _bindings) {
+        if(action == _binding.first) {
             LOG(INFO) << "Overwriting existing key binding for action " + action << " with key " << key << "!";
-            it->second = __key;
+            _binding.second = __key;
             overwrite = true;
         }
     }

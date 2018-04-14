@@ -12,7 +12,7 @@ protected:
     sf::Vector2f _position;
     Panel _label;
 
-    sf::FloatRect getMouseRect(int width, int height);
+    sf::FloatRect getMouseRect(unsigned int width, unsigned int height);
     virtual void onClick();
     virtual void onHover();
     virtual void reset();
@@ -29,4 +29,6 @@ public:
     bool isClicked() const;
 
     void addLabel(const std::string& text);
+
+    virtual const std::string& getSelection() const;
 };

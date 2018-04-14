@@ -21,11 +21,13 @@ void OptionButton::addOption(const std::string &option) {
 }
 
 void OptionButton::addOptions(const std::vector<std::string> &options) {
-    for(auto option : options) {
+    for(const auto &option : options) {
         addOption(option);
     }
+
+    _panel.setTextLocalised(_options[_currentOption]);
 }
 
-unsigned int OptionButton::getSelection() {
-    return _currentOption;
+const std::string& OptionButton::getSelection() const {
+    return _options[_currentOption];
 }
