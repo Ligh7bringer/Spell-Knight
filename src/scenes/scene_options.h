@@ -7,9 +7,15 @@
 class OptionsScene : public Scene {
 private:
     Menu _optionsMenu;
-    float _timer;
+    unsigned int _id;
+    bool _flag;
+    float _delay;
+    std::map<std::string, sf::Vector2f> _resolutionData;
+    std::map<int, std::string> _actionData;
 
-    void updateLabel(unsigned int id, double dt);
+    void initResolutions();
+    void initActions();
+    void updateButton(unsigned int id);
 
 public:
     OptionsScene() = default;

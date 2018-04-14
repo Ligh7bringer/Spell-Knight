@@ -17,10 +17,11 @@ void MenuScene::Load() {
     languageFile.readFile("res/lang/en.txt");
 
     _mainMenu = Menu();
-    _mainMenu.addTitle(Vector2f(500, 200), Vector2f(100, 100), "Spell Knight");
-    _mainMenu.addButton(Vector2f(500, 350), Vector2f(200, 35), languageFile.get("play")); //id = 0
-    _mainMenu.addButton(Vector2f(500, 400), Vector2f(200, 35), languageFile.get("options")); //id = 1
-    _mainMenu.addButton(Vector2f(500, 450), Vector2f(200, 35), languageFile.get("exit")); //id = 2
+    _mainMenu.setPosition(Vector2f(500, 200));
+    _mainMenu.addTitle("Spell Knight");
+    _mainMenu.addButton(languageFile.get("play")); //id = 0
+    _mainMenu.addButton(languageFile.get("options")); //id = 1
+    _mainMenu.addButton(languageFile.get("exit")); //id = 2
 
     setLoaded(true);
 }

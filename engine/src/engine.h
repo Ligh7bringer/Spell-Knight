@@ -56,16 +56,22 @@ public:
   static bool _pause;
   static void Exit();
   static sf::Event getEvent();
-  static std::vector<char>& getKeys();
+  static std::vector<char>& getKeysText();
+  static std::vector<sf::Keyboard::Key>& getKeys();
   static bool isPaused();
-
+  static void toggleFullscreen();
+  static bool isFullscreen();
+  static void setResolution(const sf::Vector2f& res);
 private:
   static Scene* _activeScene;
   static std::string _gameName;
   static void Update();
   static void Render(sf::RenderWindow& window);
   static sf::Event _event;
-  static std::vector<char> _keys;
+  static std::vector<char> _keysText;
+  static bool _fullscreen;
+  static sf::Vector2f _currentResolution;
+  static std::vector<sf::Keyboard::Key> _keys;
 };
 
 namespace timing {

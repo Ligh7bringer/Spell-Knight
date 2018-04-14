@@ -96,7 +96,7 @@ const sf::Vector2f &Button::getPosition() {
 
 void Button::addLabel(const std::string &text) {
     const auto pos = _panel.getPosition();
-    const auto labelPos = Vector2f(pos.x - 150.f, pos.y);
+    const auto labelPos = Vector2f(pos.x - 200.f, pos.y - 5.f);
     _label = Panel(labelPos, Vector2f(100.f, 50.f), "Anonymous.ttf");
     _label.setTextLocalised(text);
     _label.setPanelColour(Color::Transparent);

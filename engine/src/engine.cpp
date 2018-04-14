@@ -15,15 +15,19 @@
 
 using namespace sf;
 using namespace std;
+
 Scene* Engine::_activeScene = nullptr;
 std::string Engine::_gameName;
 sf::Event Engine::_event;
-std::vector<char> Engine::_keys;
-
+std::vector<char> Engine::_keysText;
+std::vector<sf::Keyboard::Key> Engine::_keys;
 static bool loading = false;
 static float loadingspinner = 0.f;
 static float loadingTime;
 static RenderWindow* _window;
+
+bool Engine::_fullscreen = false;
+sf::Vector2f Engine::_currentResolution = Vector2f(1280, 760);
 
 structlog LOGCFG = {};
 
@@ -105,6 +109,8 @@ void Engine::setView(const sf::View& view) {
 bool Engine::_pause = false;
 void Engine::Start(unsigned int width, unsigned int height,
                    const std::string& gameName, Scene* scn) {
+  _currentResolution.x = width;
+  _currentResolution.y = height;
 
   //set up logging:
   //display logging level
@@ -130,7 +136,7 @@ void Engine::Start(unsigned int width, unsigned int height,
   while (window.isOpen()) {
     Event event;
     while (window.pollEvent(event)) {
-      _event = event;
+      _keysText.clear();
       _keys.clear();
       if (event.type == Event::Closed) {
         window.close();
@@ -150,17 +156,19 @@ void Engine::Start(unsigned int width, unsigned int height,
       }
       if(event.type == Event::Resized) {
         //resize view when window is resized so textures are not stretched
-        _activeScene->getView().setSize(event.size.width, event.size.height);
+        View v = View(FloatRect(0, 0, event.size.width, event.size.height));
+        Renderer::setView(v);
+        _activeScene->setView(v);
       }
       if(event.type == Event::TextEntered) {
         if(event.text.unicode < 128)
-          _keys.push_back(static_cast<char>(event.text.unicode));
+          _keysText.push_back(static_cast<char>(event.text.unicode));
+      }
+      if(event.type == Event::KeyPressed) {
+          _keys.push_back(event.key.code);
+          LOG(DEBUG) << event.key.code;
       }
     }
-    
-  //   if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-  //     window.close();
-  //  }
 
 	window.clear();
 	Update();
@@ -212,12 +220,34 @@ sf::Event Engine::getEvent() {
   return _event;
 }
 
-std::vector<char> &Engine::getKeys() {
-  return _keys;
+std::vector<char> &Engine::getKeysText() {
+  return _keysText;
 }
 
 bool Engine::isPaused() {
     return _pause;
+}
+
+void Engine::toggleFullscreen() {
+  _fullscreen = !_fullscreen;
+  if(_fullscreen) {
+    _window->create(VideoMode(_currentResolution.x, _currentResolution.y), _gameName, sf::Style::Fullscreen);
+  } else {
+    _window->create(VideoMode(_currentResolution.x, _currentResolution.y), _gameName, sf::Style::Close | sf::Style::Resize);
+  }
+}
+
+bool Engine::isFullscreen() {
+  return _fullscreen;
+}
+
+void Engine::setResolution(const sf::Vector2f &res) {
+  _currentResolution = res;
+  _window->create(VideoMode(res.x, res.y), _gameName, _fullscreen ? sf::Style::Fullscreen : sf::Style::Close | sf::Style::Resize);
+}
+
+std::vector<sf::Keyboard::Key> &Engine::getKeys() {
+  return _keys;
 }
 
 void Scene::Update(const double& dt) { 
