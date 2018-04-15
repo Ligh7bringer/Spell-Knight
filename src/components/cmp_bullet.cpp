@@ -1,10 +1,6 @@
 #include "cmp_bullet.h"
 #include "cmp_player_attack.h"
-#include "cmp_physics.h"
 #include "cmp_animated_sprite.h"
-#include "cmp_enemy_physics.h"
-#include "texture_manager.h"
-#include "system_physics.h"
 #include "../../engine/src/engine.h"
 #include "cmp_score.h"
 #include "cmp_enemy_health.h"
@@ -81,8 +77,8 @@ void BulletComponent::checkCollisions(const std::vector<const b2Contact*>& conta
                         _enemies = _parent->scene->ents.find("enemy");
                         break;
                     }
-                  else{
-                      parentPhysics->setMass(0.f);
+                    else {
+                        parentPhysics->setMass(0.f);
                     }
                 }
             }

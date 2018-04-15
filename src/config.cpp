@@ -45,8 +45,11 @@ void Config::setSetting(const std::string &key, const std::string &value) {
     setPar.set(key, value);
 }
 
-void Config::setCurrentLanguage(const std::string &_currentLanguage) {
-    Config::_currentLanguage = _currentLanguage;
+void Config::setCurrentLanguage(const std::string &lang) {
+    _currentLanguage = lang;
+    SettingsParser sp;
+    sp.readFile(DEFAULT_SETTINGS_DIR + SETTINGS_FILE);
+    sp.set("language", lang);
 }
 
 const std::string &Config::getDefaultFont() {
@@ -60,6 +63,7 @@ bool Config::firstRun() {
         sp.put("width", "1280");
         sp.put("height", "720");
         sp.put("fullscreen", "0");
+        sp.put("language", "en.txt");
         sp.saveToFile(false);
         return true;
     }

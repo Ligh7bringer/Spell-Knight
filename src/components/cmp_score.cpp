@@ -13,11 +13,12 @@ using namespace sf;
 PlayerScoreComponent::PlayerScoreComponent(Entity* p) : Component(p), _points(0) {
     _panel = Panel(Vector2f(300.f, 0), Vector2f(150.f, 32.f));
     _panel.setPanelColour(Color(192, 192, 192, 128));
+    TEXT = Config::getLocalisedString("score") + " ";
+    _panel.setTextLocalised(TEXT + std::to_string(_points));
 }
 
 
 void PlayerScoreComponent::update(double dt) {
-    _panel.setTextLocalised(Config::getLocalisedString("score") + " " + std::to_string(_points));
     _panel.update(dt);
 }
 
@@ -29,6 +30,7 @@ void PlayerScoreComponent::render() {
 //increases points 
 void PlayerScoreComponent::increasePoints(int num) {
     _points += num;
+    _panel.setTextLocalised(TEXT + std::to_string(_points));
 }
 
 //decreases points and makes sure they are not lower than 0
@@ -37,6 +39,8 @@ void PlayerScoreComponent::decreasePoints(int num) {
     if(_points < 0) {
         _points = 0;
     }
+
+    _panel.setTextLocalised(TEXT + std::to_string(_points));
 }
 
 //returns current points

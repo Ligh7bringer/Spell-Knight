@@ -8,7 +8,7 @@ private:
     int _maxLives;
     int _lives;
     Panel _panel;
-
+    std::string TEXT;
 public:
     PlayerLivesComponent() = delete;
     explicit PlayerLivesComponent(Entity* p, unsigned int lives);

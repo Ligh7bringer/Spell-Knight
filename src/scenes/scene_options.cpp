@@ -10,8 +10,10 @@ using namespace sf;
 void OptionsScene::Load() {
     _sceneID = "options";
     _delay = 0.3f;
+
     initResolutions();
     initActions();
+    initLang();
 
     Vector2f windowSize(Engine::getWindowSize());
     auto center = windowSize / 2.f;
@@ -23,25 +25,24 @@ void OptionsScene::Load() {
     Vector2f pos(Vector2f(500, 200));
     _optionsMenu = Menu();
     _optionsMenu.setPosition(Vector2f(pos));
-    _optionsMenu.addTitle(Config::getLocalisedString("play"));
+    _optionsMenu.addTitle(Config::getLocalisedString("options"));
 
     std::vector<std::string> languages = { "English", "Bulgarian" };
-    std::vector<std::string> resolutions = { "1280 x 760", "800 x 600", "1366 x 768" };
-    std::vector<std::string> fullscreen = { "Windowed", "Fullscreen"};
+    std::vector<std::string> resolutions = { "1280 x 720", "720 x 480", "1366 x 768", "1920 x 1080" };
 
     _optionsMenu.addOptionButton(languages); //id=0
     _optionsMenu.addOptionButton(resolutions); //id=1
-    _optionsMenu.addOptionButton(fullscreen); //id=2
-    _optionsMenu.addButton("Walk left"); //id=3
-    _optionsMenu.addButton("Walk right"); //id=4
-    _optionsMenu.addButton("Jump"); //id=5
-    _optionsMenu.addButton("Shoot"); //id=6
-    _optionsMenu.addButton("Main menu"); //id=7
+    _optionsMenu.addButton(Config::getLocalisedString("toggle")); //id=2
+    _optionsMenu.addButton(Config::getLocalisedString("walkl")); //id=3
+    _optionsMenu.addButton(Config::getLocalisedString("walkr")); //id=4
+    _optionsMenu.addButton(Config::getLocalisedString("jump")); //id=5
+    _optionsMenu.addButton(Config::getLocalisedString("shoot")); //id=6
+    _optionsMenu.addButton(Config::getLocalisedString("main_menu")); //id=7
 
-    _optionsMenu.addLabel(0, "Language:");
-    _optionsMenu.addLabel(1, "Resolution:");
-    _optionsMenu.addLabel(2, "Window mode:");
-    _optionsMenu.addLabel(3, "Key bindings:");
+    _optionsMenu.addLabel(0, Config::getLocalisedString("language"));
+    _optionsMenu.addLabel(1, Config::getLocalisedString("resolution"));
+    _optionsMenu.addLabel(2, Config::getLocalisedString("winmode"));
+    _optionsMenu.addLabel(3, Config::getLocalisedString("bindings"));
 
     setLoaded(true);
 }
@@ -54,7 +55,11 @@ void OptionsScene::Update(const double& dt) {
 
    switch(_optionsMenu.getMenuResponse()) {
        case 0:
-           break;
+           {
+               string selection = _optionsMenu.getSelectedOption(0);
+               Config::setCurrentLanguage(_langData[selection]);
+               break;
+           }
        case 1: //resolution button pressed; set the correct resolution
            Engine::setResolution(_resolutionData[_optionsMenu.getSelectedOption(1)]);
            _optionsMenu.repositionMenu();
@@ -101,8 +106,9 @@ void OptionsScene::Render() {
 
 void OptionsScene::initResolutions() {
     _resolutionData["1366 x 768"] = Vector2u(1366, 768);
-    _resolutionData["1280 x 760"] = Vector2u(1280, 760);
-    _resolutionData["800 x 600"] = Vector2u(800, 600);
+    _resolutionData["1280 x 720"] = Vector2u(1280, 720);
+    _resolutionData["720 x 480"] = Vector2u(720, 480);
+    _resolutionData["1920 x 1080"] = Vector2u(1920, 1080);
 }
 
 void OptionsScene::initActions() {
@@ -116,4 +122,9 @@ void OptionsScene::updateButton(unsigned int id) {
     _flag = true;
     _id = id;
     _optionsMenu.addLabel(id, "Press any key");
+}
+
+void OptionsScene::initLang() {
+    _langData["English"] = "en.txt";
+    _langData["Bulgarian"] = "bg.txt";
 }

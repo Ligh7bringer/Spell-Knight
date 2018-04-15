@@ -175,9 +175,6 @@ void Engine::Start(unsigned int width, unsigned int height,
       //capture the pressed keys in order to figure out what key has been pressed for the key bindings menu
       //only happens in the options scene
       if((event.type == Event::TextEntered || event.type == Event::KeyPressed) && _activeScene->_sceneID.compare("options") == 0) {
-          if(event.text.unicode < 128) {
-            _keysText.push_back(static_cast<char>(event.text.unicode));
-          }
           _keys.push_back(event.key.code);
           //LOG(DEBUG) << "IN OPTIONS SCENE";
       }

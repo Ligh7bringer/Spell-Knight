@@ -8,6 +8,8 @@ protected:
     int _health, _maxHealth;
     sf::Vector2f _offset;
     int _panelAlpha;
+    std::string TEXT;
+
 public:
     EnemyHealthComponent() = delete;
     explicit EnemyHealthComponent(Entity *p, int health);
