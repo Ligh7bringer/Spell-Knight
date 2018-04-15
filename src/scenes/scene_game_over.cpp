@@ -2,22 +2,21 @@
 #include "../game.h"
 #include "../Log.h"
 #include "../../engine/lib_settings_parser/settings_parser.h"
-using namespace sf;
+#include "../config.h"
 
-SettingsParser languages;
+using namespace sf;
 
 //initialise panel
 void GameOverScene::Load() {
-    languages.readFile("res/lang/en.txt");
     Vector2f pos(Engine::getWindowSize());
     pos /= 2.f;
-    _panel = Panel(pos, Vector2f(600.f, 200.f), "Anonymous.ttf");
+    _panel = Panel(pos, Vector2f(600.f, 200.f));
     _panel.setPositionOfCentre(pos);
     _panel.setTextSize(40);
     _panel.setGUI(false);
 
-    restartLevelbtn = Button(Vector2f(pos.x-100, pos.y+100), Vector2f(200.f, 35.f), languages.get("restart"));
-    mainMenubtn = Button(Vector2f(pos.x-300, pos.y+100), Vector2f(200.f, 35.f), languages.get("main_menu"));
+    restartLevelbtn = Button(Vector2f(pos.x-100, pos.y+100), Vector2f(200.f, 35.f), Config::getLocalisedString("restart"));
+    mainMenubtn = Button(Vector2f(pos.x-300, pos.y+100), Vector2f(200.f, 35.f), Config::getLocalisedString("main_menu"));
     setLoaded(true);
 }
 
@@ -37,12 +36,10 @@ void GameOverScene::Update(const double& dt) {
     if(Keyboard::isKeyPressed(Keyboard::Escape) || mainMenubtn.isClicked()) {
         Engine::ChangeScene((Scene*)&menu);
     }
-  if(nextLevelbtn.isClicked()){
-    //Engine::ChangeScene((Scene*)&level1);
-    //Engine::ChangeScene((Scene*)&level(levelInt++))
-  }
-
-
+    if(nextLevelbtn.isClicked()){
+        //Engine::ChangeScene((Scene*)&level1);
+        //Engine::ChangeScene((Scene*)&level(levelInt++))
+    }
     //update everything else
     _panel.update(dt);
     Scene::Update(dt);
@@ -75,5 +72,5 @@ void GameOverScene::nextLevel(){
   // another level then dont render next level btn
   Vector2f pos(Engine::getWindowSize());
   pos /= 2.f;
-  nextLevelbtn = Button(Vector2f(pos.x+100, pos.y+100), Vector2f(200.f, 35.f), languages.get("next_level"));
+  nextLevelbtn = Button(Vector2f(pos.x+100, pos.y+100), Vector2f(200.f, 35.f), Config::getLocalisedString("next_level"));
 }

@@ -1,6 +1,7 @@
 #include "cmp_enemy_health.h"
 #include "cmp_animated_sprite.h"
 #include "../Log.h"
+#include "../config.h"
 
 using namespace sf;
 
@@ -17,7 +18,7 @@ const Color COL_25_PERCENT = Color(255, 0, 0, ALPHA);
 
 //initialise needed stuff
 EnemyHealthComponent::EnemyHealthComponent(Entity* p, int health) : Component(p), _health(health), _maxHealth(health),
-                                        _panel(Panel(_parent->getPosition(), Vector2f(50.f, 20.f), "DoctorSoos.ttf")) {
+                                        _panel(Panel(_parent->getPosition(), Vector2f(50.f, 20.f))) {
     //create panel
     _panel.setTextSize(20);
     _panel.setPanelColour(Col_100_PERCENT);
@@ -33,7 +34,7 @@ EnemyHealthComponent::EnemyHealthComponent(Entity* p, int health) : Component(p)
 
 void EnemyHealthComponent::update(double dt) {
     //update text to current health
-    _panel.setText("HP " + std::to_string(_health));
+    _panel.setText(Config::getLocalisedString("hp") + " " + std::to_string(_health));
     //update position
     _panel.setPosition(_parent->getPosition() - _offset);
     //update panel

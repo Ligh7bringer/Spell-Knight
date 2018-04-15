@@ -31,6 +31,8 @@ public:
 
   EntityManager ents;
 
+  std::string _sceneID = "";
+
 protected:
   void setLoaded(bool);
   sf::View _view;
@@ -61,7 +63,7 @@ public:
   static bool isPaused();
   static void toggleFullscreen();
   static bool isFullscreen();
-  static void setResolution(const sf::Vector2f& res);
+  static void setResolution(const sf::Vector2u& res);
 private:
   static Scene* _activeScene;
   static std::string _gameName;
@@ -70,7 +72,7 @@ private:
   static sf::Event _event;
   static std::vector<char> _keysText;
   static bool _fullscreen;
-  static sf::Vector2f _currentResolution;
+  static sf::Vector2u _currentResolution;
   static std::vector<sf::Keyboard::Key> _keys;
 };
 

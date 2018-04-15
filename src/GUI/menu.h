@@ -18,6 +18,7 @@ public:
     const std::string& getSelectedOption(unsigned int id) const;
     void setOffset(const sf::Vector2f& offset);
     void setPosition(const sf::Vector2f& pos);
+    void repositionMenu();
 
 private:
     unsigned int _id;
@@ -25,6 +26,7 @@ private:
     sf::Vector2f _btnOffset;
     sf::Vector2f _btnSize;
     sf::Vector2f _position;
+    sf::Vector2f _totalSize;
 
     //storing the buttons as pointers allows both regular and option buttons to be stored in the same container
     //as option buttons inherit from regular buttons

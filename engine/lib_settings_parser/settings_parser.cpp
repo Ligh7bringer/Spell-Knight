@@ -17,7 +17,7 @@ void SettingsParser::readFile(const string& file) {
     //clear the map
     _data.clear();
     _fileName = file;
-    
+
     //make sure the file is open
     std::ifstream in(file);
     if(!in.is_open()) {
@@ -33,14 +33,14 @@ void SettingsParser::readFile(const string& file) {
             if(!keyValue.first.empty()) {
                 //store it in the _data map
                 _data[keyValue.first] = keyValue.second;
-                //LOG(DEBUG) << "Setting read: " << keyValue.first << " = " << keyValue.second;
+                LOG(DEBUG) << "Setting read: " << keyValue.first << " = " << keyValue.second;
             }
         }
 
-        //close stream
-        in.close();
         LOG(DEBUG) << "Settings file " << file << " read successfully!";
     }
+    //close stream
+    in.close();
 }
 
 //converts a line of text to a key value pair
@@ -64,7 +64,7 @@ pair<string, string> SettingsParser::parseLine(const string& line) const {
         while(isspace(line[index]) || line[index] == EQUALS) {
             index++;
         }
-        
+
         //get the actual value
         const string value = line.substr(index, line.size() - index);
 
@@ -85,7 +85,7 @@ string SettingsParser::get(const string& key) const {
     return string();
 }
 
-//sets the value of setting key 
+//sets the value of setting key
 void SettingsParser::set(const string& key, const string& value) {
     auto it = _data.find(key);
     if(it != _data.end()) {
@@ -97,21 +97,18 @@ void SettingsParser::set(const string& key, const string& value) {
 }
 
 //save the changes made to the settings file
-void SettingsParser::saveToFile() {
+void SettingsParser::saveToFile(bool overwrite) {
     //temporary vector of values
     vector<pair<string, string>> fileContents;
 
     //open file
     std::ifstream in(_fileName);
-    if(!in.is_open()) {
-        LOG(ERROR) << "Couldn't open settings file " << _fileName << " for writing!";
-    }
 
-    if(in.is_open()) {
+    if(in.is_open() && overwrite) {
         string line;
         while(getline(in, line)) {
             pair<string, string> keyValue = parseLine(line);
-            
+
             //get new value from the map
             if(!keyValue.first.empty()) {
                 auto it = _data.find(keyValue.first);
@@ -124,13 +121,13 @@ void SettingsParser::saveToFile() {
             }
             //add to the vector
             fileContents.push_back(keyValue);
+            LOG(DEBUG) << keyValue.first << " " << keyValue.second;
         }
     } else {
         // can't open file, use available data in the map
-        for (auto it = _data.begin(); it != _data.end(); ++it)
-            fileContents.push_back(std::make_pair(it->first, it->second));
+        for (auto &it : _data)
+            fileContents.emplace_back(it.first, it.second);
     }
-
     //close stream
     in.close();
 
@@ -138,30 +135,30 @@ void SettingsParser::saveToFile() {
     ofstream out(_fileName);
     if(!out.is_open()) {
         LOG(ERROR) << "Couldn't open file " << _fileName << " for writing!";
-    } else {
-        //LOG(INFO) << "Saving to settings file " << _fileName << "...";
-        //write everything from the fileContents vector to the file
-        for (auto it = fileContents.begin() ; it != fileContents.end(); ++it) {
-            out << it->first;
-
-
-            if(!it->second.empty()) {
-                out << EQUALS << it->second; 
-            }
-
-            out << endl;
-        }
-
-        //close stream
-        out.close();
-        //LOG(INFO) << "Successfully wrote to settings file " << _fileName;
+        return;
     }
 
+    LOG(INFO) << "Saving to settings file " << _fileName << "...";
+    //write everything from the fileContents vector to the file
+    for (auto &fileContent : fileContents) {
+        out << fileContent.first;
+
+        if(!fileContent.second.empty()) {
+            out << "=" << fileContent.second;
+        }
+
+        out << endl;
+    }
+
+    //close stream
+    out.flush();
+    out.close();
+    LOG(INFO) << "Successfully wrote to settings file " << _fileName;
 }
 
 //save to the file when object is destroyed just in case
 SettingsParser::~SettingsParser() {
-    saveToFile();
+    saveToFile(true);
 }
 
 //prints all the loaded values from the settings file
@@ -170,5 +167,9 @@ void SettingsParser::print() const {
     for(auto keyValue : _data) {
         LOG(INFO) << keyValue.first << " = " << keyValue.second;
     }
+}
+
+void SettingsParser::put(const std::string &key, const std::string &value) {
+    _data[key] = value;
 }
 

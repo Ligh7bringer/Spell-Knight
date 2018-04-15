@@ -4,6 +4,7 @@
 #include <engine.h>
 #include <codecvt>
 #include "../Log.h"
+#include "../config.h"
 
 using namespace sf;
 
@@ -12,8 +13,8 @@ using namespace sf;
 */
 
 //initialise everything needed
-Panel::Panel(const Vector2f& pos, const Vector2f& size, const std::string& font) : _size(size), _position(pos) {
-    _font = Resources::get<sf::Font>(font);
+Panel::Panel(const Vector2f &pos, const Vector2f &size) : _size(size), _position(pos) {
+    _font = Resources::get<sf::Font>(Config::getDefaultFont());
     _text.setFont(*_font);
     _text.setCharacterSize(32);
     _text.setFillColor(Color::Black);
@@ -116,4 +117,9 @@ void Panel::setBorder(const float &thickness, const sf::Color &colour) {
 
 const sf::Vector2f &Panel::getPosition() const {
     return _position;
+}
+
+const sf::Vector2f &Panel::getPositionOfCentre() const {
+    auto newPos = _rect.getPosition() - _rect.getSize() / 2.f;
+    return newPos;
 }

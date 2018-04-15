@@ -7,7 +7,7 @@ using namespace sf;
 
 //constructor, sets size and text
 Button::Button(const Vector2f& pos, const Vector2f& size, const std::string& text) : _check(true), _timer(0.2f),
-                                                                                       _panel(Panel(pos, size, "Anonymous.ttf"))
+                                                                                       _panel(Panel(pos, size))
 
 {
     _panel.setTextLocalised(text);
@@ -22,10 +22,12 @@ Button::Button(const Vector2f& pos, const Vector2f& size, const std::string& tex
 void Button::setPosition(const Vector2f& pos) {
     _panel.setPositionOfCentre(pos);
     _position = pos;
+    _label.setPositionOfCentre(pos - Vector2f(300.f, 0));
 }
 
 //checks for clicks or if the mouse is over the button
 void Button::update(double dt) {
+    //_label.setPositionOfCentre(Vector2f(_panel.getPositionOfCentre().x - 200.f, _panel.getPositionOfCentre().y));
     _label.update(dt);
 
     _clicked = false;
@@ -97,7 +99,8 @@ const sf::Vector2f &Button::getPosition() {
 void Button::addLabel(const std::string &text) {
     const auto pos = _panel.getPosition();
     const auto labelPos = Vector2f(pos.x - 200.f, pos.y - 5.f);
-    _label = Panel(labelPos, Vector2f(100.f, 50.f), "Anonymous.ttf");
+    _label = Panel(labelPos, Vector2f(100.f, 50.f));
+    _label.setPositionOfCentre(labelPos);
     _label.setTextLocalised(text);
     _label.setPanelColour(Color::Transparent);
     _label.setTextColour(Color::White);

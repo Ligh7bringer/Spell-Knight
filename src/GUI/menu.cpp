@@ -8,9 +8,10 @@ using namespace sf;
 
 //set up the menu items
 //TO DO: make this take total size of menu as parameter and calculate button positions rather than using magic numbers
-Menu::Menu() : _id(0), _title(Panel(Vector2f(0, 0), Vector2f(0, 0), "Anonymous.ttf")), _btnOffset(Vector2f(0, 50.f)),
-                                                                                       _btnSize(Vector2f(200.f, 35.f)),
-                                                                                       _position(Vector2f(0, 0)) {}
+Menu::Menu() : _id(0), _title(Panel(Vector2f(0, 0), Vector2f(0, 0))), _btnOffset(Vector2f(0, 50.f)),
+               _btnSize(Vector2f(200.f, 35.f)),
+               _position(Vector2f(0, 0)),
+               _totalSize(Vector2f(_btnSize.x, 0)) {}
 
 //returns the id of the button which has been clicked
 //returns -1 if no button has been clicked
@@ -47,6 +48,9 @@ void Menu::addButton(const std::string &text) {
     auto btn = std::make_shared<Button>(_position + _btnOffset * static_cast<float>(_id), _btnSize, text);
     _buttons[_id] = btn;
     _id++;
+    _totalSize.y += _btnSize.y + _btnOffset.y;
+
+    repositionMenu();
 }
 
 //adds an option button to the menu
@@ -55,11 +59,14 @@ void Menu::addOptionButton(const std::vector<std::string> &options) {
     btn->addOptions(options);
     _buttons[_id] = btn;
     _id++;
+    _totalSize.y += _btnSize.y + _btnOffset.y;
+
+    repositionMenu();
 }
 
 //adds a title for the menu
 void Menu::addTitle(const std::string &title) {
-    _title = Panel(_position - Vector2f(0, _btnSize.y * 2), _btnSize, "Anonymous.ttf");
+    _title = Panel(_position - Vector2f(0, _btnSize.y * 2), _btnSize);
     _title.setGUI(false);
     _title.setPanelColour(Color::Transparent);
     _title.setTextLocalised(title);
@@ -71,6 +78,7 @@ void Menu::addLabel(unsigned int itemId, const std::string &text){
     for (auto &_button : _buttons) {
         if(_button.first == itemId) {
             _button.second->addLabel(text);
+            _button.second->setPosition(_button.second->getPosition());
         }
     }
 }
@@ -93,6 +101,18 @@ void Menu::setPosition(const sf::Vector2f &pos) {
 
 void Menu::setOffset(const sf::Vector2f &offset) {
     _btnOffset = offset;
+}
+
+//repositions the menu to the center of the screen
+void Menu::repositionMenu() {
+    auto windowSize = Vector2f(Engine::getWindowSize());
+    auto center = windowSize / 2.f;
+    auto startPos = center - Vector2f(0, _totalSize.y / 4.f);
+
+    _title.setPositionOfCentre(startPos - Vector2f(0, _btnSize.y * 2));
+    for(int i = 0; i < _buttons.size(); ++i) {
+        _buttons[i]->setPosition(startPos + _btnOffset * (float)i);
+    }
 }
 
 

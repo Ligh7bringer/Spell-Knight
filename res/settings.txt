@@ -1,0 +1,5 @@
+#game settings:
+#window
+width=1280
+height=720
+fullscreen=0

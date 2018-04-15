@@ -3,6 +3,8 @@
 #include "scenes/scene_menu.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "config.h"
+
 using namespace std;
 
 MenuScene menu;
@@ -12,5 +14,10 @@ OptionsScene options;
 
 
 int main() {
-  Engine::Start(1280, 720, "Spell Knight", (Scene*)&menu);
+  Config::firstRun();
+  auto width_str = Config::getSetting("width");
+  auto height_str = Config::getSetting("height");
+  auto width = stoi(width_str);
+  auto height = stoi(height_str);
+  Engine::Start(width, height, "Spell Knight", (Scene*)&menu);
 }

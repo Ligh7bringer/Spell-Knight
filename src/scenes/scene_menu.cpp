@@ -2,11 +2,10 @@
 #include "../game.h"
 #include "../../engine/lib_settings_parser/settings_parser.h"
 #include "../Log.h"
+#include "../config.h"
 
 using namespace std;
 using namespace sf;
-
-SettingsParser languageFile;
 
 void MenuScene::Load() {
     Vector2f windowSize(Engine::getWindowSize());
@@ -14,14 +13,12 @@ void MenuScene::Load() {
     _view = View(center, windowSize);
     Engine::setView(_view);
 
-    languageFile.readFile("res/lang/en.txt");
-
     _mainMenu = Menu();
     _mainMenu.setPosition(Vector2f(500, 200));
     _mainMenu.addTitle("Spell Knight");
-    _mainMenu.addButton(languageFile.get("play")); //id = 0
-    _mainMenu.addButton(languageFile.get("options")); //id = 1
-    _mainMenu.addButton(languageFile.get("exit")); //id = 2
+    _mainMenu.addButton(Config::getLocalisedString("play")); //id = 0
+    _mainMenu.addButton(Config::getLocalisedString("options")); //id = 1
+    _mainMenu.addButton(Config::getLocalisedString("exit")); //id = 2
 
     setLoaded(true);
 }

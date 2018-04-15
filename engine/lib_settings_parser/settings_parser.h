@@ -23,11 +23,11 @@ public:
     ~SettingsParser();
 
     void readFile(const std::string& file);
-    void saveToFile();
+    void saveToFile(bool overwrite = true);
 
     std::string get(const std::string& key) const;
-    
     void set(const std::string& key, const std::string& value);
+    void put(const std::string& key, const std::string& value);
 
     void print() const;
 

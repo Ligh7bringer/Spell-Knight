@@ -12,6 +12,7 @@
 #include "../lib_input_manager/input_manager.h"
 #include "../lib_settings_parser/settings_parser.h"
 #include "../lib_audio_manager/audio_manager.h"
+#include "../../src/config.h"
 
 using namespace sf;
 using namespace std;
@@ -27,7 +28,7 @@ static float loadingTime;
 static RenderWindow* _window;
 
 bool Engine::_fullscreen = false;
-sf::Vector2f Engine::_currentResolution = Vector2f(1280, 760);
+sf::Vector2u Engine::_currentResolution;
 
 structlog LOGCFG = {};
 
@@ -127,8 +128,17 @@ void Engine::Start(unsigned int width, unsigned int height,
   AudioManager::initialise();
 
   RenderWindow window(VideoMode(width, height), gameName, sf::Style::Close | sf::Style::Resize);
+
   _gameName = gameName;
   _window = &window;
+
+  auto fullscr_str = Config::getSetting("fullscreen");
+  auto fullscr = stoi(fullscr_str);
+  _currentResolution = Vector2u(width, height);
+
+  if(fullscr != 0) {
+    toggleFullscreen();
+  }
 
   Renderer::initialise(window);
   Physics::initialise();
@@ -160,13 +170,14 @@ void Engine::Start(unsigned int width, unsigned int height,
         Renderer::setView(v);
         _activeScene->setView(v);
       }
-      if(event.type == Event::TextEntered) {
-        if(event.text.unicode < 128)
-          _keysText.push_back(static_cast<char>(event.text.unicode));
-      }
-      if(event.type == Event::KeyPressed) {
+      //capture the pressed keys in order to figure out what key has been pressed for the key bindings menu
+      //only happens in the options scene
+      if((event.type == Event::TextEntered || event.type == Event::KeyPressed) && _activeScene->_sceneID.compare("options") == 0) {
+          if(event.text.unicode < 128) {
+            _keysText.push_back(static_cast<char>(event.text.unicode));
+          }
           _keys.push_back(event.key.code);
-          LOG(DEBUG) << event.key.code;
+          //LOG(DEBUG) << "IN OPTIONS SCENE";
       }
     }
 
@@ -241,8 +252,12 @@ bool Engine::isFullscreen() {
   return _fullscreen;
 }
 
-void Engine::setResolution(const sf::Vector2f &res) {
+void Engine::setResolution(const sf::Vector2u &res) {
   _currentResolution = res;
+
+  Config::setSetting("width", to_string(res.x));
+  Config::setSetting("height", to_string(res.y));
+
   _window->create(VideoMode(res.x, res.y), _gameName, _fullscreen ? sf::Style::Fullscreen : sf::Style::Close | sf::Style::Resize);
 }
 

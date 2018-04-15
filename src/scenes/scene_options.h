@@ -10,7 +10,7 @@ private:
     unsigned int _id;
     bool _flag;
     float _delay;
-    std::map<std::string, sf::Vector2f> _resolutionData;
+    std::map<std::string, sf::Vector2u> _resolutionData;
     std::map<int, std::string> _actionData;
 
     void initResolutions();

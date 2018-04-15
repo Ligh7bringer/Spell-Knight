@@ -1,4 +1,5 @@
 #include "cmp_timer.h"
+#include "../config.h"
 #include <engine.h>
 #include <settings_parser.h>
 
@@ -8,12 +9,9 @@ using namespace sf;
 * This component will keep track of how much time the player takes to complete a level and display a timer.
 */
 
-SettingsParser sp;
-
 //create panel and start the timer
-TimerComponent::TimerComponent(Entity *p) : Component(p), 
-                                            _panel(Panel(Vector2f(100.f, 0), Vector2f(200.f, 32.f), "Anonymous.ttf")), _timer(0) {
-    sp.readFile("res/lang/en.txt");
+TimerComponent::TimerComponent(Entity *p) : Component(p),
+                                            _panel(Panel(Vector2f(100.f, 0), Vector2f(200.f, 32.f))), _timer(0) {
     _panel.setPanelColour(Color(192, 192, 192, 128));
 }
 
@@ -23,7 +21,7 @@ void TimerComponent::update(double dt) {
         _timer += dt;
     }
     //cast the time to an int because we don't want it to be displayed as a float (e.g. 1.00000)
-    _panel.setTextLocalised(sp.get("time") + " " + std::to_string((int)(_timer)));
+    _panel.setTextLocalised(Config::getLocalisedString("time") + " " + std::to_string((int)(_timer)));
     _panel.update(dt);
 }
 

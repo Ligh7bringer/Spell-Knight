@@ -1,15 +1,15 @@
 #include <input_manager.h>
+#include <settings_parser.h>
 #include "scene_options.h"
-#include "../../engine/lib_settings_parser/settings_parser.h"
 #include "../game.h"
 #include "../Log.h"
+#include "../config.h"
 
 using namespace std;
 using namespace sf;
 
-SettingsParser options_languageFile;
-
 void OptionsScene::Load() {
+    _sceneID = "options";
     _delay = 0.3f;
     initResolutions();
     initActions();
@@ -20,12 +20,11 @@ void OptionsScene::Load() {
     Engine::setView(_view);
 
     _flag = false;
-    options_languageFile.readFile("res/lang/en.txt");
 
     Vector2f pos(Vector2f(500, 200));
     _optionsMenu = Menu();
     _optionsMenu.setPosition(Vector2f(pos));
-    _optionsMenu.addTitle(options_languageFile.get("options"));
+    _optionsMenu.addTitle(Config::getLocalisedString("play"));
 
     std::vector<std::string> languages = { "English", "Bulgarian" };
     std::vector<std::string> resolutions = { "1280 x 760", "800 x 600", "1366 x 768" };
@@ -43,7 +42,7 @@ void OptionsScene::Load() {
     _optionsMenu.addLabel(0, "Language:");
     _optionsMenu.addLabel(1, "Resolution:");
     _optionsMenu.addLabel(2, "Window mode:");
-    _optionsMenu.addLabel(3, "Key bindings :");
+    _optionsMenu.addLabel(3, "Key bindings:");
 
     setLoaded(true);
 }
@@ -59,11 +58,14 @@ void OptionsScene::Update(const double& dt) {
            break;
        case 1: //resolution button pressed; set the correct resolution
            Engine::setResolution(_resolutionData[_optionsMenu.getSelectedOption(1)]);
+           _optionsMenu.repositionMenu();
            break;
        case 2: //fullscreen btn pressed, toggle fullscreen
            Engine::toggleFullscreen();
+            Config::setSetting("fullscreen", Engine::isFullscreen() ? "1" : "0");
+           _optionsMenu.repositionMenu();
            break;
-       case 3:
+       case 3: //key bindings buttons:
            updateButton(3);
            break;
        case 4:
@@ -74,8 +76,8 @@ void OptionsScene::Update(const double& dt) {
            break;
        case 6:
            updateButton(6);
-           break;
-       case 7:
+           break; //end of key bindings
+       case 7: //back button
            Engine::ChangeScene((Scene*)&menu);
            break;
        default:
@@ -83,8 +85,7 @@ void OptionsScene::Update(const double& dt) {
    }
 
     if (_flag) {
-        auto keys = Engine::getKeysText();
-        if (!keys.empty()) {
+        if (!Engine::getKeys().empty()) {
             InputManager::addKey(_actionData[_id], Event::KeyPressed, Engine::getKeys()[0]);
             _optionsMenu.addLabel(_id, "Done!");
             _flag = false;
@@ -100,9 +101,9 @@ void OptionsScene::Render() {
 }
 
 void OptionsScene::initResolutions() {
-    _resolutionData["1366 x 768"] = Vector2f(1366, 768);
-    _resolutionData["1280 x 760"] = Vector2f(1280, 760);
-    _resolutionData["800 x 600"] = Vector2f(800, 600);
+    _resolutionData["1366 x 768"] = Vector2u(1366, 768);
+    _resolutionData["1280 x 760"] = Vector2u(1280, 760);
+    _resolutionData["800 x 600"] = Vector2u(800, 600);
 }
 
 void OptionsScene::initActions() {

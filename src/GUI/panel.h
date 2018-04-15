@@ -20,7 +20,7 @@ protected:
 
 public:
     Panel() = default;
-    Panel(const sf::Vector2f& pos, const sf::Vector2f& size, const std::string& font);
+    Panel(const sf::Vector2f &pos, const sf::Vector2f &size);
     ~Panel() = default;
 
     void update(double dt);
@@ -38,4 +38,5 @@ public:
     void setPositionOfCentre(const sf::Vector2f& pos);
 
     const sf::Vector2f& getPosition() const;
+    const sf::Vector2f& getPositionOfCentre() const;
 };

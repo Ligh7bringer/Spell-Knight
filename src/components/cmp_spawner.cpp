@@ -38,7 +38,7 @@ void SpawnerComponent::update(double dt) {
         anim->setRotation(-35.f);
 
         //make sure the boulder is deleted after a while
-        boulder->addComponent<CleanUpComponent>(20.f);
+        boulder->addComponent<CleanUpComponent>(10.f);
 
         //reset timer
         _spawnTime = 3.5f;

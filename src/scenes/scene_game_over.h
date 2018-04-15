@@ -14,6 +14,8 @@ private:
     int _time;
 
 public:
+    GameOverScene() {}
+
     void Load() override;
 
     void Update(const double& dt) override;
