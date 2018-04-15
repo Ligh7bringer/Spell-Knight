@@ -45,7 +45,7 @@ void PlayerPhysicsComponent::update(double dt) {
     // Moving Either Left or Right
     if (Keyboard::isKeyPressed(InputManager::getKey("walkRight"))) {
       if (getVelocity().x < _maxVelocity.x) {
-        impulse({(float)(dt * _groundspeed*2), 0.01});
+        impulse({(float)(dt * _groundspeed*2.f), 0.01f});
 
         //play walking right animation
         anim->setFacingRight(true);
@@ -53,7 +53,7 @@ void PlayerPhysicsComponent::update(double dt) {
       }
     } else {
       if (getVelocity().x > -_maxVelocity.x) {
-        impulse({-(float)(dt * _groundspeed*2), 0.01});
+        impulse({-(float)(dt * _groundspeed*2.f), 0.01f});
 
         //play walking left animation
         anim->setFacingRight(false);
@@ -80,7 +80,7 @@ void PlayerPhysicsComponent::update(double dt) {
       //play idle animation
       anim->setCurrentRow(0);
       teleport(Vector2f(pos.x, pos.y - 1.0f));
-      impulse(Vector2f(0, -8.f));      
+      impulse(Vector2f(0.f, -8.f));      
     }
   }
 
