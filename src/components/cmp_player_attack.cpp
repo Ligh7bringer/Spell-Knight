@@ -21,7 +21,7 @@ PlayerAttackComponent::PlayerAttackComponent(Entity* p) : Component(p), _cooldow
     _cooldown = 0;
 
     initAttacks();
-    changeAttack(ICICLE);
+    changeAttack(SHOCK);
     _lastAttack = _currentAttack;
 }
 

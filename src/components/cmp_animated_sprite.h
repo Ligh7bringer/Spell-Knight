@@ -14,6 +14,7 @@ protected:
     sf::Vector2u _currentImage;
     int _startX;
     float _totalTime;
+    unsigned int _frameDecline;
     int _spriteSheetPadding;
     int _currentRow;
     float _frameTime;
@@ -24,6 +25,7 @@ protected:
     float _hurtTimer;
     bool _locked = false;
     bool _done;
+    bool _stalled;
     float _rotation;
 
 public:
@@ -33,6 +35,7 @@ public:
     void update(double dt) override;
     void render() override;
 
+    void stallAnimation(int row);
     void setSpritesheet(const sf::Texture& sh);
     void setFrameTime(float t);
     void setNumberOfFrames(int num);

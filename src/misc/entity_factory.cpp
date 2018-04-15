@@ -44,7 +44,9 @@ std::shared_ptr<Entity> EntityFactory::makePlayer(Scene* scene, const Vector2f& 
     player->addComponent<PlayerAttackComponent>();
     player->addComponent<PlayerLivesComponent>(3);
     player->addComponent<PlayerScoreComponent>();
-    player->addComponent<TimerComponent>();
+    player->addComponent<TimerComponent>(
+
+    );
 
     return player;
 }
@@ -54,7 +56,7 @@ std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& p
     auto slime = scene->makeEntity();
     slime->addTag("enemy");
     // set position
-    slime->setPosition(pos);
+    slime->setPosition(Vector2f(pos.x,pos.y+30.f));
     auto anim = slime->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
     anim->setSpritesheet(TextureManager::getTexture("slime.png"));
     anim->setNumberOfFrames(4);
@@ -80,6 +82,7 @@ std::shared_ptr<Entity> EntityFactory::makeFish(Scene* scene, const Vector2f& po
     fish->addComponent<HurtComponent>();
     fish->addComponent<EnemyHealthComponent>(1);
     auto physics = fish->addComponent<EnemyPhysicsComponent>(true, Vector2f(32.f, 32.f));
+    physics->setMass(2.f);
     physics->setGravityScale(0);
     auto sm = fish->addComponent<StateMachineComponent>();
     sm->addState("jumping", make_shared<JumpingState>());

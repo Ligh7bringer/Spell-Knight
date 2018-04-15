@@ -8,7 +8,7 @@
 #include "../components/cmp_score.h"
 #include "../components/cmp_timer.h"
 #include "../../engine/lib_audio_manager/audio_manager.h"
-
+#include <engine.h>
 using namespace std;
 using namespace sf;
 
@@ -146,8 +146,18 @@ void Level1Scene::Update(const double& dt) {
 
     //show game over scene if player dies
     if (!player->isAlive()) {
-        AudioManager::playSound("death.wav");
-        gameOver.setText("Game over!");
+        if(sf::length(player->getPosition() - ls::getPosition(ls::baseTiles::END)[0]) < 30.0f){
+            //AudioManager::playSound("collect.wav");
+            AudioManager::playSound("teleport.wav");
+            gameOver.setText("wooohooo!!");
+            gameOver.nextLevel();
+        }
+        else{
+            AudioManager::playSound("death.wav");
+            gameOver.setText("Game over!");
+        }
+
+        sf::sleep(sf::seconds(1.f));
         Engine::ChangeScene(&gameOver);
     } else {
         auto timeComp = player->get_components<TimerComponent>()[0];

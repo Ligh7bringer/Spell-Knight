@@ -22,7 +22,9 @@ using namespace sf;
 BulletComponent::BulletComponent(Entity* p, float lifetime)	: Component(p), _lifetime(lifetime),
                                                                  _player(_parent->scene->ents.find("player")[0]), _exploded(false),
                                                                  _explosionTime(0.5f),
-                                                                 _enemies(_parent->scene->ents.find("enemy")), _damage(1) {}
+                                                                 _enemies(_parent->scene->ents.find("enemy")), _damage(1) {
+
+}
 
 void BulletComponent::update(double dt) {
     //get the collisions from the physics component
@@ -50,6 +52,7 @@ void BulletComponent::update(double dt) {
 void BulletComponent::checkCollisions(const std::vector<const b2Contact*>& contacts) {
     //get necessary component
     const auto parentPhysics = _parent->get_components<PhysicsComponent>()[0];
+    parentPhysics->setMass(0.1f);
 
     //get player component to set the players score based on enemy's death
     //make sure the bullet is still colliding with something
@@ -77,6 +80,9 @@ void BulletComponent::checkCollisions(const std::vector<const b2Contact*>& conta
                         //update the list of enemies!!
                         _enemies = _parent->scene->ents.find("enemy");
                         break;
+                    }
+                  else{
+                      parentPhysics->setMass(0.f);
                     }
                 }
             }

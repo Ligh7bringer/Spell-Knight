@@ -33,11 +33,11 @@ void SettingsParser::readFile(const string& file) {
             if(!keyValue.first.empty()) {
                 //store it in the _data map
                 _data[keyValue.first] = keyValue.second;
-                LOG(DEBUG) << "Setting read: " << keyValue.first << " = " << keyValue.second;
+                //LOG(DEBUG) << "Setting read: " << keyValue.first << " = " << keyValue.second;
             }
         }
 
-        LOG(DEBUG) << "Settings file " << file << " read successfully!";
+        //LOG(DEBUG) << "Settings file " << file << " read successfully!";
     }
     //close stream
     in.close();
@@ -121,7 +121,7 @@ void SettingsParser::saveToFile(bool overwrite) {
             }
             //add to the vector
             fileContents.push_back(keyValue);
-            LOG(DEBUG) << keyValue.first << " " << keyValue.second;
+            //LOG(DEBUG) << keyValue.first << " " << keyValue.second;
         }
     } else {
         // can't open file, use available data in the map
@@ -138,7 +138,7 @@ void SettingsParser::saveToFile(bool overwrite) {
         return;
     }
 
-    LOG(INFO) << "Saving to settings file " << _fileName << "...";
+    //LOG(INFO) << "Saving to settings file " << _fileName << "...";
     //write everything from the fileContents vector to the file
     for (auto &fileContent : fileContents) {
         out << fileContent.first;
@@ -153,7 +153,7 @@ void SettingsParser::saveToFile(bool overwrite) {
     //close stream
     out.flush();
     out.close();
-    LOG(INFO) << "Successfully wrote to settings file " << _fileName;
+    //LOG(INFO) << "Successfully wrote to settings file " << _fileName;
 }
 
 //save to the file when object is destroyed just in case

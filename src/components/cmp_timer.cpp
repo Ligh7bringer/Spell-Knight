@@ -17,14 +17,13 @@ TimerComponent::TimerComponent(Entity *p) : Component(p),
 
 //update panel and set its text
 void TimerComponent::update(double dt) {
-    if(!Engine::isPaused()) {
+    if(!Engine::isPaused())
         _timer += dt;
-    }
     //cast the time to an int because we don't want it to be displayed as a float (e.g. 1.00000)
-    _panel.setTextLocalised(Config::getLocalisedString("time") + " " + std::to_string((int)(_timer)));
+    _panel.setTextLocalised(Config::getLocalisedString("time") + " " + std::to_string(static_cast<int>(_timer)));
+
     _panel.update(dt);
 }
-
 //render the panel
 void TimerComponent::render() {
     _panel.render();

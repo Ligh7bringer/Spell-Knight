@@ -1,9 +1,8 @@
 #include <input_manager.h>
-#include <settings_parser.h>
 #include "scene_options.h"
 #include "../game.h"
-#include "../Log.h"
 #include "../config.h"
+
 
 using namespace std;
 using namespace sf;

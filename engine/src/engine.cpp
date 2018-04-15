@@ -166,7 +166,9 @@ void Engine::Start(unsigned int width, unsigned int height,
       }
       if(event.type == Event::Resized) {
         //resize view when window is resized so textures are not stretched
-        View v = View(FloatRect(0, 0, event.size.width, event.size.height));
+        auto old = _window->getView();
+        auto oldPos = Vector2f(old.getViewport().left, old.getViewport().top);
+        View v = View(FloatRect(oldPos.x, oldPos.y, event.size.width, event.size.height));
         Renderer::setView(v);
         _activeScene->setView(v);
       }
@@ -235,9 +237,6 @@ std::vector<char> &Engine::getKeysText() {
   return _keysText;
 }
 
-bool Engine::isPaused() {
-    return _pause;
-}
 
 void Engine::toggleFullscreen() {
   _fullscreen = !_fullscreen;
@@ -264,6 +263,11 @@ void Engine::setResolution(const sf::Vector2u &res) {
 std::vector<sf::Keyboard::Key> &Engine::getKeys() {
   return _keys;
 }
+
+bool Engine::isPaused() {
+      return _pause;
+}
+
 
 void Scene::Update(const double& dt) { 
   ents.update(dt); 
