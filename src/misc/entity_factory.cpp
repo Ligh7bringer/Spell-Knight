@@ -174,7 +174,7 @@ std::shared_ptr<Entity> EntityFactory::makePotion(Scene *scene, const sf::Vector
     auto pl = scene->ents.find("player")[0];
     auto attack = pl->get_components<PlayerAttackComponent>()[0];
     //use a random potion to change the players attack
-    auto row = rand() % 5;
+    auto row = rand() % 4;
 
     auto pu = potion->addComponent<PowerUpComponent>(10, attack->getAttack(row).type);
     pu->giveHealth(10);

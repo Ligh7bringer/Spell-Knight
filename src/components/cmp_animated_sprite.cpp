@@ -58,6 +58,9 @@ void AnimatedSpriteComponent::update(double dt) {
             //restart from the first frame
             _currentImage.x = 0;
           }
+          //else{
+           // _currentImage.x = _numOfFrames-1;
+          //}
 //          else{
 //            if(_frameDecline ==_numOfFrames-1){
 //              _currentImage.x= _numOfFrames-_frameDecline--;

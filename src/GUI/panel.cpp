@@ -15,6 +15,7 @@ using namespace sf;
 //initialise everything needed
 Panel::Panel(const Vector2f &pos, const Vector2f &size) : _size(size), _position(pos) {
     _font = Resources::get<sf::Font>(Config::getDefaultFont());
+    LOG(DEBUG) << Config::getDefaultFont();
     _text.setFont(*_font);
     _text.setCharacterSize(32);
     _text.setFillColor(Color::Black);
@@ -120,6 +121,6 @@ const sf::Vector2f &Panel::getPosition() const {
 }
 
 const sf::Vector2f &Panel::getPositionOfCentre() const {
-    auto newPos = _rect.getPosition() - _rect.getSize() / 2.f;
+    static auto newPos = _rect.getPosition() - _rect.getSize() / 2.f;
     return newPos;
 }

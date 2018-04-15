@@ -4,6 +4,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "config.h"
+#include "Log.h"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ OptionsScene options;
 
 
 int main() {
+  LOG(DEBUG) << Config::getDefaultFont();
   Config::firstRun();
   auto width_str = Config::getSetting("width");
   auto height_str = Config::getSetting("height");

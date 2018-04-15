@@ -73,7 +73,7 @@ void PlayerPhysicsComponent::update(double dt) {
     _grounded = isGrounded();
     //play jumping animation
     anim->setCurrentRow(2);
-    //anim->stallAnimation(2);
+   // anim->stallAnimation(2);
 
     if (_grounded) {
       setVelocity(Vector2f(getVelocity().x, 0.f));

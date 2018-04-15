@@ -1,11 +1,13 @@
 #include "system_resources.h"
+#include "../../src/Log.h"
 
 namespace Resources {
   template<>
   std::shared_ptr<sf::Font> load(const std::string &name) {
     auto f = std::make_shared<sf::Font>();
     if (!f->loadFromFile("res/fonts/" + name)) {
-      throw("not found: " + name);
+     // throw("not found: " + name);
+      LOG(ERROR) << "not found : " << name;
     };
     return f;
   };
