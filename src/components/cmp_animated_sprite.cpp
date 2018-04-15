@@ -6,31 +6,30 @@ using namespace std;
 
 //constructor, initialises default sprite size and default animation speed
 AnimatedSpriteComponent::AnimatedSpriteComponent(Entity* p, Vector2f size) : Component(p), _size(size), _rotation(0) {
-        //total accumulated time, used to tell when to switch to the next frame
-        _totalTime = 0.0f;
-        //the texture rect's width and height
-        _currentFrame.width = _size.x;
-        _currentFrame.height = _size.y;
-        //current frame, default 0, 0
-        _currentImage = Vector2u(0, 0);
-        //default animation speed
-        _frameTime = 0.2f;
-        //this boolean is used to decide whether to flip the sprite or not
-        _facingRight = true;
-        //set this to the padding between rows in the spritesheet!!
-        //all online spritesheet packers seem to add padding for some reason
-        _spriteSheetPadding = 0;
-		    _currentRow = 0;
-        _hurt = false;
-        _hurtTimer = 1.0f;
-        _numOfFrames = 1;
-        _done = false;
-        _frameDecline = _numOfFrames;
-        //set origin
-        auto origin = _size / 2.f;
-        origin.x = floor(origin.x);
-        origin.y = floor(origin.y);
-        _sprite.setOrigin(origin);
+    //total accumulated time, used to tell when to switch to the next frame
+    _totalTime = 0.0f;
+    //the texture rect's width and height
+    _currentFrame.width = _size.x;
+    _currentFrame.height = _size.y;
+    //current frame, default 0, 0
+    _currentImage = Vector2u(0, 0);
+    //default animation speed
+    _frameTime = 0.2f;
+    //this boolean is used to decide whether to flip the sprite or not
+    _facingRight = true;
+    //set this to the padding between rows in the spritesheet!!
+    //all online spritesheet packers seem to add padding for some reason
+    _spriteSheetPadding = 0;
+    _currentRow = 0;
+    _hurt = false;
+    _hurtTimer = 1.0f;
+    _numOfFrames = 1;
+    _done = false;
+    //set origin
+    auto origin = _size / 2.f;
+    origin.x = floor(origin.x);
+    origin.y = floor(origin.y);
+    _sprite.setOrigin(origin);
 }
 
 void AnimatedSpriteComponent::update(double dt) {
@@ -54,18 +53,8 @@ void AnimatedSpriteComponent::update(double dt) {
             //unlock
             _locked = false;
             _done = true;
-          if(!_stalled){
             //restart from the first frame
             _currentImage.x = 0;
-          }
-//          else{
-//            if(_frameDecline ==_numOfFrames-1){
-//              _currentImage.x= _numOfFrames-_frameDecline--;
-//              _currentImage.x=_numOfFrames-_frameDecline--;
-//            }
-
-//          }
-
         }
 
     }
@@ -81,7 +70,7 @@ void AnimatedSpriteComponent::update(double dt) {
         _currentFrame.left = (_currentImage.x + 1) * abs(_currentFrame.width);
         _currentFrame.width = -abs(_currentFrame.width);
     }
-    
+
     //calculate spritesheet y coordinate, don't forget padding
     _currentFrame.top = _currentImage.y * _size.y + _spriteSheetPadding;
 
@@ -122,15 +111,6 @@ void AnimatedSpriteComponent::lockInAnimation(unsigned int row) {
     _locked = true;
 }
 
-void AnimatedSpriteComponent::stallAnimation(int row){
-  _stalled = true;
-    if(isDone()){
-        _currentImage.y = row;
-        _currentImage.x = _numOfFrames-1;
-    }
-
-}
-
 //sets the spritesheet, using the passed reference to a spritesheet
 void AnimatedSpriteComponent::setSpritesheet(const sf::Texture& sh) {
     _spritesheet = sh;
@@ -153,7 +133,7 @@ void AnimatedSpriteComponent::setNumberOfFrames(int num) {
 void AnimatedSpriteComponent::setCurrentRow(int r) {
     //if changing to a new animation
     if(_currentRow != r) {
-        _currentRow = r;    
+        _currentRow = r;
         //reset to first frame
         _currentImage.x = 0;
     }

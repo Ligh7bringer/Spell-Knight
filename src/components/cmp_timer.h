@@ -7,6 +7,7 @@ class TimerComponent : public Component {
 private:
     Panel _panel;
     float _timer;
+    std::string TEXT;
 
 public:
     TimerComponent() = delete;

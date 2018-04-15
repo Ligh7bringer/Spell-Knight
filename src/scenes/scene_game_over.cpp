@@ -1,7 +1,6 @@
 #include "scene_game_over.h"
 #include "../game.h"
 #include "../Log.h"
-#include "../../engine/lib_settings_parser/settings_parser.h"
 #include "../config.h"
 
 using namespace sf;

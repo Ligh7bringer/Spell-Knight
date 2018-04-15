@@ -30,11 +30,12 @@ EnemyHealthComponent::EnemyHealthComponent(Entity* p, int health) : Component(p)
     _offset.x = _offset.x / 2.f;
     _offset.y += anim->getSize().y / 2.f;
     _panelAlpha = 180;
+
+    TEXT = Config::getLocalisedString("hp") + " ";
+    _panel.setTextLocalised(TEXT + to_string(_health));
 }
 
 void EnemyHealthComponent::update(double dt) {
-    //update text to current health
-    _panel.setText(Config::getLocalisedString("hp") + " " + std::to_string(_health));
     //update position
     _panel.setPosition(_parent->getPosition() - _offset);
     //update panel
@@ -69,9 +70,15 @@ void EnemyHealthComponent::decreaseHealth(int num) {
     if(_health <= (int)(1.f/4.f * (float)_maxHealth)) {
         _panel.setPanelColour(COL_25_PERCENT);
     }
+
+    //update text to current health
+    _panel.setTextLocalised(TEXT + std::to_string(_health));
 }
 
 //increases health by num
 void EnemyHealthComponent::increaseHealth(int num) {
     _health += num;
+
+    //update text to current health
+    _panel.setTextLocalised(TEXT + std::to_string(_health));
 }

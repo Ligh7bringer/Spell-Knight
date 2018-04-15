@@ -33,7 +33,7 @@ public:
 
     static void setSetting(const std::string& key, const std::string& value);
 
-    static void setCurrentLanguage(const std::string &_currentLanguage);
+    static void setCurrentLanguage(const std::string &lang);
 };
 
 

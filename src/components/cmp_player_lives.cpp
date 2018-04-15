@@ -12,11 +12,12 @@ using namespace sf;
 PlayerLivesComponent::PlayerLivesComponent(Entity* p, unsigned int lives) : Component(p), _maxLives(8), _lives(lives),
                                                     _panel(Panel(Vector2f(0, 0), Vector2f(100.f, 32.f))) {
     _panel.setPanelColour(Color(192, 192, 192, 128));
+    TEXT = Config::getLocalisedString("hp") + " ";
 }
 
 //update positions of GUI stuff
 void PlayerLivesComponent::update(double dt) {
-    _panel.setTextLocalised(Config::getLocalisedString("hp") + " " + std::to_string(_lives));
+    _panel.setTextLocalised(TEXT + std::to_string(_lives));
     _panel.update(dt);
 }
 

@@ -6,6 +6,7 @@ class PlayerScoreComponent : public Component {
 protected:
     Panel _panel;
     int _points;
+    std::string TEXT;
 
 public:
     PlayerScoreComponent() = delete;

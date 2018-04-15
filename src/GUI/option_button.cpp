@@ -31,3 +31,17 @@ void OptionButton::addOptions(const std::vector<std::string> &options) {
 const std::string& OptionButton::getSelection() const {
     return _options[_currentOption];
 }
+
+void OptionButton::setSelection(const std::string &sel) {
+    auto index = -1;
+    for(int i = 0; i < _options.size(); ++i) {
+        if(_options[i] == sel) {
+            index = i;
+            break;
+        }
+    }
+
+    if(index != -1) {
+        _panel.setTextLocalised(_options[index]);
+    }
+}
