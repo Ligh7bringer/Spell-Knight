@@ -58,6 +58,7 @@ public:
   static sf::Event getEvent();
   static std::vector<char>& getKeysText();
   static std::vector<sf::Keyboard::Key>& getKeys();
+  static bool isPaused();
   static void toggleFullscreen();
   static bool isFullscreen();
   static void setResolution(const sf::Vector2f& res);

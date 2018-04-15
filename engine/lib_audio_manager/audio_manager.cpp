@@ -22,8 +22,9 @@ void AudioManager::initialise() {
     AudioManager::loadSound("shoot.wav");
     AudioManager::loadSound("explosion.wav");
     AudioManager::loadSound("collect.wav");
-	AudioManager::loadSound("fireball.wav");
-	//AudioManager::loadSound("shock.wav");
+    AudioManager::loadSound("teleport.wav");
+	  AudioManager::loadSound("fireball.wav");
+	  AudioManager::loadSound("shock.wav");
     LOG(INFO) << "Audio manager initialised!";
 }
 

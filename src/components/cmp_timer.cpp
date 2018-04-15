@@ -20,7 +20,9 @@ TimerComponent::TimerComponent(Entity *p) : Component(p),
 //update panel and set its text
 void TimerComponent::update(double dt) {
     //cast the time to an int because we don't want it to be displayed as a float (e.g. 1.00000)
-
+        if(!Engine::isPaused()) {
+                _timer += dt;
+        }
     _panel.setTextLocalised(sp.get("time") + " " + std::to_string((int)(_timer)));
     _panel.update(dt);
 }

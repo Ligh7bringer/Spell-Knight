@@ -251,6 +251,11 @@ std::vector<sf::Keyboard::Key> &Engine::getKeys() {
   return _keys;
 }
 
+bool Engine::isPaused() {
+      return _pause;
+}
+
+
 void Scene::Update(const double& dt) { 
   ents.update(dt); 
 }

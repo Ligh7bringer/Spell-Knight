@@ -11,16 +11,8 @@ void TeleportComponent::update(double dt){
   if(auto player = _player.lock()){
     //check the distance is less than 30
     if(sf::length(player->getPosition() - _parent->getPosition()) < 30.0f){
-      //AudioManager::playSound("teleport.wav");
-
-      //set the text of the gameover scene
-      gameOver.setText("whooohooo!!");
-
-      //put the next level btn onto the gameover scene
-      gameOver.nextLevel();
-      //change the scene to the gameover scene
-      Engine::ChangeScene(&gameOver);
-      //set the current scene of the gameover scene to the next level
+      //kill the player
+      player->setAlive(false);
     }
   }
 }
