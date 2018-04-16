@@ -71,9 +71,16 @@ void OptionsScene::Update(const double& dt) {
                break;
            }
        case 1: //resolution button pressed; set the correct resolution
-           Engine::setResolution(_resolutionData[_optionsMenu.getSelectedOption(1)]);
-           _optionsMenu.repositionMenu();
-           break;
+	   {
+		   Engine::setResolution(_resolutionData[_optionsMenu.getSelectedOption(1)]);
+		   _optionsMenu.repositionMenu();
+		   Vector2f windowSize(Engine::getWindowSize());
+		   auto center = windowSize / 2.f;
+		   _view = View(center, windowSize);
+		   Engine::setView(_view);
+		   break;
+	   }
+           
        case 2: //fullscreen btn pressed, toggle fullscreen
            Engine::toggleFullscreen();
             Config::setSetting("fullscreen", Engine::isFullscreen() ? "1" : "0");
@@ -98,12 +105,11 @@ void OptionsScene::Update(const double& dt) {
            break;
    }
 
-    if (_flag) {
-        if (!Engine::getKeys().empty()) {
-            InputManager::addKey(_actionData[_id], Event::KeyPressed, Engine::getKeys()[0]);
-            _optionsMenu.addLabel(_id, Config::getLocalisedString("done"));
-            _flag = false;
-        }
+    if (_flag && !Engine::getKeys().empty()) {
+        InputManager::addKey(_actionData[_id], Event::KeyPressed, Engine::getKeys()[0]);
+        _optionsMenu.addLabel(_id, Config::getLocalisedString("done"));
+        _flag = false;
+        Config::setSetting(_actionData[_id], to_string(InputManager::getKey(_actionData[_id])));
     }
 
     Scene::Update(dt);

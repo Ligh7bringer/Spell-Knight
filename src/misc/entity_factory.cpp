@@ -56,14 +56,14 @@ std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& p
     auto slime = scene->makeEntity();
     slime->addTag("enemy");
     // set position
-    slime->setPosition(Vector2f(pos.x,pos.y+30.f));
+    slime->setPosition(Vector2f(pos.x,pos.y+16.f));
     auto anim = slime->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
     anim->setSpritesheet(TextureManager::getTexture("slime.png"));
     anim->setNumberOfFrames(4);
     // Add HurtComponent
     slime->addComponent<HurtComponent>();
     slime->addComponent<EnemyHealthComponent>(1);
-    slime->addComponent<EnemyPhysicsComponent>(true, Vector2f(32.f, 32.f));
+    slime->addComponent<PhysicsComponent>(Vector2f(32.f, 32.f));
     //slime->addComponent<SteeringComponent>(scene->ents.find("player")[0]);
     slime->addComponent<RoamingComponent>(distance, time, false);
 

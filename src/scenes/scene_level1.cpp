@@ -25,14 +25,20 @@ void Level1Scene::Load() {
 
     //setup view
     auto windowSize = Engine::getWindowSize();
-    _view.reset(FloatRect(0, 0, windowSize.x, windowSize.y));
+    auto res = Engine::getResolution();
+    if(res.x > 1366) {
+		res.x = 1366;
+		res.y = 768;
+    }
+
+	_view.reset(FloatRect(0, 0, res.x, res.y));
 
     ls::loadLevelFile("res/levels/lvl1.txt", 32.0f);
     //auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);
     //ls::setOffset(Vector2f(0, ho));
 
     //initialise background and add layers
-    _parBackground = ParallaxBackground(Vector2f(windowSize.x, windowSize.y));
+    _parBackground = ParallaxBackground(Vector2f(res.x, res.y));
     _parBackground.addLayer(0.5f, "forest.jpg");
     _parBackground.addLayer(0.8f, "trees.png");
     _parBackground.addLayer(1.2f, "ground.png");

@@ -26,9 +26,9 @@ void SpawnerComponent::update(double dt) {
         auto physics = boulder->addComponent<PhysicsComponent>(true, sf::Vector2f(128.f, 128.f));
         physics->setRestitution(.4f);
         physics->setFriction(.0001f);
-        physics->impulse(sf::Vector2f(-3.f, 0));
+        physics->impulse(sf::Vector2f(-9.f, 0));
         //make it veeeeeeery heavy
-        physics->setMass(1000000000.f);
+        physics->setMass(10000000.f);
 
         //add sprite
         auto anim = boulder->addComponent<AnimatedSpriteComponent>(sf::Vector2f(128.f, 128.f));
@@ -41,6 +41,6 @@ void SpawnerComponent::update(double dt) {
         boulder->addComponent<CleanUpComponent>(10.f);
 
         //reset timer
-        _spawnTime = 3.5f;
+        _spawnTime = 4.5f;
     }
 }

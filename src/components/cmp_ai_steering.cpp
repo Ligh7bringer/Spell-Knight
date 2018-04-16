@@ -7,11 +7,11 @@ using namespace sf;
 
 void SteeringComponent::update(double dt) {
   //if target (player) is more than 100 pixels away seek
-  if(length(_parent->getPosition() - _player->getPosition()) > 250.0f){
+  if(length(_parent->getPosition() - _player->getPosition()) > 100.f){
     _output = _seek.getSteering();
   }
   //if target player is less than 50 pixels away flee
-  else if(_parent->getPosition().x - _player->getPosition().x < 200.0f){
+  else if(_parent->getPosition().x - _player->getPosition().x < 50.f){
     _output =_flee.getSteering();
   }
 }
