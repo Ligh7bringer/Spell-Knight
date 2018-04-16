@@ -124,8 +124,9 @@ void BulletComponent::explode() {
     }
 
     auto ps =_parent->addComponent<ParticleSystemComponent>(ParticleSystem::EXPLOSION, sprite);
-    ps->setEmissionRate(100.f);
+    ps->setEmissionRate(30.f);
     ps->setColour(c);
+    ps->setLifetime(1.f);
     //set exploded to true so we know it has exploded
     _exploded = true;
     //reset explosion time!

@@ -15,16 +15,15 @@ ParticleSystemComponent::ParticleSystemComponent(Entity* p, ParticleSystem::Type
 void ParticleSystemComponent::update(double dt) {
     if(_repeat) {
         _particles.setEmitter(_parent->getPosition());
-        _particles.emitParticles(dt);
         _particles.update(dt);
+        _particles.emitParticles(dt);
     } else {
         _timer -= dt;
-
+        _particles.setEmitter(_parent->getPosition());
+        _particles.update(dt);
         if(_timer > 0.0f) {
-            _particles.setEmitter(_parent->getPosition());
             _particles.emitParticles(dt);
         }
-        _particles.update(dt);
     }
 }
 
@@ -52,4 +51,8 @@ void ParticleSystemComponent::setEmitterSize(const sf::Vector2f &size) {
 
 void ParticleSystemComponent::setOffset(const sf::Vector2f &offset) {
     _particles.setEmitOffset(offset);
+}
+
+void ParticleSystemComponent::setLifetime(float lt) {
+    _particles.setLifetime(lt);
 }

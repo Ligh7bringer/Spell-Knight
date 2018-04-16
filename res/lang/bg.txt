@@ -21,3 +21,4 @@ jump=Скок
 shoot=Атака
 anykey=Press any key...
 done=Готово!
+sound=Звук:

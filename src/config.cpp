@@ -74,6 +74,7 @@ bool Config::firstRun() {
         sp.put("walkRight", std::to_string(sf::Keyboard::D));
         sp.put("jump", std::to_string(sf::Keyboard::W));
         sp.put("shoot", std::to_string(sf::Keyboard::Space));
+        sp.put("sound", "1");
         sp.saveToFile(false);
         return true;
     }

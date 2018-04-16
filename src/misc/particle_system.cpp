@@ -16,22 +16,20 @@ void ParticleSystem::addParticle(const sf::Vector2f &pos) {
     Particle particle;
     particle.position = _emitter;
     particle.colour = _colour;
+    particle.lifetime = _lifetime;
 
     //set velocity and lifetime depending on effect type
     if(_type == Type::FLOATING) {
-        particle.position = sf::Vector2f(rand() % (int)_emitterSize.x + pos.x - _emitterSize.x / 2.f + _offset.x, pos.y + _emitterSize.y / 2.f + _offset.y);
-        particle.lifetime = 1.0f;
+        particle.position = sf::Vector2f(rand() % static_cast<int>(_emitterSize.x) + pos.x - _emitterSize.x / 2.f + _offset.x, pos.y + _emitterSize.y / 2.f + _offset.y);
         particle.velocity = sf::Vector2f(0, -50.0f);
     }
     if(_type == Type::EXPLOSION) {
         float angle = (std::rand() % 360) * 3.14f / 180.f;
         float speed = (std::rand() % 50) + 50.f;
         particle.velocity = sf::Vector2f(std::cos(angle) * speed, std::sin(angle) * speed);
-        particle.lifetime = 1.0f;
     }
     if(_type == Type::TRAIL) {
         particle.velocity = sf::Vector2f(0.0f, 0.0f);
-        particle.lifetime = 1.0f;
     }
 
     //add to the list
@@ -47,7 +45,7 @@ void ParticleSystem::update(double dt) {
     //update lifetime and positions of all particles
     for(Particle& particle : _particles) {
         particle.lifetime -= dt;
-        particle.position += particle.velocity * (float)dt;
+        particle.position += particle.velocity * static_cast<float>(dt);
     }
 
     //optimisations
@@ -112,7 +110,8 @@ void ParticleSystem::setEmitter(const sf::Vector2f &pos) {
 //creates particles
 void ParticleSystem::emitParticles(double dt) {
     //interval of emission
-    const static float interval = 1.f / _emissionRate;
+    const float interval = 1.f / _emissionRate;
+
     //accumulate time
     _accumulatedTime += dt;
     //if enough time has passed
@@ -139,4 +138,8 @@ void ParticleSystem::setEmitterSize(const sf::Vector2f &size) {
 
 void ParticleSystem::setEmitOffset(const sf::Vector2f &offset) {
     _offset = offset;
+}
+
+void ParticleSystem::setLifetime(float lifetime) {
+    _lifetime = lifetime;
 }

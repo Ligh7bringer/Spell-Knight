@@ -10,7 +10,6 @@
 #include "../lib_texture_manager/texture_manager.h"
 #include "../../src/Log.h"
 #include "../lib_input_manager/input_manager.h"
-#include "../lib_settings_parser/settings_parser.h"
 #include "../lib_audio_manager/audio_manager.h"
 #include "../../src/config.h"
 
@@ -229,7 +228,7 @@ void Engine::ChangeScene(Scene* s) {
   if (!s->isLoaded()) {
     LOG(INFO) << "Eng: Entering Loading Screen";
     loadingTime = 0;
-    _activeScene->Load();
+    _activeScene->LoadAsync();
     loading = true;
   }
 }

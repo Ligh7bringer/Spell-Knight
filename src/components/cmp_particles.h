@@ -21,4 +21,5 @@ public:
     void setEmissionRate(float rate);
     void setEmitterSize(const sf::Vector2f& size);
     void setOffset(const sf::Vector2f& offset);
+    void setLifetime(float lt);
 };

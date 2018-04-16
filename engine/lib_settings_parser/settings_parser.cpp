@@ -144,7 +144,7 @@ void SettingsParser::saveToFile(bool overwrite) {
         out << fileContent.first;
 
         if(!fileContent.second.empty()) {
-            out << "=" << fileContent.second;
+            out << EQUALS << fileContent.second;
         }
 
         out << endl;

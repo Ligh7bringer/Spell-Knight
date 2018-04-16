@@ -21,7 +21,7 @@ int playerTime;
 Panel panel;
 
 void Level1Scene::Load() {
-    //AudioManager::playMusic("background.wav", true);
+    AudioManager::playMusic("background.wav", true);
 
     //setup view
     auto windowSize = Engine::getWindowSize();

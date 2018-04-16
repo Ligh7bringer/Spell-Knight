@@ -24,6 +24,9 @@ public:
     void setColour(sf::Color c);
     void setEmissionRate(float rate);
     void setEmitterSize(const sf::Vector2f& size);
+
+    void setLifetime(float _lifetime);
+
     void setEmitOffset(const sf::Vector2f& offset);
 private:
     struct Particle {

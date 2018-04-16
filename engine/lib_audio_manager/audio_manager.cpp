@@ -1,5 +1,6 @@
 #include "audio_manager.h"
 #include "../../src/Log.h"
+#include "../../src/config.h"
 
 using namespace sf;
 
@@ -14,6 +15,7 @@ const std::string AudioManager::_res_dir =  "res/sounds/";
 std::map<std::string, std::shared_ptr<sf::Music>> AudioManager::_music;
 std::map<std::string, std::shared_ptr<sf::SoundBuffer>> AudioManager::_buffers;
 std::map<std::string, std::shared_ptr<sf::Sound>> AudioManager::_sounds;
+bool AudioManager::_sound = true;
 
 //loads all necessary sounds and music so they are ready to be used
 void AudioManager::initialise() {
@@ -23,9 +25,11 @@ void AudioManager::initialise() {
     AudioManager::loadSound("explosion.wav");
     AudioManager::loadSound("collect.wav");
     AudioManager::loadSound("teleport.wav");
-	  AudioManager::loadSound("fireball.wav");
-	  AudioManager::loadSound("shock.wav");
+    AudioManager::loadSound("fireball.wav");
+    AudioManager::loadSound("shock.wav");
     LOG(INFO) << "Audio manager initialised!";
+    auto s_str = Config::getSetting("sound");
+    _sound = stoi(s_str) != 0;
 }
 
 // ---- MUSIC ----
@@ -40,10 +44,13 @@ void AudioManager::loadMusic(const std::string &name) {
 
 //plays music which has already been loaded
 void AudioManager::playMusic(const std::string &name, bool loop) {
-    for(std::map<std::string, std::shared_ptr<Music>>::const_iterator it = _music.begin(); it != _music.end(); ++it) {
-        if(name == it->first) {
-            it->second->setLoop(loop);
-            it->second->play();
+    if(_sound) {
+        for (std::map<std::string, std::shared_ptr<Music>>::const_iterator it = _music.begin();
+             it != _music.end(); ++it) {
+            if (name == it->first) {
+                it->second->setLoop(loop);
+                it->second->play();
+            }
         }
     }
 }
@@ -80,9 +87,11 @@ void AudioManager::loadSound(const std::string &name) {
 
 //plays a sound which has been loaded
 void AudioManager::playSound(const std::string &name) {
-    for(std::map<std::string, std::shared_ptr<Sound>>::const_iterator it = _sounds.begin(); it != _sounds.end(); ++it) {
-        if(name == it->first) {
-            it->second->play();
+    if(_sound) {
+        for(std::map<std::string, std::shared_ptr<Sound>>::const_iterator it = _sounds.begin(); it != _sounds.end(); ++it) {
+            if(name == it->first) {
+                it->second->play();
+            }
         }
     }
 }
@@ -105,6 +114,14 @@ void AudioManager::stopSound(const std::string &name) {
             return it->second->stop();
         }
     }
+}
+
+void AudioManager::toggleSoundOnOff() {
+    _sound = !_sound;
+}
+
+bool AudioManager::isSoundOn() {
+    return _sound;
 }
 
 

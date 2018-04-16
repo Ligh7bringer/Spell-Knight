@@ -13,6 +13,7 @@ private:
     static std::map<std::string, std::shared_ptr<sf::Music>> _music;
     static std::map<std::string, std::shared_ptr<sf::SoundBuffer>> _buffers;
     static std::map<std::string, std::shared_ptr<sf::Sound>> _sounds;
+    static bool _sound;
 
 public:
     static void initialise();
@@ -26,6 +27,10 @@ public:
     static std::shared_ptr<sf::SoundBuffer> getBuffer(const std::string& name);
     static void playSound(const std::string& name);
     static void stopSound(const std::string& name);
+    //----------------------------------------------------------
+    static void toggleSoundOnOff();
+
+    static bool isSoundOn();
 };
 
 

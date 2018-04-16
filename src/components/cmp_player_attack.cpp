@@ -67,7 +67,8 @@ void PlayerAttackComponent::fire() {
         if(_currentAttack.type == FIREBALL) {
             auto ps = bullet->addComponent<ParticleSystemComponent>(ParticleSystem::TRAIL, "smoke.png");
             ps->setColour(sf::Color(192, 192, 192));
-            ps->setEmissionRate(500.0f);
+            ps->setEmissionRate(100.0f);
+            ps->setLifetime(1.f);
         }
 
         _cooldown = _currentAttack.cooldown;

@@ -1,5 +1,6 @@
 #include <input_manager.h>
 #include <texture_manager.h>
+#include <audio_manager.h>
 #include "scene_options.h"
 #include "../game.h"
 #include "../config.h"
@@ -41,12 +42,14 @@ void OptionsScene::Load() {
     _optionsMenu.addButton(Config::getLocalisedString("walkr")); //id=4
     _optionsMenu.addButton(Config::getLocalisedString("jump")); //id=5
     _optionsMenu.addButton(Config::getLocalisedString("shoot")); //id=6
-    _optionsMenu.addButton(Config::getLocalisedString("main_menu")); //id=7
+    _optionsMenu.addButton(Config::getLocalisedString("toggle")); //id-7
+    _optionsMenu.addButton(Config::getLocalisedString("main_menu")); //id=8
 
     _optionsMenu.addLabel(0, Config::getLocalisedString("language"));
     _optionsMenu.addLabel(1, Config::getLocalisedString("resolution"));
     _optionsMenu.addLabel(2, Config::getLocalisedString("winmode"));
     _optionsMenu.addLabel(3, Config::getLocalisedString("bindings"));
+    _optionsMenu.addLabel(7, Config::getLocalisedString("sound"));
 
     setLoaded(true);
 }
@@ -90,6 +93,10 @@ void OptionsScene::Update(const double& dt) {
            updateButton(6);
            break; //end of key bindings
        case 7: //back button
+           AudioManager::toggleSoundOnOff();
+           Config::setSetting("sound", AudioManager::isSoundOn() ? "1" : "0");
+           break;
+       case 8: //back button
            Engine::ChangeScene((Scene*)&menu);
            break;
        default:
