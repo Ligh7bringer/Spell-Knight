@@ -23,7 +23,12 @@ void Level1Scene::Load() {
 
     //setup view
     auto windowSize = Engine::getWindowSize();
-    _view.reset(FloatRect(0, 0, windowSize.x, windowSize.y));
+    auto res = Engine::getResolution();
+   // if(res.x > 1366) {
+        //_view.reset(FloatRect(0, 0, 1366, 768));
+    //} else {
+        _view.reset(FloatRect(0, 0, windowSize.x, windowSize.y));
+    //}
 
     ls::loadLevelFile("res/levels/lvl1.txt", 32.0f);
     //auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);

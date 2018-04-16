@@ -64,6 +64,9 @@ public:
   static void toggleFullscreen();
   static bool isFullscreen();
   static void setResolution(const sf::Vector2u& res);
+
+    static const sf::Vector2u &getResolution();
+
 private:
   static Scene* _activeScene;
   static std::string _gameName;

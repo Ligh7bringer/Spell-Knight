@@ -1,4 +1,5 @@
 #include <settings_parser.h>
+#include <SFML/Window/Keyboard.hpp>
 #include "config.h"
 
 const std::string Config::DEFAULT_SETTINGS_DIR  = "";
@@ -64,6 +65,10 @@ bool Config::firstRun() {
         sp.put("height", "720");
         sp.put("fullscreen", "0");
         sp.put("language", "en.txt");
+        sp.put("walkLeft", std::to_string(sf::Keyboard::A));
+        sp.put("walkRight", std::to_string(sf::Keyboard::D));
+        sp.put("jump", std::to_string(sf::Keyboard::W));
+        sp.put("shoot", std::to_string(sf::Keyboard::Space));
         sp.saveToFile(false);
         return true;
     }

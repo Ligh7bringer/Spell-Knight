@@ -152,7 +152,6 @@ void Engine::Start(unsigned int width, unsigned int height,
       if (event.type == Event::Closed) {
         window.close();
       }
-    
       if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P))
       {
         _pause = !_pause;
@@ -166,7 +165,6 @@ void Engine::Start(unsigned int width, unsigned int height,
         _pause = false;
       }
       if(event.type == Event::Resized) {
-          LOG(DEBUG) << "RESIZED";
         //resize view when window is resized so textures are not stretched
         auto old = _window->getView();
         auto oldPos = Vector2f(old.getViewport().left, old.getViewport().top);
@@ -176,9 +174,17 @@ void Engine::Start(unsigned int width, unsigned int height,
       }
       //capture the pressed keys in order to figure out what key has been pressed for the key bindings menu
       //only happens in the options scene
-      if((event.type == Event::TextEntered || event.type == Event::KeyPressed) && _activeScene->_sceneID.compare("options") == 0) {
+      if(event.type == Event::KeyPressed && _activeScene->_sceneID == "options") {
           _keys.push_back(event.key.code);
-          //LOG(DEBUG) << "IN OPTIONS SCENE";
+          //LOG(DEBUG) << "KEY PRESSED: " << event.key.code << " SIZE: " << _keys.size();
+      }
+        //cap
+      if(event.type == Event::TextEntered && _activeScene->_sceneID == "options") {
+        if(event.key.code - 97 >= 0) {
+          _keys.push_back(static_cast<Keyboard::Key>(event.key.code - 97));
+          //LOG(DEBUG) << "TEXT ENTERED: " <<event.key.code - 97;
+        }
+
       }
     }
 
@@ -267,6 +273,9 @@ bool Engine::isPaused() {
       return _pause;
 }
 
+const Vector2u &Engine::getResolution() {
+  return _currentResolution;
+}
 
 void Scene::Update(const double& dt) { 
   ents.update(dt); 

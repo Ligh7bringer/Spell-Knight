@@ -3,6 +3,7 @@
 #include "cmp_animated_sprite.h"
 #include "cmp_player_attack.h"
 #include "../../engine/lib_input_manager/input_manager.h"
+#include "../Log.h"
 
 using namespace std;
 using namespace sf;
@@ -40,10 +41,9 @@ void PlayerPhysicsComponent::update(double dt) {
     _parent->setAlive(false);
   }
 
-  if (Keyboard::isKeyPressed(InputManager::getKey("walkLeft")) ||
-      Keyboard::isKeyPressed(InputManager::getKey("walkRight"))) {
+  if (InputManager::isKeyPressed("walkLeft") || InputManager::isKeyPressed("walkRight")) {
     // Moving Either Left or Right
-    if (Keyboard::isKeyPressed(InputManager::getKey("walkRight"))) {
+    if (InputManager::isKeyPressed("walkRight")) {
       if (getVelocity().x < _maxVelocity.x) {
         impulse({(float)(dt * _groundspeed*2.f), 0.01f});
 
@@ -69,7 +69,7 @@ void PlayerPhysicsComponent::update(double dt) {
   }
   
   // Handle Jump
-  if (Keyboard::isKeyPressed(InputManager::getKey("jump"))) {
+  if (InputManager::isKeyPressed("jump")) {
     _grounded = isGrounded();
     //play jumping animation
     anim->setCurrentRow(2);
@@ -101,7 +101,7 @@ void PlayerPhysicsComponent::update(double dt) {
   setVelocity(v);
 
   //shoot
-  if(Keyboard::isKeyPressed(InputManager::getKey("shoot"))) {
+  if(InputManager::isKeyPressed("shoot")) {
     //play shooting animation
     anim->lockInAnimation(3);
     _parent->get_components<PlayerAttackComponent>()[0]->fire();
