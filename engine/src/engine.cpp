@@ -106,7 +106,7 @@ sf::View& Engine::getCurrentView() {
 void Engine::setView(const sf::View& view) {
   _activeScene->setView(view);
 }
-
+Event event;
 bool Engine::_pause = false;
 void Engine::Start(unsigned int width, unsigned int height,
                    const std::string& gameName, Scene* scn) {
@@ -145,7 +145,6 @@ void Engine::Start(unsigned int width, unsigned int height,
   Physics::initialise();
   ChangeScene(scn);
   while (window.isOpen()) {
-    Event event;
     while (window.pollEvent(event)) {
       _keysText.clear();
       _keys.clear();
@@ -156,6 +155,7 @@ void Engine::Start(unsigned int width, unsigned int height,
       if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P))
       {
         _pause = !_pause;
+		_activeScene->Render();
       }
       //pause if the window loses focus
       if(event.type == sf::Event::LostFocus) {
@@ -266,7 +266,6 @@ std::vector<sf::Keyboard::Key> &Engine::getKeys() {
 bool Engine::isPaused() {
       return _pause;
 }
-
 
 void Scene::Update(const double& dt) { 
   ents.update(dt); 

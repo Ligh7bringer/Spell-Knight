@@ -9,6 +9,7 @@ game_over=Край на играта!
 next_level=следващо ниво
 main_menu=Меню
 restart=Рестартиране
+paused=paused
 language=Език:
 resolution=Резолюция:
 winmode=Цял екран:

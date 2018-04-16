@@ -9,6 +9,7 @@ game_over=Game оver!
 next_level=Next level
 main_menu=Main menu
 restart=Restart
+paused=Paused
 language=Language:
 resolution=Resolution:
 winmode=Window mode:

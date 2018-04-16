@@ -9,6 +9,7 @@
 #include "../components/cmp_timer.h"
 #include "../../engine/lib_audio_manager/audio_manager.h"
 #include <engine.h>
+#include "../config.h"
 using namespace std;
 using namespace sf;
 
@@ -17,6 +18,7 @@ using namespace sf;
 static shared_ptr<Entity> player;
 int score;
 int playerTime;
+Panel panel;
 
 void Level1Scene::Load() {
     //AudioManager::playMusic("background.wav", true);
@@ -34,6 +36,14 @@ void Level1Scene::Load() {
     _parBackground.addLayer(0.5f, "forest.jpg");
     _parBackground.addLayer(0.8f, "trees.png");
     _parBackground.addLayer(1.2f, "ground.png");
+
+	Vector2f pos(windowSize.x/2, windowSize.y/2);
+	panel = Panel(pos, Vector2f(300.f, 67.5f));
+	panel.setGUI(true);
+	panel.setPositionOfCentre(pos);
+	panel.setPanelColour(Color(102, 178, 255, 128));
+	panel.setTextSize(40);
+	panel.setText(Config::getLocalisedString("paused"));
 
     Restart();
 
@@ -144,6 +154,7 @@ void Level1Scene::UnLoad() {
 void Level1Scene::Update(const double& dt) {
     _parBackground.update(dt);
 
+
     //show game over scene if player dies
     if (!player->isAlive()) {
         if(sf::length(player->getPosition() - ls::getPosition(ls::baseTiles::END)[0]) < 30.0f){
@@ -185,6 +196,9 @@ void Level1Scene::Render() {
     ls::render(Engine::GetWindow());
 
     Scene::Render();
+	if (Engine::isPaused()) {
+		panel.render();
+	}
 }
 
 
