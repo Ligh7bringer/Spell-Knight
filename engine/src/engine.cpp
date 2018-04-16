@@ -110,6 +110,7 @@ void Engine::setView(const sf::View& view) {
 bool Engine::_pause = false;
 void Engine::Start(unsigned int width, unsigned int height,
                    const std::string& gameName, Scene* scn) {
+  Config::setCurrentLanguage(Config::getSetting("language"));
   _currentResolution.x = width;
   _currentResolution.y = height;
 
@@ -165,6 +166,7 @@ void Engine::Start(unsigned int width, unsigned int height,
         _pause = false;
       }
       if(event.type == Event::Resized) {
+          LOG(DEBUG) << "RESIZED";
         //resize view when window is resized so textures are not stretched
         auto old = _window->getView();
         auto oldPos = Vector2f(old.getViewport().left, old.getViewport().top);

@@ -27,9 +27,15 @@ void PickUpComponent::update(double dt) {
                 auto livesComp = player->get_components<PlayerLivesComponent>()[0];
                 //and increase lives
                 livesComp->increaseLives(_health);
-                auto particles = player->addComponent<ParticleSystemComponent>(ParticleSystem::FLOATING, "heart-particle.png");
+                auto particles = player->addComponent<ParticleSystemComponent>(ParticleSystem::FLOATING, "healing-particle.png");
                 particles->setRepeat(false);
-                particles->setColour(sf::Color::Red);
+                particles->setColour(sf::Color::Green);
+                particles->setEmitterSize(sf::Vector2f(50.f, 64.f));
+                particles->setEmissionRate(8.f);
+            } else {
+                auto particles = player->addComponent<ParticleSystemComponent>(ParticleSystem::FLOATING, "money-particle.png");
+                particles->setRepeat(false);
+                particles->setColour(sf::Color::Yellow);
                 particles->setEmitterSize(sf::Vector2f(50.f, 64.f));
                 particles->setEmissionRate(8.f);
             }

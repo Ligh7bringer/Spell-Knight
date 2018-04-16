@@ -115,5 +115,13 @@ void Menu::repositionMenu() {
     }
 }
 
+void Menu::setSelection(unsigned int id, const std::string &sel) {
+    _buttons[id]->setSelection(sel);
+}
+
+void Menu::setTitleSize(int size) {
+    _title.setTextSize(size);
+}
+
 
 

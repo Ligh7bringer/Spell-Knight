@@ -18,3 +18,5 @@ walkl=Walk left
 walkr=Walk right
 jump=Jump
 shoot=Shoot
+anykey=Press any key...
+done=Key set!

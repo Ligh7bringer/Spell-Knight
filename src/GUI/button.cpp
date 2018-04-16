@@ -14,6 +14,7 @@ Button::Button(const Vector2f& pos, const Vector2f& size, const std::string& tex
     _panel.setTextSize(30);
     _panel.setGUI(false);
     _panel.setBorder(2, Color::Magenta);
+    _panel.setTextColour(Color::White);
     _position = pos;
     _clicked = false;
 }
@@ -68,12 +69,14 @@ void Button::onClick() {
 
 //called when the mouse is on top the button
 void Button::onHover() {
-    _panel.setPanelColour(Color::Red);
+    _panel.setBorder(4.f, Color(54, 18, 179));
+    _panel.setPanelColour(Color(0, 204, 255));
 }
 
 //called when the mouse is NOT on top of the button
 void Button::reset() {
-    _panel.setPanelColour(Color::Green);
+    _panel.setPanelColour(Color(0, 46, 138));
+    _panel.setBorder(0, Color::Transparent);
 }
 
 //returns the "hitbox" of the mouse
@@ -110,4 +113,8 @@ void Button::addLabel(const std::string &text) {
 const std::string &Button::getSelection() const {
     static const std::string ret = std::string();
     return ret;
+}
+
+void Button::setSelection(const std::string &sel) {
+    //do nothing
 }

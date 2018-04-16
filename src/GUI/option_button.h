@@ -16,7 +16,7 @@ public:
     void addOption(const std::string& option);
     void addOptions(const std::vector<std::string>& options);
     const std::string& getSelection() const override;
-    void setSelection(const std::string& sel);
+    void setSelection(const std::string& sel) override;
 };
 
 

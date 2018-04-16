@@ -31,4 +31,5 @@ public:
     void addLabel(const std::string& text);
 
     virtual const std::string& getSelection() const;
+    virtual void setSelection(const std::string& sel);
 };

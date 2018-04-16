@@ -1,11 +1,13 @@
 #include <input_manager.h>
+#include <texture_manager.h>
 #include "scene_options.h"
 #include "../game.h"
 #include "../config.h"
 
-
 using namespace std;
 using namespace sf;
+
+Sprite _background;
 
 void OptionsScene::Load() {
     _sceneID = "options";
@@ -20,6 +22,10 @@ void OptionsScene::Load() {
     _view = View(center, windowSize);
     Engine::setView(_view);
 
+    _background = Sprite(TextureManager::getTexture("options-bg.jpg"));
+    _background.setOrigin(Vector2f(_background.getTexture()->getSize()) / 2.f);
+    _background.setPosition(center);
+
     _flag = false;
 
     Vector2f pos(Vector2f(500, 200));
@@ -27,11 +33,14 @@ void OptionsScene::Load() {
     _optionsMenu.setPosition(Vector2f(pos));
     _optionsMenu.addTitle(Config::getLocalisedString("options"));
 
-    std::vector<std::string> languages = { "English", "Bulgarian" };
+    std::vector<std::string> languages = { "en.txt", "bg.txt" };
     std::vector<std::string> resolutions = { "1280 x 720", "720 x 480", "1366 x 768", "1920 x 1080" };
 
     _optionsMenu.addOptionButton(languages); //id=0
+    _optionsMenu.setSelection(0, Config::getSetting("language"));
     _optionsMenu.addOptionButton(resolutions); //id=1
+    auto res_str = Config::getSetting("width") + " x " + Config::getSetting("height");
+    _optionsMenu.setSelection(1, res_str);
     _optionsMenu.addButton(Config::getLocalisedString("toggle")); //id=2
     _optionsMenu.addButton(Config::getLocalisedString("walkl")); //id=3
     _optionsMenu.addButton(Config::getLocalisedString("walkr")); //id=4
@@ -58,6 +67,7 @@ void OptionsScene::Update(const double& dt) {
            {
                string selection = _optionsMenu.getSelectedOption(0);
                Config::setCurrentLanguage(_langData[selection]);
+               Config::setSetting("language", _langData[selection]);
                break;
            }
        case 1: //resolution button pressed; set the correct resolution
@@ -91,7 +101,7 @@ void OptionsScene::Update(const double& dt) {
     if (_flag) {
         if (!Engine::getKeys().empty()) {
             InputManager::addKey(_actionData[_id], Event::KeyPressed, Engine::getKeys()[0]);
-            _optionsMenu.addLabel(_id, "Done!");
+            _optionsMenu.addLabel(_id, Config::getLocalisedString("done"));
             _flag = false;
         }
     }
@@ -100,6 +110,7 @@ void OptionsScene::Update(const double& dt) {
 }
 
 void OptionsScene::Render() {
+    Engine::GetWindow().draw(_background);
     _optionsMenu.render();
     Scene::Render();
 }
@@ -121,10 +132,10 @@ void OptionsScene::initActions() {
 void OptionsScene::updateButton(unsigned int id) {
     _flag = true;
     _id = id;
-    _optionsMenu.addLabel(id, "Press any key");
+    _optionsMenu.addLabel(id, Config::getLocalisedString("anykey"));
 }
 
 void OptionsScene::initLang() {
-    _langData["English"] = "en.txt";
-    _langData["Bulgarian"] = "bg.txt";
+    _langData["en.txt"] = "en.txt";
+    _langData["bg.txt"] = "bg.txt";
 }

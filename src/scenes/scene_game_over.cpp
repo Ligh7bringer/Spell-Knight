@@ -7,12 +7,18 @@ using namespace sf;
 
 //initialise panel
 void GameOverScene::Load() {
+    Vector2f windowSize(Engine::getWindowSize());
+    auto center = windowSize / 2.f;
+    _view = View(center, windowSize);
+    Engine::setView(_view);
+
     Vector2f pos(Engine::getWindowSize());
     pos /= 2.f;
     _panel = Panel(pos, Vector2f(600.f, 200.f));
     _panel.setPositionOfCentre(pos);
     _panel.setTextSize(40);
     _panel.setGUI(false);
+    _panel.setPanelColour(Color(102, 178, 255));
 
     restartLevelbtn = Button(Vector2f(pos.x-100, pos.y+100), Vector2f(200.f, 35.f), Config::getLocalisedString("restart"));
     mainMenubtn = Button(Vector2f(pos.x-300, pos.y+100), Vector2f(200.f, 35.f), Config::getLocalisedString("main_menu"));

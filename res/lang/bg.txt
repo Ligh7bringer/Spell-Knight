@@ -18,3 +18,5 @@ walkl=Ляво
 walkr=Дясно
 jump=Скачане
 shoot=Стреляне
+anykey=Press any key...
+done=Готово!

@@ -19,6 +19,8 @@ public:
     void setOffset(const sf::Vector2f& offset);
     void setPosition(const sf::Vector2f& pos);
     void repositionMenu();
+    void setSelection(unsigned int id, const std::string& sel);
+    void setTitleSize(int size);
 
 private:
     unsigned int _id;
