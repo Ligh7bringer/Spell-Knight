@@ -11,8 +11,12 @@ private:
     const static std::string DEFAULT_LANG_DIR;
     const static std::string DEFAULT_LANGUAGE;
     const static std::string SETTINGS_FILE;
+    const static std::string SCORE_FILE;
     const static std::string DEFAULT_FONT;
     static std::string _currentLanguage;
+
+    static int _score;
+    static int _time;
 
 public:
     static bool firstRun();
@@ -34,6 +38,18 @@ public:
     static void setSetting(const std::string& key, const std::string& value);
 
     static void setCurrentLanguage(const std::string &lang);
+
+    static std::vector<std::string> getScore(const std::string &key);
+
+    static bool updateHighScore();
+
+    static int get_score();
+
+    static void set_score(int score);
+
+    static int get_time();
+
+    static void set_time(int time);
 };
 
 

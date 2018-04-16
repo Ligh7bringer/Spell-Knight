@@ -10,8 +10,8 @@ private:
     Button nextLevelbtn;
     Button restartLevelbtn;
     Button mainMenubtn;
-    int _score;
-    int _time;
+    bool _init;
+    float _timer;
 
 public:
     GameOverScene() {}

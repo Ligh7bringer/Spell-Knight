@@ -114,8 +114,8 @@ void BulletComponent::explode() {
             c = Color::Cyan;
         }
         if(type == PlayerAttackComponent::SHOCK) {
-            sprite = "thunder-particle.png";
-            c = Color::Cyan;
+            sprite = "spark-particle.png";
+            c = Color::Yellow;
         }
         if(type == PlayerAttackComponent::ICICLE) {
             sprite = "ice-particle2.png";

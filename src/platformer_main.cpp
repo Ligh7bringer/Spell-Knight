@@ -12,6 +12,7 @@ MenuScene menu;
 Level1Scene level1;
 GameOverScene gameOver;
 OptionsScene options;
+HighScoreScene highScore;
 
 
 int main() {

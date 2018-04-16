@@ -11,6 +11,7 @@ using namespace std;
 using namespace sf;
 
 void MenuScene::Load() {
+    _delay = 0.3f;
     resetView();
 
     _background = Sprite(TextureManager::getTexture("menu-bg-2.png"));
@@ -21,16 +22,18 @@ void MenuScene::Load() {
     _mainMenu.setPosition(Vector2f(500, 200));
     _mainMenu.addTitle("Spell Knight");
     _mainMenu.setTitleSize(45);
-    _mainMenu.addButton(Config::getLocalisedString("play")); //id = 0
-    _mainMenu.addButton(Config::getLocalisedString("options")); //id = 1
-    _mainMenu.addButton(Config::getLocalisedString("exit")); //id = 2
+    _mainMenu.addButton(Config::getLocalisedString("play")); //id=0
+    _mainMenu.addButton(Config::getLocalisedString("options")); //id=1
+    _mainMenu.addButton(Config::getLocalisedString("hiscore")); //id=2
+    _mainMenu.addButton(Config::getLocalisedString("exit")); //id=3
 
     setLoaded(true);
 }
 
 void MenuScene::Update(const double& dt) {
-    _parBackground.update(dt);
-    _mainMenu.update(dt);
+    _delay -= static_cast<float>(dt);
+    if(_delay < 0)
+        _mainMenu.update(dt);
 
     if(_mainMenu.getMenuResponse() == 0) { //play button
         Engine::ChangeScene((Scene*)&level1);
@@ -39,6 +42,10 @@ void MenuScene::Update(const double& dt) {
         Engine::ChangeScene((Scene*)&options);
     }
     if(_mainMenu.getMenuResponse() == 2) { //exit button
+        //exit
+        Engine::ChangeScene((Scene*)&highScore); //high score btn
+    }
+    if(_mainMenu.getMenuResponse() == 3) { //exit button
         //exit
         Engine::Exit();
     }

@@ -173,3 +173,13 @@ void SettingsParser::put(const std::string &key, const std::string &value) {
     _data[key] = value;
 }
 
+std::vector<std::string> SettingsParser::getAll() {
+    std::vector<std::string> result;
+
+    for(auto &keyValue : _data) {
+        result.push_back(keyValue.second);
+    }
+
+    return result;
+}
+

@@ -15,6 +15,7 @@ PlayerScoreComponent::PlayerScoreComponent(Entity* p) : Component(p), _points(0)
     _panel.setPanelColour(Color(192, 192, 192, 128));
     TEXT = Config::getLocalisedString("score") + " ";
     _panel.setTextLocalised(TEXT + std::to_string(_points));
+    Config::set_score(0);
 }
 
 
@@ -31,6 +32,7 @@ void PlayerScoreComponent::render() {
 void PlayerScoreComponent::increasePoints(int num) {
     _points += num;
     _panel.setTextLocalised(TEXT + std::to_string(_points));
+    Config::set_score(_points);
 }
 
 //decreases points and makes sure they are not lower than 0
@@ -41,6 +43,7 @@ void PlayerScoreComponent::decreasePoints(int num) {
     }
 
     _panel.setTextLocalised(TEXT + std::to_string(_points));
+    Config::set_score(_points);
 }
 
 //returns current points

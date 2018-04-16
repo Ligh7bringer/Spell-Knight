@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <map>
+#include <vector>
 
 class SettingsParser {
 private:
@@ -28,6 +29,7 @@ public:
     std::string get(const std::string& key) const;
     void set(const std::string& key, const std::string& value);
     void put(const std::string& key, const std::string& value);
+    std::vector<std::string> getAll();
 
     void print() const;
 

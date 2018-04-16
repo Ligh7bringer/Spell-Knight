@@ -7,6 +7,8 @@ using namespace sf;
 
 //initialise panel
 void GameOverScene::Load() {
+    _init = true;
+    _timer = 0.3f;
     resetView();
 
     Vector2f pos(Engine::getWindowSize());
@@ -19,12 +21,19 @@ void GameOverScene::Load() {
 
     restartLevelbtn = Button(Vector2f(pos.x-100, pos.y+100), Vector2f(200.f, 35.f), Config::getLocalisedString("restart"));
     mainMenubtn = Button(Vector2f(pos.x-300, pos.y+100), Vector2f(200.f, 35.f), Config::getLocalisedString("main_menu"));
+
     setLoaded(true);
 }
 
 void GameOverScene::Update(const double& dt) {
-    //for some reason if the text is set in load the score and time are always 0
-    _panel.setTextLocalised(_message + "\nScore: " + std::to_string(score) + "\nTime: " + std::to_string(playerTime) + "s");
+    _timer -= dt;
+    if(_init && _timer < 0) {
+        //for some reason if the text is set in load the score and time are wrong
+        Config::updateHighScore();
+        _init = false;
+    }
+
+    _panel.setTextLocalised(_message + "\nScore: " + std::to_string(Config::get_score()) + "\nTime: " + std::to_string(Config::get_time()) + "s");
 
     nextLevelbtn.update(dt);
     restartLevelbtn.update(dt);
@@ -58,8 +67,8 @@ void GameOverScene::Render() {
 
 //reset variables
 void GameOverScene::UnLoad() {
-    score = 0;
-    playerTime = 0;
+    Config::set_score(0);
+    Config::set_time(0);
 }
 
 //sets the message to be displayed

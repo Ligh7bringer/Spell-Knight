@@ -16,8 +16,6 @@ using namespace sf;
 //Sprite background;	
 
 static shared_ptr<Entity> player;
-int score;
-int playerTime;
 Panel panel;
 
 void Level1Scene::Load() {
@@ -49,7 +47,7 @@ void Level1Scene::Load() {
 	panel.setPositionOfCentre(pos);
 	panel.setPanelColour(Color(102, 178, 255, 128));
 	panel.setTextSize(40);
-	panel.setText(Config::getLocalisedString("paused"));
+	panel.setTextLocalised(Config::getLocalisedString("paused"));
 
     Restart();
 
@@ -162,24 +160,18 @@ void Level1Scene::Update(const double& dt) {
 
     //show game over scene if player dies
     if (!player->isAlive()) {
-        if(sf::length(player->getPosition() - ls::getPosition(ls::baseTiles::END)[0]) < 30.0f){
-            //AudioManager::playSound("collect.wav");
+        if(sf::length(player->getPosition() - ls::getPosition(ls::baseTiles::END)[0]) < 30.0f) {
             AudioManager::playSound("teleport.wav");
             gameOver.setText("wooohooo!!");
             gameOver.nextLevel();
         }
-        else{
+        else {
             AudioManager::playSound("death.wav");
             gameOver.setText("Game over!");
         }
 
-        sf::sleep(sf::seconds(1.f));
+        sf::sleep(sf::seconds(0.7f));
         Engine::ChangeScene(&gameOver);
-    } else {
-        auto timeComp = player->get_components<TimerComponent>()[0];
-        playerTime = timeComp->getTime();
-        auto scoreComp = player->get_components<PlayerScoreComponent>()[0];
-        score = scoreComp->getPoints();
     }
 
     if(Keyboard::isKeyPressed(Keyboard::Escape)) {
