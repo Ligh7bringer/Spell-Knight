@@ -31,7 +31,7 @@ void Level1Scene::Load() {
 		res.y = 768;
     }
 
-	_view.reset(FloatRect(0, 0, res.x, res.y));
+    _view.reset(FloatRect(0, 0, res.x, res.y));
 
     ls::loadLevelFile("res/levels/lvl1.txt", 32.0f);
     //auto ho = Engine::getWindowSize().y - (ls::getHeight() * 32.f);
@@ -160,7 +160,6 @@ void Level1Scene::UnLoad() {
 void Level1Scene::Update(const double& dt) {
     _parBackground.update(dt);
 
-
     //show game over scene if player dies
     if (!player->isAlive()) {
         if(sf::length(player->getPosition() - ls::getPosition(ls::baseTiles::END)[0]) < 30.0f){
@@ -183,10 +182,14 @@ void Level1Scene::Update(const double& dt) {
         score = scoreComp->getPoints();
     }
 
+    if(Keyboard::isKeyPressed(Keyboard::Escape)) {
+        Engine::ChangeScene((Scene*)&menu);
+    }
+
     //move the view with the player
     if(player != nullptr) {
         float vx = player->getPosition().x;
-        float vy = Engine::getWindowSize().y / 2.f;
+        float vy = Engine::getResolution().y / 2.f;
         vx = floor(vx);
         vy = floor(vy);
         _view.setCenter(vx, vy);

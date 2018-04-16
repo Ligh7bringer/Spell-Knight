@@ -2,6 +2,10 @@
 #include <SFML/Window/Keyboard.hpp>
 #include "config.h"
 
+/*
+ * Wrapper class for storing and retrieving settings and strings and some global variables are stored here instead of using externs.
+ */
+
 const std::string Config::DEFAULT_SETTINGS_DIR  = "";
 const std::string Config::DEFAULT_LANG_DIR = "res/lang/";
 const std::string Config::DEFAULT_LANGUAGE = "en.txt";
@@ -57,6 +61,7 @@ const std::string &Config::getDefaultFont() {
     return DEFAULT_FONT;
 }
 
+//create the settings file if this is the first time the game is run!!!
 bool Config::firstRun() {
     SettingsParser sp;
     sp.readFile(DEFAULT_SETTINGS_DIR + SETTINGS_FILE);

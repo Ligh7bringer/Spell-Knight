@@ -7,10 +7,7 @@ using namespace sf;
 
 //initialise panel
 void GameOverScene::Load() {
-    Vector2f windowSize(Engine::getWindowSize());
-    auto center = windowSize / 2.f;
-    _view = View(center, windowSize);
-    Engine::setView(_view);
+    resetView();
 
     Vector2f pos(Engine::getWindowSize());
     pos /= 2.f;

@@ -7,8 +7,6 @@
 using namespace std;
 using namespace sf;
 
-Sprite _background;
-
 void OptionsScene::Load() {
     _sceneID = "options";
     _delay = 0.3f;
@@ -17,14 +15,11 @@ void OptionsScene::Load() {
     initActions();
     initLang();
 
-    Vector2f windowSize(Engine::getWindowSize());
-    auto center = windowSize / 2.f;
-    _view = View(center, windowSize);
-    Engine::setView(_view);
+    resetView();
 
     _background = Sprite(TextureManager::getTexture("options-bg.jpg"));
     _background.setOrigin(Vector2f(_background.getTexture()->getSize()) / 2.f);
-    _background.setPosition(center);
+    _background.setPosition(Vector2f(Engine::getWindowSize()) / 2.f);
 
     _flag = false;
 
@@ -63,7 +58,7 @@ void OptionsScene::Update(const double& dt) {
     }
 
    switch(_optionsMenu.getMenuResponse()) {
-       case 0:
+       case 0: //language button
            {
                string selection = _optionsMenu.getSelectedOption(0);
                Config::setCurrentLanguage(_langData[selection]);
@@ -71,16 +66,12 @@ void OptionsScene::Update(const double& dt) {
                break;
            }
        case 1: //resolution button pressed; set the correct resolution
-	   {
-		   Engine::setResolution(_resolutionData[_optionsMenu.getSelectedOption(1)]);
-		   _optionsMenu.repositionMenu();
-		   Vector2f windowSize(Engine::getWindowSize());
-		   auto center = windowSize / 2.f;
-		   _view = View(center, windowSize);
-		   Engine::setView(_view);
-		   break;
-	   }
-           
+           {
+               Engine::setResolution(_resolutionData[_optionsMenu.getSelectedOption(1)]);
+               _optionsMenu.repositionMenu();
+               resetView();
+               break;
+           }
        case 2: //fullscreen btn pressed, toggle fullscreen
            Engine::toggleFullscreen();
             Config::setSetting("fullscreen", Engine::isFullscreen() ? "1" : "0");

@@ -10,17 +10,12 @@
 using namespace std;
 using namespace sf;
 
-sf::Sprite _bg;
-
 void MenuScene::Load() {
-    Vector2f windowSize(Engine::getWindowSize());
-    auto center = windowSize / 2.f;
-    _view = View(center, windowSize);
-    Engine::setView(_view);
+    resetView();
 
-    _bg = Sprite(TextureManager::getTexture("menu-bg-2.png"));
-    _bg.setOrigin(Vector2f(_bg.getTexture()->getSize()) / 2.f);
-    _bg.setPosition(center);
+    _background = Sprite(TextureManager::getTexture("menu-bg-2.png"));
+    _background.setOrigin(Vector2f(_background.getTexture()->getSize()) / 2.f);
+    _background.setPosition(Vector2f(Engine::getWindowSize()) / 2.f);
 
     _mainMenu = Menu();
     _mainMenu.setPosition(Vector2f(500, 200));
@@ -43,7 +38,7 @@ void MenuScene::Update(const double& dt) {
     if(_mainMenu.getMenuResponse() == 1) { //options button
         Engine::ChangeScene((Scene*)&options);
     }
-    if(_mainMenu.getMenuResponse() == 2) {
+    if(_mainMenu.getMenuResponse() == 2) { //exit button
         //exit
         Engine::Exit();
     }
@@ -53,7 +48,7 @@ void MenuScene::Update(const double& dt) {
 
 void MenuScene::Render() {
     //make sure background is drawn before the menu
-    Engine::GetWindow().draw(_bg);
+    Engine::GetWindow().draw(_background);
     _mainMenu.render();
     Scene::Render();
 }

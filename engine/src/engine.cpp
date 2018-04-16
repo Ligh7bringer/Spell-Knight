@@ -340,3 +340,11 @@ void Scene::setView(const sf::View& view) {
 }
 
 Scene::~Scene() { UnLoad(); }
+
+void Scene::resetView() {
+    Vector2f windowSize(Engine::getWindowSize());
+    auto center = windowSize / 2.f;
+    _view = View(center, windowSize);
+    Engine::setView(_view);
+    _background.setPosition(Vector2f(Engine::getWindowSize()) / 2.f);
+}

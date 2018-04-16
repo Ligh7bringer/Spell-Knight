@@ -28,6 +28,7 @@ public:
   std::shared_ptr<Entity> makeEntity();
   sf::View& getView();
   void setView(const sf::View& view);
+  void resetView();
 
   EntityManager ents;
 
@@ -37,6 +38,7 @@ protected:
   void setLoaded(bool);
   sf::View _view;
   ParallaxBackground _parBackground;
+  sf::Sprite _background;
   
 private:
   mutable bool _loaded;
