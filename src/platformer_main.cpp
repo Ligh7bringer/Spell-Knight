@@ -10,6 +10,7 @@ using namespace std;
 
 MenuScene menu;
 Level1Scene level1;
+Level2Scene level2;
 GameOverScene gameOver;
 OptionsScene options;
 HighScoreScene highScore;

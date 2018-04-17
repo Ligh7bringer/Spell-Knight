@@ -5,6 +5,7 @@
 
 using namespace sf;
 
+bool _nextLevel = false;
 //initialise panel
 void GameOverScene::Load() {
     _init = true;
@@ -40,7 +41,12 @@ void GameOverScene::Update(const double& dt) {
     mainMenubtn.update(dt);
     //allow the user to go back to the menu or restart the level
     if(Keyboard::isKeyPressed(Keyboard::Return) || restartLevelbtn.isClicked()) {
-        Engine::ChangeScene((Scene*)&level1);
+        if(_nextLevel){
+            Engine::ChangeScene((Scene*) &level2);
+        }
+        else {
+            Engine::ChangeScene((Scene*)&level1);
+        }
         //Engine::ChangeScene((Scene*)&currentLevel)
     }
 
@@ -48,8 +54,7 @@ void GameOverScene::Update(const double& dt) {
         Engine::ChangeScene((Scene*)&menu);
     }
     if(nextLevelbtn.isClicked()){
-        //Engine::ChangeScene((Scene*)&level1);
-        //Engine::ChangeScene((Scene*)&level(levelInt++))
+        Engine::ChangeScene((Scene*)&level2);
     }
     //update everything else
     _panel.update(dt);
@@ -81,6 +86,7 @@ void GameOverScene::setText(const std::string& text) {
 void GameOverScene::nextLevel(){
   // maybe check if there is a next level and if there isnt
   // another level then dont render next level btn
+    _nextLevel = !_nextLevel;
   Vector2f pos(Engine::getWindowSize());
   pos /= 2.f;
   nextLevelbtn = Button(Vector2f(pos.x+100, pos.y+100), Vector2f(200.f, 35.f), Config::getLocalisedString("next_level"));

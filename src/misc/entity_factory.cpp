@@ -62,7 +62,7 @@ std::shared_ptr<Entity> EntityFactory::makeSlime(Scene* scene, const Vector2f& p
     anim->setNumberOfFrames(4);
     // Add HurtComponent
     slime->addComponent<HurtComponent>();
-    slime->addComponent<EnemyHealthComponent>(1);
+    slime->addComponent<EnemyHealthComponent>(2);
     slime->addComponent<PhysicsComponent>(Vector2f(32.f, 32.f));
     //slime->addComponent<SteeringComponent>(scene->ents.find("player")[0]);
     slime->addComponent<RoamingComponent>(distance, time, false);
@@ -177,7 +177,6 @@ std::shared_ptr<Entity> EntityFactory::makePotion(Scene *scene, const sf::Vector
     auto row = rand() % 4;
 
     auto pu = potion->addComponent<PowerUpComponent>(10, attack->getAttack(row).type);
-    pu->giveHealth(10);
 
     auto anim = potion->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
     anim->setSpritesheet(TextureManager::getTexture("potions.png"));
@@ -294,4 +293,16 @@ void EntityFactory::makeWalls(Scene* scene) {
   }
 
 
+}
+
+std::shared_ptr<Entity> EntityFactory::makeHeart(Scene *scene, const sf::Vector2f &pos) {
+    auto heart = scene->makeEntity();
+    heart->setPosition(pos);
+
+    auto sprite = heart->addComponent<AnimatedSpriteComponent>(Vector2f(32.f, 32.f));
+    sprite->setSpritesheet(TextureManager::getTexture("heart.png"));
+    auto pu = heart->addComponent<PickUpComponent>(10);
+    pu->giveHealth(1);
+
+    return heart;
 }

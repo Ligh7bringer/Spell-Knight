@@ -117,7 +117,7 @@ void Engine::Start(unsigned int width, unsigned int height,
   //display logging level
   LOGCFG.headers = true; 
   //min logging level 
-  LOGCFG.level = DEBUG;
+  LOGCFG.level = ERROR;
 
   //initialise input manager
   InputManager::initialise();

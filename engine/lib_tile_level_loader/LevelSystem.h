@@ -29,7 +29,8 @@ public:
             INVISIBLE = '0',
             COIN = 'C',
             GEM = 'G',
-            POTION = 'Q'
+            POTION = 'Q',
+            HEART = 'H'
         };
     };
     struct platformTiles {
@@ -58,7 +59,8 @@ public:
             PLANT = 'p',
             BIRD = 'b',
             BOULDER = 'q',
-            SPIKE = 'f'
+            SPIKE = 'f',
+            FISH = 'n'
         };
     };
 

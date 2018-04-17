@@ -21,7 +21,7 @@ PlayerAttackComponent::PlayerAttackComponent(Entity* p) : Component(p), _cooldow
     _cooldown = 0;
 
     initAttacks();
-    changeAttack(FIREBALL);
+    changeAttack(DEFAULT);
     _lastAttack = _currentAttack;
 }
 
@@ -87,7 +87,7 @@ void PlayerAttackComponent::initAttacks() {
     Attack fireball;
     fireball.type = FIREBALL;
     fireball.damage = 4;
-    fireball.cooldown = 2.5f;
+    fireball.cooldown = 1.6f;
     fireball.spriteSize = Vector2f(64.f, 22.f);
     fireball.spriteSheet = "fireball2.png";
     fireball.frameCount = 8;
@@ -111,7 +111,7 @@ void PlayerAttackComponent::initAttacks() {
     Attack icicle;
     icicle.type = ICICLE;
     icicle.damage = 2;
-    icicle.cooldown = 1.5f;
+    icicle.cooldown = 1.2f;
     icicle.spriteSize = Vector2f(64.f, 45.f);
     icicle.spriteSheet = "icicle.png";
     icicle.frameCount = 8;
@@ -123,7 +123,7 @@ void PlayerAttackComponent::initAttacks() {
     Attack shock;
     shock.type = SHOCK;
     shock.damage = 3;
-    shock.cooldown = 1.75f;
+    shock.cooldown = 1.4f;
     shock.spriteSize = Vector2f(64.f, 45.f);
     shock.spriteSheet = "shock.png";
     shock.frameCount = 4;

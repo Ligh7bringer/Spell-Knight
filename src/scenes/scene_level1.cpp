@@ -63,6 +63,7 @@ void Level1Scene::Restart() {
 
     // Create player
     player = EntityFactory::makePlayer(this, ls::getPosition(ls::baseTiles::START)[0]);
+    //player = EntityFactory::makePlayer(this, Vector2f(5500.f,100.f));
 
     // Create some enemies
     auto slimePos = LevelSystem::getPosition(LevelSystem::enemyTiles::SLIME);
@@ -109,9 +110,14 @@ void Level1Scene::Restart() {
     EntityFactory::makePortal(this, portalPos[0]);
 
     //make fish
-    auto waterTiles = LevelSystem::getPosition(ls::baseTiles::DEADFALL);
-    auto fishPos = waterTiles[2];
+    auto waterTiles = LevelSystem::getPosition(ls::enemyTiles::FISH);
+    auto fishPos = waterTiles[0];
     EntityFactory::makeFish(this, fishPos);
+
+    //make heart
+    auto heartPos = ls::getPosition(ls::groundTiles::HEART);
+    for(auto hp : heartPos)
+        EntityFactory::makeHeart(this, hp);
 
     //get positions of moving tiles
     auto platformTile = LevelSystem::getPosition(ls::platformTiles::PLATFORM_MOVING);

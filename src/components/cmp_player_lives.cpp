@@ -9,7 +9,7 @@ using namespace sf;
 * Component which handles the lives of the player and draws them on the screen.
 */
 
-PlayerLivesComponent::PlayerLivesComponent(Entity* p, unsigned int lives) : Component(p), _maxLives(8), _lives(lives),
+PlayerLivesComponent::PlayerLivesComponent(Entity* p, unsigned int lives) : Component(p), _maxLives(5), _lives(lives),
                                                     _panel(Panel(Vector2f(0, 0), Vector2f(100.f, 32.f))) {
     _panel.setPanelColour(Color(192, 192, 192, 128));
     TEXT = Config::getLocalisedString("hp") + " ";
