@@ -1,6 +1,10 @@
 # Spell Knight
 Spell Knight is a run and gun platformer. The aim is to get to the portal at the end of the level as quickly as possible without dying.
 
+![img](https://i.imgur.com/LMV3bIV.png)
+
+![img](https://i.imgur.com/VXfrs2L.png)
+
 ## Controls
 **A** - Move left.
 
