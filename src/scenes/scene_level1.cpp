@@ -13,8 +13,6 @@
 using namespace std;
 using namespace sf;
 
-//Sprite background;	
-
 static shared_ptr<Entity> player;
 Panel panel;
 
@@ -196,10 +194,11 @@ void Level1Scene::Render() {
 
     ls::render(Engine::GetWindow());
 
-    Scene::Render();
 	if (Engine::isPaused()) {
 		panel.render();
 	}
+
+    Scene::Render();
 }
 
 

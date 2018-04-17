@@ -31,12 +31,12 @@ public:
     void setTextColour(const sf::Color& colour);
     void setPosition(const sf::Vector2f& pos);
     void setBorder(const float& thickness, const sf::Color& colour);
-    void setTextSize(const int size);
+    void setTextSize(int size);
     void setGUI(bool value);
     sf::FloatRect getBoundingBox() const;
     void setTextLocalised(const std::string& text);
     void setPositionOfCentre(const sf::Vector2f& pos);
 
     const sf::Vector2f& getPosition() const;
-    const sf::Vector2f& getPositionOfCentre() const;
+    const sf::Vector2f getPositionOfCentre() const;
 };

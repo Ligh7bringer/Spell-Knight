@@ -95,7 +95,7 @@ void Panel::setPositionOfCentre(const Vector2f& pos) {
 }
 
 //sets the size of the text
-void Panel::setTextSize(const int size) {
+void Panel::setTextSize(int size) {
     _text.setCharacterSize(size);
 }
 
@@ -119,7 +119,7 @@ const sf::Vector2f &Panel::getPosition() const {
     return _position;
 }
 
-const sf::Vector2f &Panel::getPositionOfCentre() const {
-    static auto newPos = _rect.getPosition() - _rect.getSize() / 2.f;
+const sf::Vector2f Panel::getPositionOfCentre() const {
+    auto newPos = _rect.getPosition() - _rect.getSize() / 2.f;
     return newPos;
 }
