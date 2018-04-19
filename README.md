@@ -1,3 +1,8 @@
+# Continuous Integration builds status
+| Windows build | Linux build |
+| ------------- | ----------- |
+| [![Windows status](https://ci.appveyor.com/api/projects/status/fatl1v01ymec32pk?svg=true)](https://ci.appveyor.com/project/Ligh7bringer/sfml-game) | [![Linux Status](https://travis-ci.org/Ligh7bringer/SFML-Game.svg?branch=master)](https://travis-ci.org/Ligh7bringer/SFML-Game) |
+
 # Spell Knight
 Spell Knight is a run and gun platformer. The aim is to get to the portal at the end of the level as quickly as possible without dying.
 
@@ -36,8 +41,3 @@ Builds for **Windows x64** (including an installer) and **Linux** can be found o
 1. If **openal32.dll** is missing, [download](https://github.com/Ligh7bringer/SFML-Game/releases/download/0.3-play_test_alpha/openal32.dll) it and put in the folder where the executable is.
 2. If you have openal32.dll but the game still doesn't start, run it as Administrator as it needs to create **settings.txt** and **score.txt**. 
 If the files still can't be created, [download them](https://pastebin.com/LJUbtMCu).
-
-# Continuous Integration builds status
-| Windows build | Linux build |
-| ------------- | ------------- |
-| [![Windows status](https://ci.appveyor.com/api/projects/status/fatl1v01ymec32pk?svg=true)](https://ci.appveyor.com/project/Ligh7bringer/sfml-game) | [![Linux Status](https://travis-ci.org/Ligh7bringer/SFML-Game.svg?branch=master)](https://travis-ci.org/Ligh7bringer/SFML-Game) |
