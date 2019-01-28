@@ -11,6 +11,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(Games_Engineering)
 
+find_package(Threads)
+
 #### Setup Directories ####
 #Main output directory
 SET(OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
@@ -36,7 +38,7 @@ file(GLOB_RECURSE RESOURCE_FILES "res/*.*")
 file(GLOB_RECURSE SOURCE_FILES engine/src/*.cpp engine/src/*.h)
 add_library(lib_engine STATIC ${SOURCE_FILES} ${RESOURCE_FILES})
 target_include_directories(lib_engine INTERFACE "${CMAKE_SOURCE_DIR}/engine/src/" PUBLIC SYSTEM ${B2D_INCS} )
-target_link_libraries(lib_engine lib_tile_level_loader lib_maths lib_ecm Box2D sfml-graphics sfml-audio)
+target_link_libraries(lib_engine lib_tile_level_loader lib_maths lib_ecm Box2D sfml-graphics sfml-audio ${CMAKE_THREAD_LIBS_INIT})
 ## Maths lib
 add_library(lib_maths INTERFACE)
 target_sources(lib_maths INTERFACE "${CMAKE_SOURCE_DIR}/engine/lib_maths/maths.h")
