@@ -2,34 +2,37 @@
 #include "../config.h"
 #include "../game.h"
 
+void HighScoreScene::Load()
+{
+	resetView();
 
-void HighScoreScene::Load() {
-    resetView();
+	_menu = Menu();
+	_menu.setPosition(sf::Vector2f(500.f, 200.f));
+	_menu.addTitle(Config::getLocalisedString("hiscore"));
 
-    _menu = Menu();
-    _menu.setPosition(sf::Vector2f(500.f, 200.f));
-    _menu.addTitle(Config::getLocalisedString("hiscore"));
+	for(auto& s : Config::getScore(""))
+	{
+		_menu.addButton(s);
+	}
 
-    for(auto &s : Config::getScore("")) {
-        _menu.addButton(s);
-    }
+	_menu.addButton(Config::getLocalisedString("main_menu"));
 
-    _menu.addButton(Config::getLocalisedString("main_menu"));
-
-    setLoaded(true);
+	setLoaded(true);
 }
 
+void HighScoreScene::Update(const double& dt)
+{
+	_menu.update(dt);
+	if(_menu.getMenuResponse() == 3)
+	{
+		Engine::ChangeScene((Scene*)&menu);
+	}
 
-void HighScoreScene::Update(const double &dt) {
-    _menu.update(dt);
-    if(_menu.getMenuResponse() == 3) {
-        Engine::ChangeScene((Scene*)&menu);
-    }
-
-    Scene::Update(dt);
+	Scene::Update(dt);
 }
 
-void HighScoreScene::Render() {
-    _menu.render();
-    Scene::Render();
+void HighScoreScene::Render()
+{
+	_menu.render();
+	Scene::Render();
 }

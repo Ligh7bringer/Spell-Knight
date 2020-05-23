@@ -3,20 +3,22 @@
 #include "../GUI/panel.h"
 //#include <SFML/Font.hpp>
 
-class PlayerLivesComponent : public Component {
+class PlayerLivesComponent : public Component
+{
 private:
-    int _maxLives;
-    int _lives;
-    Panel _panel;
-    std::string TEXT;
+	int _maxLives;
+	int _lives;
+	Panel _panel;
+	std::string TEXT;
+
 public:
-    PlayerLivesComponent() = delete;
-    explicit PlayerLivesComponent(Entity* p, unsigned int lives);
+	PlayerLivesComponent() = delete;
+	explicit PlayerLivesComponent(Entity* p, unsigned int lives);
 
-    void update(double dt) override;
-    void render() override;
+	void update(double dt) override;
+	void render() override;
 
-    void increaseLives(unsigned int num);
-    void decreaseLives(unsigned int num);
-    int getLives() const;
+	void increaseLives(unsigned int num);
+	void decreaseLives(unsigned int num);
+	int getLives() const;
 };

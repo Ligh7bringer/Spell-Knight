@@ -10,28 +10,27 @@ using namespace sf;
 */
 
 //create panel and start the timer
-TimerComponent::TimerComponent(Entity *p) : Component(p),
-                                            _panel(Panel(Vector2f(100.f, 0), Vector2f(200.f, 32.f))), _timer(0) {
-    _panel.setPanelColour(Color(192, 192, 192, 128));
-    TEXT = Config::getLocalisedString("time") + " ";
-    Config::set_time(0);
+TimerComponent::TimerComponent(Entity* p)
+	: Component(p)
+	, _panel(Panel(Vector2f(100.f, 0), Vector2f(200.f, 32.f)))
+	, _timer(0)
+{
+	_panel.setPanelColour(Color(192, 192, 192, 128));
+	TEXT = Config::getLocalisedString("time") + " ";
+	Config::set_time(0);
 }
 
 //update panel and set its text
-void TimerComponent::update(double dt) {
-    if(!Engine::isPaused())
-        _timer += dt;
-    //cast the time to an int because we don't want it to be displayed as a float (e.g. 1.00000)
-    _panel.setTextLocalised(TEXT + std::to_string(static_cast<int>(_timer)));
-    Config::set_time(static_cast<unsigned int>(_timer));
+void TimerComponent::update(double dt)
+{
+	if(!Engine::isPaused()) _timer += dt;
+	//cast the time to an int because we don't want it to be displayed as a float (e.g. 1.00000)
+	_panel.setTextLocalised(TEXT + std::to_string(static_cast<int>(_timer)));
+	Config::set_time(static_cast<unsigned int>(_timer));
 
-    _panel.update(dt);
+	_panel.update(dt);
 }
 //render the panel
-void TimerComponent::render() {
-    _panel.render();
-}
+void TimerComponent::render() { _panel.render(); }
 
-int TimerComponent::getTime() const {
-    return (int)_timer;
-}
+int TimerComponent::getTime() const { return (int)_timer; }

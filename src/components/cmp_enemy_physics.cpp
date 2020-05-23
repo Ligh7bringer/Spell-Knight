@@ -1,30 +1,34 @@
 #include "cmp_enemy_physics.h"
-#include "system_physics.h"
-#include <LevelSystem.h>
-#include "cmp_animated_sprite.h"
-#include "cmp_enemy_ai.h"
 #include "../Log.h"
 #include "cmp_actor_movement.h"
+#include "cmp_animated_sprite.h"
+#include "cmp_enemy_ai.h"
+#include "system_physics.h"
+#include <LevelSystem.h>
 
 using namespace std;
 using namespace sf;
 using namespace Physics;
 
-bool EnemyPhysicsComponent::isGrounded() const {
+bool EnemyPhysicsComponent::isGrounded() const
+{
 	auto touch = getTouching();
 	const auto& pos = _body->GetPosition();
 	const float halfPlrHeigt = _size.y * .25f;
 	const float halfPlrWidth = _size.x * .25f;
 	b2WorldManifold manifold;
-	for (const auto& contact : touch) {
+	for(const auto& contact : touch)
+	{
 		contact->GetWorldManifold(&manifold);
 		const int numPoints = contact->GetManifold()->pointCount;
 		bool onTop = numPoints > 0;
 		// If all contacts are below the enemy.
-		for (int j = 0; j < numPoints; j++) {
-			onTop &= (manifold.points[j].y < pos.y- halfPlrHeigt);
+		for(int j = 0; j < numPoints; j++)
+		{
+			onTop &= (manifold.points[j].y < pos.y - halfPlrHeigt);
 		}
-		if (onTop) {
+		if(onTop)
+		{
 			return true;
 		}
 	}
@@ -32,16 +36,19 @@ bool EnemyPhysicsComponent::isGrounded() const {
 	return false;
 }
 
-void EnemyPhysicsComponent::update(double dt) {
+void EnemyPhysicsComponent::update(double dt)
+{
 
 	//Are we in air?
-	if (!_grounded) {
+	if(!_grounded)
+	{
 		// Check to see if we have landed yet
 		_grounded = isGrounded();
 		// disable friction while jumping
 		setFriction(0.f);
 	}
-	else {
+	else
+	{
 		setFriction(0.1f);
 	}
 
@@ -54,12 +61,13 @@ void EnemyPhysicsComponent::update(double dt) {
 	PhysicsComponent::update(dt);
 }
 
-EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,	bool dynamic, const Vector2f& size)
-	: PhysicsComponent(p, dynamic, size) {
+EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p, bool dynamic, const Vector2f& size)
+	: PhysicsComponent(p, dynamic, size)
+{
 	_dynamic = dynamic;
 	_size = sv2_to_bv2(size, true);
 	_maxVelocity = Vector2f(200.f, 400.f);
-	_direction = Vector2f(1,0);
+	_direction = Vector2f(1, 0);
 	_groundspeed = 30.f;
 	_grounded = false;
 	_body->SetSleepingAllowed(false);
@@ -68,6 +76,4 @@ EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,	bool dynamic, const Vect
 	_body->SetBullet(false);
 }
 
-sf::Vector2f EnemyPhysicsComponent::getDirection() const {
-	return _direction;
-}
+sf::Vector2f EnemyPhysicsComponent::getDirection() const { return _direction; }

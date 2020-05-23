@@ -1,12 +1,12 @@
 #pragma once
 
-#include <SFML/Audio/Music.hpp>
-#include <SFML/Audio/SoundBuffer.hpp>
-#include <SFML/Audio/Sound.hpp>
 #include "engine.h"
+#include <SFML/Audio/Music.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
 
-
-class Level2Scene : public Scene {
+class Level2Scene : public Scene
+{
 public:
 	void Load() override;
 

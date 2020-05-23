@@ -1,7 +1,7 @@
 #include "cmp_enemy_health.h"
-#include "cmp_animated_sprite.h"
 #include "../Log.h"
 #include "../config.h"
+#include "cmp_animated_sprite.h"
 
 using namespace sf;
 
@@ -17,68 +17,77 @@ const Color COL_25_PERCENT = Color(255, 0, 0, ALPHA);
 */
 
 //initialise needed stuff
-EnemyHealthComponent::EnemyHealthComponent(Entity* p, int health) : Component(p), _health(health), _maxHealth(health),
-                                        _panel(Panel(_parent->getPosition(), Vector2f(50.f, 20.f))) {
-    //create panel
-    _panel.setTextSize(20);
-    _panel.setPanelColour(Col_100_PERCENT);
-    _panel.setGUI(false);
+EnemyHealthComponent::EnemyHealthComponent(Entity* p, int health)
+	: Component(p)
+	, _health(health)
+	, _maxHealth(health)
+	, _panel(Panel(_parent->getPosition(), Vector2f(50.f, 20.f)))
+{
+	//create panel
+	_panel.setTextSize(20);
+	_panel.setPanelColour(Col_100_PERCENT);
+	_panel.setGUI(false);
 
-    //without an offset, the "health bar" is being rendered on top of the enemy.
-    auto anim = _parent->get_components<AnimatedSpriteComponent>()[0];
-    _offset = Vector2f(_panel.getBoundingBox().width, _panel.getBoundingBox().height);
-    _offset.x = _offset.x / 2.f;
-    _offset.y += anim->getSize().y / 2.f;
-    _panelAlpha = 180;
+	//without an offset, the "health bar" is being rendered on top of the enemy.
+	auto anim = _parent->get_components<AnimatedSpriteComponent>()[0];
+	_offset = Vector2f(_panel.getBoundingBox().width, _panel.getBoundingBox().height);
+	_offset.x = _offset.x / 2.f;
+	_offset.y += anim->getSize().y / 2.f;
+	_panelAlpha = 180;
 
-    TEXT = Config::getLocalisedString("hp") + " ";
-    _panel.setTextLocalised(TEXT + to_string(_health));
+	TEXT = Config::getLocalisedString("hp") + " ";
+	_panel.setTextLocalised(TEXT + to_string(_health));
 }
 
-void EnemyHealthComponent::update(double dt) {
-    //update position
-    _panel.setPosition(_parent->getPosition() - _offset);
-    //update panel
-    _panel.update(dt);
+void EnemyHealthComponent::update(double dt)
+{
+	//update position
+	_panel.setPosition(_parent->getPosition() - _offset);
+	//update panel
+	_panel.update(dt);
 }
 
 //render health bar
-void EnemyHealthComponent::render() {
-    _panel.render();
-}
+void EnemyHealthComponent::render() { _panel.render(); }
 
 //reduces health by num
-void EnemyHealthComponent::decreaseHealth(int num) {
-    _health -= num;
+void EnemyHealthComponent::decreaseHealth(int num)
+{
+	_health -= num;
 
-    //if health is zero
-    if(_health <= 0) {
-        _health = 0;
-        //enemy is dead, delete it
-        _parent->setForDelete();
-    }
+	//if health is zero
+	if(_health <= 0)
+	{
+		_health = 0;
+		//enemy is dead, delete it
+		_parent->setForDelete();
+	}
 
-    //if at 75% health, change the panel colour to yellow
-    if(_health <= (int)(3.f/4.f * (float)_maxHealth)) {
-        _panel.setPanelColour(COL_75_PERCENT);
-    }   
-    //if at 50% health, change the panel to orange
-    if(_health <= _maxHealth / 2) {
-        _panel.setPanelColour(COL_50_PERCENT);
-    }  
-    //if at 25% health, change the panel colour to red
-    if(_health <= (int)(1.f/4.f * (float)_maxHealth)) {
-        _panel.setPanelColour(COL_25_PERCENT);
-    }
+	//if at 75% health, change the panel colour to yellow
+	if(_health <= (int)(3.f / 4.f * (float)_maxHealth))
+	{
+		_panel.setPanelColour(COL_75_PERCENT);
+	}
+	//if at 50% health, change the panel to orange
+	if(_health <= _maxHealth / 2)
+	{
+		_panel.setPanelColour(COL_50_PERCENT);
+	}
+	//if at 25% health, change the panel colour to red
+	if(_health <= (int)(1.f / 4.f * (float)_maxHealth))
+	{
+		_panel.setPanelColour(COL_25_PERCENT);
+	}
 
-    //update text to current health
-    _panel.setTextLocalised(TEXT + std::to_string(_health));
+	//update text to current health
+	_panel.setTextLocalised(TEXT + std::to_string(_health));
 }
 
 //increases health by num
-void EnemyHealthComponent::increaseHealth(int num) {
-    _health += num;
+void EnemyHealthComponent::increaseHealth(int num)
+{
+	_health += num;
 
-    //update text to current health
-    _panel.setTextLocalised(TEXT + std::to_string(_health));
+	//update text to current health
+	_panel.setTextLocalised(TEXT + std::to_string(_health));
 }

@@ -1,20 +1,20 @@
 #pragma once
 
-#include <SFML/Audio/Music.hpp>
-#include <SFML/Audio/SoundBuffer.hpp>
-#include <SFML/Audio/Sound.hpp>
 #include "engine.h"
+#include <SFML/Audio/Music.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
 
-
-class Level1Scene : public Scene {
+class Level1Scene : public Scene
+{
 public:
-  void Load() override;
+	void Load() override;
 
-  void UnLoad() override;
+	void UnLoad() override;
 
-  void Update(const double& dt) override;
+	void Update(const double& dt) override;
 
-  void Render() override;
-  
-  void Restart();
+	void Render() override;
+
+	void Restart();
 };

@@ -3,18 +3,19 @@
 #include "../GUI/panel.h"
 #include <SFML/System/Clock.hpp>
 
-class TimerComponent : public Component {
+class TimerComponent : public Component
+{
 private:
-    Panel _panel;
-    float _timer;
-    std::string TEXT;
+	Panel _panel;
+	float _timer;
+	std::string TEXT;
 
 public:
-    TimerComponent() = delete;
-    explicit TimerComponent(Entity* p);
+	TimerComponent() = delete;
+	explicit TimerComponent(Entity* p);
 
-    void update(double dt) override;
-    void render() override;
+	void update(double dt) override;
+	void render() override;
 
-    int getTime() const;
+	int getTime() const;
 };

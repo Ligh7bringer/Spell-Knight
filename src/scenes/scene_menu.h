@@ -1,20 +1,21 @@
 #pragma once
 
-#include "engine.h"
 #include "../GUI/menu.h"
+#include "engine.h"
 
-class MenuScene : public Scene {
+class MenuScene : public Scene
+{
 public:
-    MenuScene() = default;
-    ~MenuScene() override = default;
+	MenuScene() = default;
+	~MenuScene() override = default;
 
-    void Load() override;
+	void Load() override;
 
-    void Render() override;
+	void Render() override;
 
-    void Update(const double& dt) override;
+	void Update(const double& dt) override;
 
 private:
-    Menu _mainMenu;
-    float _delay;
+	Menu _mainMenu;
+	float _delay;
 };

@@ -1,32 +1,34 @@
 #include "scene_level2.h"
-#include "../game.h"
-#include <LevelSystem.h>
-#include <thread>
-#include "system_renderer.h"
-#include "../misc/entity_factory.h"
+#include "../../engine/lib_audio_manager/audio_manager.h"
 #include "../Log.h"
 #include "../components/cmp_score.h"
 #include "../components/cmp_timer.h"
-#include "../../engine/lib_audio_manager/audio_manager.h"
-#include <engine.h>
 #include "../config.h"
+#include "../game.h"
+#include "../misc/entity_factory.h"
+#include "system_renderer.h"
+#include <LevelSystem.h>
+#include <engine.h>
+#include <thread>
 using namespace std;
 using namespace sf;
 
-//Sprite background;	
+//Sprite background;
 
 static shared_ptr<Entity> player;
 int score2;
 int playerTime2;
 Panel panel2;
 
-void Level2Scene::Load() {
+void Level2Scene::Load()
+{
 	AudioManager::playMusic("background.wav", true);
 
 	//setup view
 	auto windowSize = Engine::getWindowSize();
 	auto res = Engine::getResolution();
-	if (res.x > 1366) {
+	if(res.x > 1366)
+	{
 		res.x = 1366;
 		res.y = 768;
 	}
@@ -57,9 +59,11 @@ void Level2Scene::Load() {
 	setLoaded(true);
 }
 
-void Level2Scene::Restart() {
+void Level2Scene::Restart()
+{
 	//remove all entities
-	for (auto ent : ents.list) {
+	for(auto ent : ents.list)
+	{
 		ent->setForDelete();
 	}
 
@@ -70,7 +74,8 @@ void Level2Scene::Restart() {
 
 	// Create some enemies
 	auto slimePos = LevelSystem::getPosition(LevelSystem::enemyTiles::SLIME);
-	for (int i = 0; i < slimePos.size(); i += 2) {
+	for(int i = 0; i < slimePos.size(); i += 2)
+	{
 		auto start = slimePos[i];
 		auto end = slimePos[i + 1];
 		auto distance = end - start;
@@ -78,16 +83,19 @@ void Level2Scene::Restart() {
 	}
 
 	auto eyePos = LevelSystem::getPosition(LevelSystem::enemyTiles::EYE);
-	for (auto ep : eyePos) {
+	for(auto ep : eyePos)
+	{
 		EntityFactory::makeEyeDemon(this, ep);
 	}
 
 	auto cloudPos = LevelSystem::getPosition(LevelSystem::enemyTiles::BIRD);
-	for (auto cp : cloudPos) {
+	for(auto cp : cloudPos)
+	{
 		EntityFactory::makeCloud(this, cp);
 	}
 	auto plantPos = LevelSystem::getPosition(LevelSystem::enemyTiles::PLANT);
-	for (auto pp : plantPos) {
+	for(auto pp : plantPos)
+	{
 		EntityFactory::makePlant(this, pp);
 	}
 
@@ -96,15 +104,18 @@ void Level2Scene::Restart() {
 
 	//create collectibles
 	auto coinPos = ls::getPosition(ls::groundTiles::COIN);
-	for (auto cp : coinPos) {
+	for(auto cp : coinPos)
+	{
 		EntityFactory::makeCoin(this, cp);
 	}
 	auto potionPos = ls::getPosition(ls::groundTiles::POTION);
-	for (auto pp : potionPos) {
+	for(auto pp : potionPos)
+	{
 		EntityFactory::makePotion(this, pp);
 	}
 	auto gemPos = ls::getPosition(ls::groundTiles::GEM);
-	for (auto gp : gemPos) {
+	for(auto gp : gemPos)
+	{
 		EntityFactory::makeGem(this, gp);
 	}
 
@@ -119,7 +130,8 @@ void Level2Scene::Restart() {
 	//get positions of moving tiles
 	auto platformTile = LevelSystem::getPosition(ls::platformTiles::PLATFORM_MOVING);
 	//create platforms
-	for (int i = 0; i < platformTile.size(); i += 2) {
+	for(int i = 0; i < platformTile.size(); i += 2)
+	{
 		//for every two positions
 		//the first one is the starting position
 		auto start = platformTile[i];
@@ -132,29 +144,28 @@ void Level2Scene::Restart() {
 
 	//make falling platform
 	platformTile = LevelSystem::getPosition(ls::platformTiles::PLATFORM_FALLING);
-	for (int i = 0; i < platformTile.size(); ++i) {
+	for(int i = 0; i < platformTile.size(); ++i)
+	{
 		auto platformPos = platformTile[i];
 		EntityFactory::makeFallingPlatform(this, platformPos);
 	}
 	//make heart
 	auto heartPos = ls::getPosition(ls::groundTiles::HEART);
-	for(auto hp : heartPos)
-		EntityFactory::makeHeart(this, hp);
-	
+	for(auto hp : heartPos) EntityFactory::makeHeart(this, hp);
 
 	//create boulder spawner
 	//EntityFactory::makeSpawner(this, LevelSystem::getPosition(LevelSystem::enemyTiles::BOULDER)[0]);
 
 	//create spikes
 	auto spikePos = LevelSystem::getPosition(LevelSystem::enemyTiles::SPIKE);
-	for (auto sp : spikePos)
-		EntityFactory::makeSpike(this, sp);
+	for(auto sp : spikePos) EntityFactory::makeSpike(this, sp);
 
 	LOG(INFO) << "Scene 2 Restarted!";
 }
 
-void Level2Scene::UnLoad() {
-	cout << "Scene 2 Unload" << endl;
+void Level2Scene::UnLoad()
+{
+	LOG(INFO) << "Scene 2 Unload";
 	AudioManager::stopMusic("background.wav");
 	//don't forget to reset to default view or when the scene is changed or nothing is visible :D
 	Renderer::resetView();
@@ -163,20 +174,23 @@ void Level2Scene::UnLoad() {
 	Scene::UnLoad();
 }
 
-void Level2Scene::Update(const double& dt) {
+void Level2Scene::Update(const double& dt)
+{
 	_parBackground.update(dt);
 
-
 	//show game over scene if player dies
-	if (!player->isAlive()) {
-		if (sf::length(player->getPosition() - ls::getPosition(ls::baseTiles::END)[0]) < 30.0f) {
+	if(!player->isAlive())
+	{
+		if(sf::length(player->getPosition() - ls::getPosition(ls::baseTiles::END)[0]) < 30.0f)
+		{
 			AudioManager::playSound("teleport.wav");
 			gameOver.setText("Level Complete!!");
 			auto scoreComp = player->get_components<PlayerScoreComponent>()[0];
 			score2 = scoreComp->getPoints() * 2;
 			gameOver.nextLevel();
 		}
-		else {
+		else
+		{
 			AudioManager::playSound("death.wav");
 			gameOver.setText("Game over!");
 		}
@@ -184,7 +198,8 @@ void Level2Scene::Update(const double& dt) {
 		sf::sleep(sf::seconds(1.f));
 		Engine::ChangeScene(&gameOver);
 	}
-	else {
+	else
+	{
 		auto timeComp = player->get_components<TimerComponent>()[0];
 		playerTime2 = timeComp->getTime();
 		auto scoreComp = player->get_components<PlayerScoreComponent>()[0];
@@ -192,7 +207,8 @@ void Level2Scene::Update(const double& dt) {
 	}
 
 	//move the view with the player
-	if (player != nullptr) {
+	if(player != nullptr)
+	{
 		float vx = player->getPosition().x;
 		float vy = Engine::getWindowSize().y / 2.f;
 		vx = floor(vx);
@@ -204,15 +220,15 @@ void Level2Scene::Update(const double& dt) {
 	Scene::Update(dt);
 }
 
-void Level2Scene::Render() {
+void Level2Scene::Render()
+{
 	_parBackground.render();
 
 	ls::render(Engine::GetWindow());
 
 	Scene::Render();
-	if (Engine::isPaused()) {
+	if(Engine::isPaused())
+	{
 		panel2.render();
 	}
 }
-
-
